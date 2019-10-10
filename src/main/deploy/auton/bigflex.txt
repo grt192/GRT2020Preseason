@@ -1,0 +1,183 @@
+# Fill all hatches, left then right
+swerve 0.25 0.0
+delay 1000
+pathfind 170.219 150.125
+delay 1000
+visiontarget 8
+wait
+score
+wait
+placehatch
+delay 500
+pathfind 50 28
+delay 1000
+visiontarget 0
+wait
+score
+wait
+intakehatch
+pathfind 260.75 83.094
+delay 1000
+visiontarget 14
+wait
+score
+wait
+placehatch
+delay 500
+pathfind 50 28
+delay 1000
+visiontarget 0
+wait
+score
+wait
+intakehatch
+pathfind 282.5 83.094
+delay 1000
+visiontarget 15
+wait
+score
+wait
+placehatch
+delay 500
+pathfind 50 28
+delay 1000
+visiontarget 0
+wait
+score
+wait
+intakehatch
+pathfind 304.25 83.094
+delay 1000
+visiontarget 13
+wait
+score
+wait
+placehatch
+delay 500
+pathfind 50 28
+delay 1000
+visiontarget 0
+wait
+score
+wait
+intakehatch
+pathfind 170.65010548028593 42.15713074943241
+delay 1000
+visiontarget 2
+wait
+score
+wait
+placehatch
+delay 500
+pathfind 50 28
+delay 1000
+visiontarget 0
+wait
+score
+wait
+intakehatch
+pathfind 287.6381280945186 42.08727693021015
+delay 1000
+visiontarget 4
+wait
+score
+wait
+placehatch
+delay 500
+pathfind 50 28
+delay 1000
+visiontarget 0
+wait
+score
+wait
+intakehatch
+pathfind 170.219 150.125
+delay 1000
+visiontarget 8
+wait
+score
+wait
+placehatch
+delay 500
+pathfind 50 296
+delay 1000
+visiontarget 1
+wait
+score
+wait
+intakehatch
+pathfind 260.75 83.094
+delay 1000
+visiontarget 14
+wait
+score
+wait
+placehatch
+delay 500
+pathfind 50 296
+delay 1000
+visiontarget 1
+wait
+score
+wait
+intakehatch
+pathfind 282.5 83.094
+delay 1000
+visiontarget 15
+wait
+score
+wait
+placehatch
+delay 500
+pathfind 50 296
+delay 1000
+visiontarget 1
+wait
+score
+wait
+intakehatch
+pathfind 304.25 83.094
+delay 1000
+visiontarget 13
+wait
+score
+wait
+placehatch
+delay 500
+pathfind 50 296
+delay 1000
+visiontarget 1
+wait
+score
+wait
+intakehatch
+pathfind 170.65010548028593 42.15713074943241
+delay 1000
+visiontarget 2
+wait
+score
+wait
+placehatch
+delay 500
+pathfind 50 296
+delay 1000
+visiontarget 1
+wait
+score
+wait
+intakehatch
+pathfind 287.6381280945186 42.08727693021015
+delay 1000
+visiontarget 4
+wait
+score
+wait
+placehatch
+delay 500
+pathfind 50 296
+delay 1000
+visiontarget 1
+wait
+score
+wait
+intakehatch

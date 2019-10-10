@@ -1,0 +1,52 @@
+# Config file for 2018 omega2
+# Domain: roborio-192-frc.local
+
+swerve_width=26
+swerve_height=21
+
+robot_width=32.75
+robot_height=28
+
+
+swerve_inverted=true
+swerve_kp=0.3
+swerve_kd=0.0
+
+
+# Offsets are inverted
+fl_rotate=1
+fl_drive=2
+fl_offset=150
+fr_rotate=15
+fr_drive=16
+fr_offset=-731
+bl_rotate=3
+bl_drive=4
+bl_offset=225
+br_rotate=13
+br_drive=14
+br_offset=-30
+
+ticks_per_rotation=1024
+drive_encoder_scale=1.884955592
+
+# roller=?
+# roller_sol=?
+
+# winch=?
+# winch_follwer=?
+
+# climber_sol=?
+# left_climber=?
+# right_climber=?
+
+# carriage=?
+
+name=omega22018
+
+#hatch1=0
+#hatch2=1
+
+hatch_cam_x=-14
+hatch_cam_y=0.875
+hatch_cam_angle=3.1415926535

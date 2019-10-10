@@ -1,0 +1,17 @@
+#
+swerve 0.25 0.0
+delay 1500
+pathfind 165 59
+visiontarget 2
+wait
+score
+wait
+placehatch
+delay 500
+pathfind 50 25
+delay 1000
+visiontarget 0
+wait
+score
+wait
+intakehatch
