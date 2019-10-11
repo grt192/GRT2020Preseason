@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -16,19 +15,11 @@ import frc.config.Config;
 import frc.fieldmap.FieldMap;
 import frc.input.Input;
 import frc.input.JoystickProfile;
-import frc.mechs.BottomIntake;
-import frc.mechs.Climber;
-import frc.mechs.Elevator;
-import frc.mechs.Hatches;
-import frc.mechs.TopIntake;
 import frc.modes.Mode;
-import frc.positiontracking.BasicPositionTracker;
 import frc.positiontracking.KalmanFilterPositionTracker;
 import frc.positiontracking.PositionTracker;
-import frc.sequence.Sequence;
 import frc.swerve.NavXGyro;
 import frc.swerve.Swerve;
-import frc.vision.Camera;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -46,15 +37,9 @@ public class Robot extends TimedRobot {
     public static NavXGyro GYRO;
     public static PositionTracker POS_TRACKER;
     public static FieldMap FIELD_MAP;
-    public static Hatches HATCHES;
-    public static BottomIntake BOTTOM_INTAKE;
-    public static Elevator ELEVATOR;
-    public static TopIntake TOP_INTAKE;
-    public static Climber CLIMBER;
     public static double ROBOT_WIDTH;
     public static double ROBOT_HEIGHT;
     public static double ROBOT_RADIUS;
-    public static Camera HATCH_JEVOIS;
 
     private boolean overridden;
 
@@ -67,22 +52,13 @@ public class Robot extends TimedRobot {
         FIELD_MAP = new FieldMap();
         autonomous = new Autonomous(this);
         GYRO = new NavXGyro();
-        ELEVATOR = new Elevator();
-        CLIMBER = new Climber();
-        TOP_INTAKE = new TopIntake();
-        BOTTOM_INTAKE = new BottomIntake();
-        HATCHES = new Hatches();
-        HATCH_JEVOIS = new Camera("hatch_cam");
         POS_TRACKER = new KalmanFilterPositionTracker();
         // POS_TRACKER = new BasicPositionTracker();
         POS_TRACKER.set(66 + ROBOT_HEIGHT / 2, 14.75 + ROBOT_WIDTH / 2);
         SWERVE = new Swerve();
-        Sequence.initSequneces();
         Mode.initModes();
         mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
         mode.setNumber(0);
-        CameraServer.getInstance().startAutomaticCapture(0);
-        CameraServer.getInstance().startAutomaticCapture(1);
     }
 
     private void loop() {

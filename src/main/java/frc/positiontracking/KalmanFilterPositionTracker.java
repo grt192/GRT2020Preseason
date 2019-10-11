@@ -90,12 +90,7 @@ public class KalmanFilterPositionTracker extends PositionTracker {
         Mat U = new Mat(STATES, 1, TYPE);
         U.put(0, 0, data.encoderVX, data.encoderVY);
         kf.predict(U);
-        Position estimate = Robot.HATCH_JEVOIS.getPositionEstimate(ticks);
-        if (estimate != null) {
-            Mat Z = new Mat(STATES, 1, TYPE);
-            Z.put(0, 0, estimate.pos.x, estimate.pos.y);
-            kf.correct(Z);
-        }
+        Position estimate;
         // Occasionally position tracking jumps billions of miles away (no joke) and
         // wrecks stuff
         // this should hopefully prevent that :)

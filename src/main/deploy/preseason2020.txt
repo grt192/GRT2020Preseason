@@ -1,0 +1,31 @@
+# Config file for 2020 preseason
+# Domain: roborio-192-frc.local
+
+swerve_width=22.25
+swerve_height=21.70
+
+robot_width=37.00
+robot_height=41
+
+
+swerve_inverted=false
+swerve_kp=0.3
+swerve_kd=0.0
+
+
+# Offsets are inverted
+br_rotate=14
+br_drive=1
+br_offset=713
+bl_rotate=3
+bl_drive=4
+bl_offset=-17
+fr_rotate=15
+fr_drive=16
+fr_offset=726
+fl_rotate=2
+fl_drive=13
+fl_offset=362
+
+ticks_per_rotation=1024
+drive_encoder_scale=1.83259571

@@ -10,9 +10,7 @@ package frc.modes;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.input.Input;
 import frc.input.JoystickProfile;
-import frc.mechs.Elevator;
 import frc.robot.Robot;
-import frc.sequence.Sequence;
 
 /**
  * Add your docs here.
@@ -33,76 +31,15 @@ class DriverControl extends Mode {
 
     private void driveMechs() {
 
-        // Swerve Driver: Intake hatch
-        if (Input.SWERVE_XBOX.getXButtonPressed()) {
-            Robot.HATCHES.setMiddle(false);
-        }
-
-        // Swerve Driver: Place Hatch
-        if (Input.SWERVE_XBOX.getAButtonPressed()) {
-            Sequence.PLACE_HATCH.start();
-        }
-
         // Swerve Driver: Right joystick to intake power
         intakePower = -JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getY(Hand.kRight), 0.3);
         if (Input.SWERVE_XBOX.getBButton())
             intakePower = -1.0;
 
-        // Swerve Driver: Activate roller
-        if (Robot.BOTTOM_INTAKE.getPosition()) {
-            Robot.BOTTOM_INTAKE.setPower(intakePower);
-        }
-        Robot.TOP_INTAKE.setPower(-intakePower);
-
         // Mech Driver: Get manual elevator power (from controller)
         elevatorPower = JoystickProfile.applyDeadband(-Input.MECH_XBOX.getY(Hand.kLeft), 0.2);
 
-        // If no elecator sequence is running, give manual control to height
-        if (!Robot.ELEVATOR.isClosedLoop() || elevatorPower != 0) {
-            Robot.ELEVATOR.setPower(elevatorPower);
-        }
-
         // Mech Driver: goto elevator position
-
-        switch (Input.MECH_XBOX.getPOV()) {
-        // case 0:
-        // Robot.ELEVATOR.setPosition(Elevator.ROCKET_TOP); //
-        // System.out.println("Rocket Top");
-        // break;
-        case 90:
-            Robot.ELEVATOR.setPosition(Elevator.ROCKET_MIDDLE); //
-            System.out.println("Rocket Middle");
-            break;
-        case 180:
-            Robot.ELEVATOR.setPosition(Elevator.ROCKET_BOTTOM); //
-            System.out.println("Rocket Bottom");
-            break;
-        case 270:
-            Robot.ELEVATOR.setPosition(Elevator.CARGO_SHIP); //
-            System.out.println("Cargo Ship");
-            break;
-        }
-
-        if (Input.MECH_XBOX.getBackButtonPressed()) {
-            Robot.ELEVATOR.setPosition(Elevator.PICKUP);
-        }
-
-        if (Input.MECH_XBOX.getStartButtonPressed()) {
-            Robot.BOTTOM_INTAKE.toggle();
-        }
-
-        // Experimental stuff
-        if (Input.MECH_XBOX.getAButtonPressed()) {
-            Sequence.EXTEND_HOOK.start();
-        } else if (Input.MECH_XBOX.getBButtonPressed()) {
-            Sequence.RETRACT_HOOK.start();
-        }
-        // if (Input.MECH_XBOX.getBumperPressed(Hand.kLeft)) {
-        // Robot.CLIMBER.toggleFront();
-        // }
-        // if (Input.MECH_XBOX.getBumperPressed(Hand.kRight)) {
-        // Robot.CLIMBER.toggleBack();
-        // }
 
     }
 
