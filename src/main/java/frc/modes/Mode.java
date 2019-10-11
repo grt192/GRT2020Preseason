@@ -10,21 +10,12 @@ package frc.modes;
 public abstract class Mode {
 
     public static Mode DRIVER_CONTROL;
-    public static PathfindingControl PATHFINDING_CONTROL;
-    public static ScoreMode SCORE_MODE;
-    public static DummyMode DUMMY_MODE;
     private static Mode[] modes;
 
     public static void initModes() {
         DRIVER_CONTROL = new DriverControl();
-        PATHFINDING_CONTROL = new PathfindingControl();
-        SCORE_MODE = new ScoreMode();
-        DUMMY_MODE = new DummyMode();
-        modes = new Mode[4];
+        modes = new Mode[1];
         modes[0] = DRIVER_CONTROL;
-        modes[1] = PATHFINDING_CONTROL;
-        modes[2] = SCORE_MODE;
-        modes[3] = DUMMY_MODE;
     }
 
     public abstract boolean loop();

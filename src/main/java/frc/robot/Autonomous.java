@@ -77,16 +77,6 @@ public class Autonomous {
             case "wait":
                 finishedFlag = false;
                 break;
-            case "score":
-                robot.setMode(2);
-                break;
-            case "visiontarget":
-                Mode.SCORE_MODE.setTarget(Integer.parseInt(cmd[1]));
-                break;
-            case "pathfind":
-                Mode.PATHFINDING_CONTROL.setTarget(Double.parseDouble(cmd[1]), Double.parseDouble(cmd[2]));
-                robot.setMode(1);
-                break;
             case "swerve":
                 robot.setMode(3);
                 Robot.SWERVE.drive(Double.parseDouble(cmd[1]), Double.parseDouble(cmd[2]),

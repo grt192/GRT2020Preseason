@@ -12,12 +12,9 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.config.Config;
-import frc.fieldmap.FieldMap;
 import frc.input.Input;
 import frc.input.JoystickProfile;
 import frc.modes.Mode;
-import frc.positiontracking.KalmanFilterPositionTracker;
-import frc.positiontracking.PositionTracker;
 import frc.swerve.NavXGyro;
 import frc.swerve.Swerve;
 
@@ -35,8 +32,6 @@ public class Robot extends TimedRobot {
 
     public static Swerve SWERVE;
     public static NavXGyro GYRO;
-    public static PositionTracker POS_TRACKER;
-    public static FieldMap FIELD_MAP;
     public static double ROBOT_WIDTH;
     public static double ROBOT_HEIGHT;
     public static double ROBOT_RADIUS;
@@ -49,12 +44,8 @@ public class Robot extends TimedRobot {
         ROBOT_WIDTH = Config.getDouble("robot_width");
         ROBOT_HEIGHT = Config.getDouble("robot_height");
         ROBOT_RADIUS = Math.sqrt(ROBOT_WIDTH * ROBOT_WIDTH + ROBOT_HEIGHT * ROBOT_HEIGHT) / 2;
-        FIELD_MAP = new FieldMap();
         autonomous = new Autonomous(this);
         GYRO = new NavXGyro();
-        POS_TRACKER = new KalmanFilterPositionTracker();
-        // POS_TRACKER = new BasicPositionTracker();
-        POS_TRACKER.set(66 + ROBOT_HEIGHT / 2, 14.75 + ROBOT_WIDTH / 2);
         SWERVE = new Swerve();
         Mode.initModes();
         mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
@@ -65,19 +56,16 @@ public class Robot extends TimedRobot {
         // long start = System.nanoTime();
         // handle mode switching
         autonomous.loop();
-        // System.out.println("auton: " + (System.nanoTime() - start));
         int i = mode.getNumber(0).intValue();
         if (manualOverride()) {
             autonomous.kill();
             mode.setNumber(0);
             i = 0;
         }
-        // System.out.println("override: " + (System.nanoTime() - start));
         if (!Mode.getMode(i).loop()) {
             autonomous.modeFinished();
             mode.setNumber(0);
         }
-        // System.out.println("done: " + (System.nanoTime() - start));
     }
 
     public void setMode(int i) {

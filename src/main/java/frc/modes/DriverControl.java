@@ -19,28 +19,11 @@ class DriverControl extends Mode {
 
     private int pov = -1;
     private int lastPov;
-    private double intakePower;
-    private double elevatorPower;
 
     @Override
     public boolean loop() {
-        driveMechs();
         driveSwerve();
         return true;
-    }
-
-    private void driveMechs() {
-
-        // Swerve Driver: Right joystick to intake power
-        intakePower = -JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getY(Hand.kRight), 0.3);
-        if (Input.SWERVE_XBOX.getBButton())
-            intakePower = -1.0;
-
-        // Mech Driver: Get manual elevator power (from controller)
-        elevatorPower = JoystickProfile.applyDeadband(-Input.MECH_XBOX.getY(Hand.kLeft), 0.2);
-
-        // Mech Driver: goto elevator position
-
     }
 
     private void driveSwerve() {
@@ -93,7 +76,6 @@ class DriverControl extends Mode {
         double rotate = 0;
         if (lTrigger + rTrigger > 0.05) {
             rotate = -(rTrigger * rTrigger - lTrigger * lTrigger);
-            System.out.println("rotate: " + rotate);
         }
         Robot.SWERVE.drive(x, y, rotate);
     }
