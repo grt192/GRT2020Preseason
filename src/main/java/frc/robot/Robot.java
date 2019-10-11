@@ -85,11 +85,6 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void autonomousInit() {
-        autonomous.init("2hatchesfrontl.txt");
-    }
-
-    @Override
     public void autonomousPeriodic() {
         loop();
     }

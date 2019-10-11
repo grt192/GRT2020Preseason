@@ -32,8 +32,8 @@ class DriverControl extends Mode {
         if (Input.SWERVE_XBOX.getBackButtonPressed())
             Robot.SWERVE.setRobotCentric(false);
 
-        double x = JoystickProfile.applyDeadband(-Input.SWERVE_XBOX.getY(Hand.kLeft));
-        double y = JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getX(Hand.kLeft));
+        double x = JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getY(Hand.kLeft));
+        double y = JoystickProfile.applyDeadband(-Input.SWERVE_XBOX.getX(Hand.kLeft));
         // double y =
         // JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getX(Hand.kRight));
         double mag = Math.sqrt(x * x + y * y);

@@ -10,8 +10,7 @@ robot_height=41
 
 swerve_inverted=false
 swerve_kp=0.3
-swerve_kd=0.0
-
+swerve_kd=0.2
 
 # Offsets are inverted
 br_rotate=14
