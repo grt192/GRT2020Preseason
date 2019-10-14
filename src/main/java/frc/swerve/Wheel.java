@@ -34,6 +34,7 @@ class Wheel {
 	public Wheel(String name) {
 		this.name = name;
 
+		// set up the wheel based on the configuration values
 		rotateMotor = new TalonSRX(Config.getInt(name + "_rotate"));
 		driveMotor = new CANSparkMax(Config.getInt(name + "_drive"), MotorType.kBrushless);
 		driveEncoder = driveMotor.getEncoder();
@@ -62,15 +63,21 @@ class Wheel {
 
 	public void set(double radians, double speed) {
 		if (speed != 0.0) {
+
 			double targetPosition = radians / TWO_PI;
+			// make target position between 0 and 1.0
 			targetPosition = GRTUtil.positiveMod(targetPosition, 1.0);
 
+			// get the current position
 			int encoderPosition = rotateMotor.getSelectedSensorPosition(0) - OFFSET;
 			double currentPosition = encoderPosition / TICKS_PER_ROTATION;
 			double rotations = Math.floor(currentPosition);
+			// make currentPosition between 0 and 1.0
 			currentPosition -= rotations;
+			// the amount we have to change the position by
 			double delta = currentPosition - targetPosition;
 			if (Math.abs(delta) > 0.5) {
+				// add 1 if delta > 0.5, subtract 1 if delta < -0.5
 				targetPosition += Math.signum(delta);
 			}
 			delta = currentPosition - targetPosition;

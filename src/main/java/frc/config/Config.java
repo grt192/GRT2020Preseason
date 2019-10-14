@@ -14,6 +14,11 @@ import edu.wpi.first.wpilibj.Filesystem;
 public class Config {
 	private static Map<String, String> map;
 
+	/**
+	 * Get the int config value corresponding to the key passed in.
+	 * 
+	 * @return The corresponding integer value, or -1 if the key was invalid
+	 */
 	public static int getInt(String key) {
 		try {
 			return Integer.parseInt(map.get(key));
@@ -22,10 +27,21 @@ public class Config {
 		}
 	}
 
+	/**
+	 * Get the boolean config value corresponding to the key passed in.
+	 * 
+	 * @return The corresponding boolean value, or false if the key was invalid
+	 */
 	public static boolean getBoolean(String key) {
 		return Boolean.parseBoolean(map.get(key));
 	}
 
+	/**
+	 * Get the String config value corresponding to the key passed in.
+	 * 
+	 * @return The corresponding String value, or the empty string if the key was
+	 *         invalid
+	 */
 	public static String getString(String key) {
 		String result = map.get(key);
 		if (result == null) {
@@ -34,6 +50,11 @@ public class Config {
 		return result;
 	}
 
+	/**
+	 * Get the double config value corresponding to the key passed in.
+	 * 
+	 * @return The corresponding double value, or 0.0 if the key was invalid
+	 */
 	public static double getDouble(String key) {
 		try {
 			return Double.parseDouble(map.get(key));
@@ -45,6 +66,7 @@ public class Config {
 	public static void start() {
 		map = new HashMap<>();
 		try {
+			// read the configuration from a file
 			Scanner nameScanner = new Scanner(new File("/home/lvuser/name.192"));
 			String name = nameScanner.nextLine();
 			nameScanner.close();
@@ -52,16 +74,18 @@ public class Config {
 			System.out.println("reading from file " + fileName);
 			File f = new File(Filesystem.getDeployDirectory(), fileName);
 			Scanner scanner = new Scanner(f);
+			// for each line of the config file, add a new key/value pair
+			// into the map
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
 
-				while (line.startsWith(" "))
-					line = line.substring(1);
+				// remove whitespace in front/back of string
+				line = line.trim();
 
 				if (line.length() > 0 && line.charAt(0) != '#') {
-					String[] splitted = line.trim().split("=");
+					String[] splitted = line.split("=");
 					if (splitted.length == 2)
-						map.put(splitted[0], splitted[1]);
+						map.put(splitted[0].trim(), splitted[1].trim());
 				}
 			}
 			scanner.close();
@@ -69,6 +93,7 @@ public class Config {
 			e.printStackTrace();
 		}
 
+		// print the key/value pairs in the map
 		for (String s : map.keySet()) {
 			System.out.println(s + ": " + getString(s));
 		}
