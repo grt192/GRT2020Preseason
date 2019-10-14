@@ -16,7 +16,7 @@ import frc.robot.Robot;
  * Add your docs here.
  */
 class DriverControl extends Mode {
-
+    // "direction" the joystick is pointing
     private int pov = -1;
     private int lastPov;
 
@@ -26,7 +26,11 @@ class DriverControl extends Mode {
         return true;
     }
 
+    /**
+     * Function that is called repeatedly to check for controller input
+     */
     private void driveSwerve() {
+        // set whether directions are relative to the robot or the field
         if (Input.SWERVE_XBOX.getStartButtonPressed())
             Robot.SWERVE.setRobotCentric(true);
         if (Input.SWERVE_XBOX.getBackButtonPressed())
@@ -36,9 +40,13 @@ class DriverControl extends Mode {
         double y = JoystickProfile.applyDeadband(-Input.SWERVE_XBOX.getX(Hand.kLeft));
         // double y =
         // JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getX(Hand.kRight));
+
+        // magnify the x and y values?
         double mag = Math.sqrt(x * x + y * y);
         x *= mag;
         y *= mag;
+
+        // updates POV depending on what buttons were pressed
         boolean buttonPressed = false;
         if (pov == -1) {
             buttonPressed = true;
@@ -51,6 +59,7 @@ class DriverControl extends Mode {
             pov = lastPov + 45;
         }
         if (buttonPressed) {
+            // set the angle of the robot based on the value of pov
             if (pov == -1) {
             } else if (pov == 45) {
                 Robot.SWERVE.setAngle(Math.toRadians(-60));
@@ -71,12 +80,14 @@ class DriverControl extends Mode {
 
         }
 
+        // rotate the robot depending on how much the triggers are pressed
         double lTrigger = Input.SWERVE_XBOX.getTriggerAxis(Hand.kLeft);
         double rTrigger = Input.SWERVE_XBOX.getTriggerAxis(Hand.kRight);
         double rotate = 0;
         if (lTrigger + rTrigger > 0.05) {
             rotate = -(rTrigger * rTrigger - lTrigger * lTrigger);
         }
+
         Robot.SWERVE.drive(x, y, rotate);
     }
 

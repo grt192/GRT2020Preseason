@@ -12,6 +12,7 @@ public class GRTUtil {
 		return Math.min(Math.max(min, x), max);
 	}
 
+	/** Takes the positive modulo */
 	public static double positiveMod(double x, double mod) {
 		return (((x % mod) + mod) % mod);
 	}

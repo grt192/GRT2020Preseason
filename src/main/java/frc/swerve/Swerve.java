@@ -17,6 +17,7 @@ public class Swerve implements Runnable {
 	private final double RADIUS;
 	private final double WHEEL_ANGLE;
 	private final double ROTATE_SCALE;
+	/** proportional scaling constant */
 	private final double kP;
 	private final double kD;
 
@@ -26,7 +27,11 @@ public class Swerve implements Runnable {
 	private NavXGyro gyro;
 	private Wheel[] wheels;
 
+	/** requested x/y/angular velocity (radians/s) and angle */
 	private volatile double userVX, userVY, userW, angle;
+	/**
+	 * Whether all directions are relative to the robot's orientation (or the field)
+	 */
 	private volatile boolean robotCentric;
 	private volatile boolean withPID;
 	private volatile SwerveData swerveData;
@@ -58,6 +63,7 @@ public class Swerve implements Runnable {
 	}
 
 	public void run() {
+		// angular velocity (radians/s) to change to
 		double w = userW;
 		if (withPID) {
 			w = calcPID();
@@ -74,6 +80,16 @@ public class Swerve implements Runnable {
 		return w;
 	}
 
+	/**
+	 * Sets x velocity, y velocity, and angular velocity
+	 * 
+	 * @param vx
+	 *               the new x velocity
+	 * @param vy
+	 *               the new y velocity
+	 * @param w
+	 *               the new angular velocity (radians/s)
+	 */
 	public void drive(double vx, double vy, double w) {
 		userVX = vx;
 		userVY = vy;
@@ -83,6 +99,10 @@ public class Swerve implements Runnable {
 		}
 	}
 
+	/**
+	 * @param angle
+	 *                  the angle to turn the robot to in radians
+	 */
 	public void setAngle(double angle) {
 		withPID = true;
 		this.angle = angle;
@@ -92,7 +112,18 @@ public class Swerve implements Runnable {
 		robotCentric = mode;
 	}
 
+	/**
+	 * Change the motors to fit the requested values
+	 * 
+	 * @param vx
+	 *               the requested x velocity
+	 * @param vy
+	 *               the requested y velocity
+	 * @param w
+	 *               the requested angular velocity in radians/s
+	 */
 	public void changeMotors(double vx, double vy, double w) {
+		// ((distance/radius)/s) * (1/radius)
 		w *= ROTATE_SCALE;
 		double gyroAngle = (robotCentric ? 0 : Math.toRadians(gyro.getAngle()));
 		for (int i = 0; i < 4; i++) {

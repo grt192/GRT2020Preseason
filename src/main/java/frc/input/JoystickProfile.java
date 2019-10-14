@@ -7,10 +7,17 @@ public class JoystickProfile {
 	private JoystickProfile() {
 	}
 
+	/**
+	 * If the the x value passed is greater than the deadband value, the joystick
+	 * movement is significant enough, so return the movement. Otherwise, return 0.
+	 */
 	public static double applyDeadband(double x, double deadband) {
 		return (Math.abs(x) > deadband ? x : 0);
 	}
 
+	/**
+	 * Applies the default deadband to the input value.
+	 */
 	public static double applyDeadband(double x) {
 		return applyDeadband(x, DEFAULT_DEADBAND);
 	}
