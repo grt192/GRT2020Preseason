@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.input.Input;
 import frc.input.JoystickProfile;
 import frc.robot.Robot;
+import frc.lidar.Lidar;
 
 /**
  * Add your docs here.
@@ -88,7 +89,9 @@ class DriverControl extends Mode {
             rotate = -(rTrigger * rTrigger - lTrigger * lTrigger);
         }
 
-        Robot.SWERVE.drive(x, y, rotate);
+        // Robot.SWERVE.drive(x, y, rotate);
+        // System.out.println("Succes");
+
     }
 
 }

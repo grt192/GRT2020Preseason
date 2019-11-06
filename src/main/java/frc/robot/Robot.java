@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import frc.config.Config;
 import frc.input.Input;
 import frc.input.JoystickProfile;
+import frc.lidar.Lidar;
 import frc.modes.Mode;
 import frc.swerve.NavXGyro;
 import frc.swerve.Swerve;
@@ -35,6 +36,7 @@ public class Robot extends TimedRobot {
     public static double ROBOT_WIDTH;
     public static double ROBOT_HEIGHT;
     public static double ROBOT_RADIUS;
+    public static Lidar LIDAR;
 
     private boolean overridden;
 
@@ -46,7 +48,11 @@ public class Robot extends TimedRobot {
         ROBOT_RADIUS = Math.sqrt(ROBOT_WIDTH * ROBOT_WIDTH + ROBOT_HEIGHT * ROBOT_HEIGHT) / 2;
         autonomous = new Autonomous(this);
         GYRO = new NavXGyro();
-        SWERVE = new Swerve();
+        LIDAR = new Lidar();
+        // SWERVE = new Swerve();
+        // if (!LIDAR.init()) {
+        // System.out.println("Lidar failed to init.");
+        // }
         Mode.initModes();
         mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
         mode.setNumber(0);
