@@ -17,67 +17,19 @@ import frc.robot.Robot;
  */
 class DriverControl extends Mode {
 
-    private int pov = -1;
-    private int lastPov;
-
     @Override
     public boolean loop() {
-        driveSwerve();
+        driveTank();
         return true;
     }
 
-    private void driveSwerve() {
-        if (Input.SWERVE_XBOX.getStartButtonPressed())
-            Robot.SWERVE.setRobotCentric(true);
-        if (Input.SWERVE_XBOX.getBackButtonPressed())
-            Robot.SWERVE.setRobotCentric(false);
+    private void driveTank() {
 
-        double x = JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getY(Hand.kLeft));
-        double y = JoystickProfile.applyDeadband(-Input.SWERVE_XBOX.getX(Hand.kLeft));
-        // double y =
-        // JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getX(Hand.kRight));
-        double mag = Math.sqrt(x * x + y * y);
-        x *= mag;
-        y *= mag;
-        boolean buttonPressed = false;
-        if (pov == -1) {
-            buttonPressed = true;
-        }
-        pov = Input.SWERVE_XBOX.getPOV();
-        if (Input.SWERVE_XBOX.getBumperPressed(Hand.kLeft)) {
-            pov = lastPov - 45;
-        }
-        if (Input.SWERVE_XBOX.getBumperPressed(Hand.kRight)) {
-            pov = lastPov + 45;
-        }
-        if (buttonPressed) {
-            if (pov == -1) {
-            } else if (pov == 45) {
-                Robot.SWERVE.setAngle(Math.toRadians(-60));
-                lastPov = pov;
-            } else if (pov == 135) {
-                Robot.SWERVE.setAngle(Math.toRadians(-150));
-                lastPov = pov;
-            } else if (pov == 235) {
-                Robot.SWERVE.setAngle(Math.toRadians(-300));
-                lastPov = pov;
-            } else if (pov == 325) {
-                Robot.SWERVE.setAngle(Math.toRadians(-210));
-                lastPov = pov;
-            } else {
-                Robot.SWERVE.setAngle(Math.toRadians(-pov));
-                lastPov = pov;
-            }
+        // You may be wondering, why x is .getY() and y is .getX()? Don't question it //
+        double x = JoystickProfile.applyDeadband(-Input.TANK_XBOX.getY(Hand.kLeft));
+        double y = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kLeft));
 
-        }
-
-        double lTrigger = Input.SWERVE_XBOX.getTriggerAxis(Hand.kLeft);
-        double rTrigger = Input.SWERVE_XBOX.getTriggerAxis(Hand.kRight);
-        double rotate = 0;
-        if (lTrigger + rTrigger > 0.05) {
-            rotate = -(rTrigger * rTrigger - lTrigger * lTrigger);
-        }
-        Robot.SWERVE.drive(x, y, rotate);
+        Robot.TANK.setPolar(x, y);
     }
 
 }
