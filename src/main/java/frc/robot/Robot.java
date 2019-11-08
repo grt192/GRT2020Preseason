@@ -15,9 +15,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.input.Input;
 import frc.input.JoystickProfile;
-import frc.swerve.NavXGyro;
 import frc.tank.Tank;
-import frc.swerve.Swerve;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,9 +29,6 @@ public class Robot extends TimedRobot {
   private Autonomous autonomous;
 
   public static Tank TANK;
-
-  public static Swerve SWERVE;
-  public static NavXGyro GYRO;
 
   public static double ROBOT_WIDTH;
   public static double ROBOT_HEIGHT;
@@ -52,8 +47,6 @@ public class Robot extends TimedRobot {
     ROBOT_HEIGHT = Config.getDouble("robot_height");
     ROBOT_RADIUS = Math.sqrt(ROBOT_WIDTH * ROBOT_WIDTH + ROBOT_HEIGHT * ROBOT_HEIGHT) / 2;
     autonomous = new Autonomous(this);
-    GYRO = new NavXGyro();
-    SWERVE = new Swerve();
     TANK = new Tank();
     Mode.initModes();
     mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
