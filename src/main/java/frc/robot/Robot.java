@@ -12,12 +12,7 @@ import frc.config.Config;
 import frc.modes.Mode;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import frc.input.Input;
-import frc.input.JoystickProfile;
-import frc.swerve.NavXGyro;
 import frc.tank.Tank;
-import frc.swerve.Swerve;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,14 +27,9 @@ public class Robot extends TimedRobot {
 
   public static Tank TANK;
 
-  public static Swerve SWERVE;
-  public static NavXGyro GYRO;
-
   public static double ROBOT_WIDTH;
   public static double ROBOT_HEIGHT;
   public static double ROBOT_RADIUS;
-
-  private boolean overridden;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -52,8 +42,6 @@ public class Robot extends TimedRobot {
     ROBOT_HEIGHT = Config.getDouble("robot_height");
     ROBOT_RADIUS = Math.sqrt(ROBOT_WIDTH * ROBOT_WIDTH + ROBOT_HEIGHT * ROBOT_HEIGHT) / 2;
     autonomous = new Autonomous(this);
-    GYRO = new NavXGyro();
-    SWERVE = new Swerve();
     TANK = new Tank();
     Mode.initModes();
     mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
@@ -63,27 +51,10 @@ public class Robot extends TimedRobot {
   private void loop() {
     autonomous.loop();
     int i = mode.getNumber(0).intValue();
-    if (manualOverride()) {
-        autonomous.kill();
-        mode.setNumber(0);
-        i = 0;
-    }
     if (!Mode.getMode(i).loop()) {
         autonomous.modeFinished();
         mode.setNumber(0);
     }
-  }
-
-  private boolean manualOverride() {
-    double x = JoystickProfile.applyDeadband(-Input.SWERVE_XBOX.getY(Hand.kLeft));
-    double y = JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getX(Hand.kLeft));
-    boolean temp = !(x == 0 && y == 0);
-    if (temp && !overridden) {
-        overridden = temp;
-        return true;
-    }
-    overridden = temp;
-    return false;
   }
 
   public void setMode(int i) {

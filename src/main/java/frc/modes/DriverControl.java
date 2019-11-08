@@ -19,7 +19,6 @@ class DriverControl extends Mode {
 
     @Override
     public boolean loop() {
-        driveSwerve();
         driveTank();
         return true;
     }
@@ -31,24 +30,6 @@ class DriverControl extends Mode {
         double y = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kLeft));
 
         Robot.TANK.setPolar(x, y);
-    }
-
-    private void driveSwerve() {
-        double x = JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getY(Hand.kLeft));
-        double y = JoystickProfile.applyDeadband(-Input.SWERVE_XBOX.getX(Hand.kLeft));
-        // double y =
-        // JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getX(Hand.kRight));
-        double mag = Math.sqrt(x * x + y * y);
-        x *= mag;
-        y *= mag;
-
-        double lTrigger = Input.SWERVE_XBOX.getTriggerAxis(Hand.kLeft);
-        double rTrigger = Input.SWERVE_XBOX.getTriggerAxis(Hand.kRight);
-        double rotate = 0;
-        if (lTrigger + rTrigger > 0.05) {
-            rotate = -(rTrigger * rTrigger - lTrigger * lTrigger);
-        }
-        Robot.SWERVE.drive(x, y, rotate);
     }
 
 }

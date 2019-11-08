@@ -1,4 +1,4 @@
-# Config file for 2020 Preseason Swerve
+# Config file for 2020 Preseason G-period
 # Domain: roborio-192-frc.local
 
 dt_width=0.73025

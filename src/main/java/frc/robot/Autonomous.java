@@ -74,11 +74,6 @@ public class Autonomous {
             case "wait":
                 finishedFlag = false;
                 break;
-            case "swerve":
-                robot.setMode(0);
-                Robot.SWERVE.drive(Double.parseDouble(cmd[1]), Double.parseDouble(cmd[2]),
-                        cmd.length > 3 ? Double.parseDouble(cmd[3]) : 0);
-                break;
             }
         }
     }
