@@ -1,5 +1,6 @@
 # GRT2020Preseason
 
+<<<<<<< HEAD
 ## People
 
 Serena and Dickson
@@ -7,6 +8,11 @@ Serena and Dickson
 ## Instructions
 
 This branch is just framework + tank code. You might see it fit to change some things. Either way, it's up to you to write code best fit your robot's functions!
+=======
+## Instructions for shop project
+
+This branch is just framework + tank code. You might see it fit to change some things.
+>>>>>>> 1672801f118ca81965942ca4bd58cd2a96962eed
 
 FYI: I will be available to help, explain, and debug.
 
