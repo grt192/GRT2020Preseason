@@ -1,0 +1,9 @@
+
+C:\Users\rmc.CARLSTROM\Documents\GRT2020Preseason\src\main\rplidar>javac RPLidar.java 
+
+C:\Users\rmc.CARLSTROM\Documents\GRT2020Preseason\src\main\rplidar>if 0 NEQ 0 exit /b 0 
+
+C:\Users\rmc.CARLSTROM\Documents\GRT2020Preseason\src\main\rplidar>javah RPLidarDriver 
+Terminate batch job (Y/N)? 
+
+C:\Users\rmc.CARLSTROM\Documents\GRT2020Preseason\src\main\rplidar>

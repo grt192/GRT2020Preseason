@@ -1,0 +1,1 @@
+/usr/local/frc/JRE/bin/java -classpath /home/lvuser/deploy/ -Djava.library.path=/home/lvuser/deploy/ RPLidar
