@@ -10,8 +10,6 @@ import frc.util.GRTUtil;
 
 public class Swerve implements Runnable {
 
-	private static final double TWO_PI = Math.PI * 2;
-
 	private final double SWERVE_WIDTH;
 	private final double SWERVE_HEIGHT;
 	private final double RADIUS;

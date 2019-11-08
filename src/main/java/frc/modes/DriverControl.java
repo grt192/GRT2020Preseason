@@ -17,13 +17,20 @@ import frc.robot.Robot;
  */
 class DriverControl extends Mode {
 
-    private int pov = -1;
-    private int lastPov;
-
     @Override
     public boolean loop() {
         driveSwerve();
+        driveTank();
         return true;
+    }
+
+    private void driveTank() {
+
+        // You may be wondering, why x is .getY() and y is .getX()? Don't question it //
+        double x = JoystickProfile.applyDeadband(-Input.TANK_XBOX.getY(Hand.kLeft));
+        double y = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kLeft));
+
+        Robot.TANK.setPolar(x, y);
     }
 
     private void driveSwerve() {
