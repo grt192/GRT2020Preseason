@@ -31,13 +31,9 @@ public class Robot extends TimedRobot {
 
   public static Swerve SWERVE;
   public static NavXGyro GYRO;
-
-  public static Swerve SWERVE;
-  public static NavXGyro GYRO;
   public static double ROBOT_WIDTH;
   public static double ROBOT_HEIGHT;
   public static double ROBOT_RADIUS;
-  public static Lidar LIDAR;
 
   private boolean overridden;
 
