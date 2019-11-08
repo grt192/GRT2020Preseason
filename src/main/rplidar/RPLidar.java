@@ -22,7 +22,7 @@ public class RPLidar {
             System.out.println("model = " + deviceInfo.model + " firmware = " + deviceInfo.getFirmwareString() + "("
                     + deviceInfo.firmwareVersion + ")" + " hardware = " + deviceInfo.hardwareVersion + " serial = "
                     + deviceInfo.getSerialnumString());
-
+            
             System.out.println("RPLidar.main 9999");
             DeviceHealth deviceHealth = drv.getDeviceHealth();
             System.out.println("status = " + deviceHealth.status + " error = " + deviceHealth.errorCode);
