@@ -1,5 +1,9 @@
 # GRT2020Preseason
 
+## People
+
+Serena and Dickson
+
 ## Instructions
 
 This branch is just framework + tank code. You might see it fit to change some things. Either way, it's up to you to write code best fit your robot's functions!
