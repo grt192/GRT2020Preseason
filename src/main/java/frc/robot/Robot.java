@@ -7,28 +7,17 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.TimedRobot;
+import frc.config.Config;
+import frc.modes.Mode;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.TimedRobot;
-import frc.config.Config;
-import frc.fieldmap.FieldMap;
 import frc.input.Input;
 import frc.input.JoystickProfile;
-import frc.mechs.BottomIntake;
-import frc.mechs.Climber;
-import frc.mechs.Elevator;
-import frc.mechs.Hatches;
-import frc.mechs.TopIntake;
-import frc.modes.Mode;
-import frc.positiontracking.BasicPositionTracker;
-import frc.positiontracking.KalmanFilterPositionTracker;
-import frc.positiontracking.PositionTracker;
-import frc.sequence.Sequence;
 import frc.swerve.NavXGyro;
+import frc.tank.Tank;
 import frc.swerve.Swerve;
-import frc.vision.Camera;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -38,101 +27,116 @@ import frc.vision.Camera;
  * project.
  */
 public class Robot extends TimedRobot {
+  private NetworkTableEntry mode;
+  private Autonomous autonomous;
 
-    private NetworkTableEntry mode;
-    private Autonomous autonomous;
+  public static Tank TANK;
 
-    public static Swerve SWERVE;
-    public static NavXGyro GYRO;
-    public static PositionTracker POS_TRACKER;
-    public static FieldMap FIELD_MAP;
-    public static Hatches HATCHES;
-    public static BottomIntake BOTTOM_INTAKE;
-    public static Elevator ELEVATOR;
-    public static TopIntake TOP_INTAKE;
-    public static Climber CLIMBER;
-    public static double ROBOT_WIDTH;
-    public static double ROBOT_HEIGHT;
-    public static double ROBOT_RADIUS;
-    public static Camera HATCH_JEVOIS;
+  public static Swerve SWERVE;
+  public static NavXGyro GYRO;
 
-    private boolean overridden;
+  public static double ROBOT_WIDTH;
+  public static double ROBOT_HEIGHT;
+  public static double ROBOT_RADIUS;
 
-    @Override
-    public void robotInit() {
-        Config.start();
-        ROBOT_WIDTH = Config.getDouble("robot_width");
-        ROBOT_HEIGHT = Config.getDouble("robot_height");
-        ROBOT_RADIUS = Math.sqrt(ROBOT_WIDTH * ROBOT_WIDTH + ROBOT_HEIGHT * ROBOT_HEIGHT) / 2;
-        FIELD_MAP = new FieldMap();
-        autonomous = new Autonomous(this);
-        GYRO = new NavXGyro();
-        ELEVATOR = new Elevator();
-        CLIMBER = new Climber();
-        TOP_INTAKE = new TopIntake();
-        BOTTOM_INTAKE = new BottomIntake();
-        HATCHES = new Hatches();
-        HATCH_JEVOIS = new Camera("hatch_cam");
-        POS_TRACKER = new KalmanFilterPositionTracker();
-        // POS_TRACKER = new BasicPositionTracker();
-        POS_TRACKER.set(66 + ROBOT_HEIGHT / 2, 14.75 + ROBOT_WIDTH / 2);
-        SWERVE = new Swerve();
-        Sequence.initSequneces();
-        Mode.initModes();
-        mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
+  private boolean overridden;
+
+  /**
+   * This function is run when the robot is first started up and should be
+   * used for any initialization code.
+   */
+  @Override
+  public void robotInit() {
+    Config.start();
+    ROBOT_WIDTH = Config.getDouble("robot_width");
+    ROBOT_HEIGHT = Config.getDouble("robot_height");
+    ROBOT_RADIUS = Math.sqrt(ROBOT_WIDTH * ROBOT_WIDTH + ROBOT_HEIGHT * ROBOT_HEIGHT) / 2;
+    autonomous = new Autonomous(this);
+    GYRO = new NavXGyro();
+    SWERVE = new Swerve();
+    TANK = new Tank();
+    Mode.initModes();
+    mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
+    mode.setNumber(0);
+  }
+
+  private void loop() {
+    autonomous.loop();
+    int i = mode.getNumber(0).intValue();
+    if (manualOverride()) {
+        autonomous.kill();
         mode.setNumber(0);
-        CameraServer.getInstance().startAutomaticCapture(0);
-        CameraServer.getInstance().startAutomaticCapture(1);
+        i = 0;
     }
-
-    private void loop() {
-        // long start = System.nanoTime();
-        // handle mode switching
-        autonomous.loop();
-        // System.out.println("auton: " + (System.nanoTime() - start));
-        int i = mode.getNumber(0).intValue();
-        if (manualOverride()) {
-            autonomous.kill();
-            mode.setNumber(0);
-            i = 0;
-        }
-        // System.out.println("override: " + (System.nanoTime() - start));
-        if (!Mode.getMode(i).loop()) {
-            autonomous.modeFinished();
-            mode.setNumber(0);
-        }
-        // System.out.println("done: " + (System.nanoTime() - start));
+    if (!Mode.getMode(i).loop()) {
+        autonomous.modeFinished();
+        mode.setNumber(0);
     }
+  }
 
-    public void setMode(int i) {
-        mode.setNumber(i);
-    }
-
-    private boolean manualOverride() {
-        double x = JoystickProfile.applyDeadband(-Input.SWERVE_XBOX.getY(Hand.kLeft));
-        double y = JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getX(Hand.kLeft));
-        boolean temp = !(x == 0 && y == 0);
-        if (temp && !overridden) {
-            overridden = temp;
-            return true;
-        }
+  private boolean manualOverride() {
+    double x = JoystickProfile.applyDeadband(-Input.SWERVE_XBOX.getY(Hand.kLeft));
+    double y = JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getX(Hand.kLeft));
+    boolean temp = !(x == 0 && y == 0);
+    if (temp && !overridden) {
         overridden = temp;
-        return false;
+        return true;
     }
+    overridden = temp;
+    return false;
+  }
 
-    @Override
-    public void autonomousInit() {
-        autonomous.init("2hatchesfrontl.txt");
-    }
+  public void setMode(int i) {
+      mode.setNumber(i);
+  }
 
-    @Override
-    public void autonomousPeriodic() {
-        loop();
-    }
+  /**
+   * This function is called every robot packet, no matter the mode. Use
+   * this for items like diagnostics that you want ran during disabled,
+   * autonomous, teleoperated and test.
+   *
+   * <p>This runs after the mode specific periodic functions, but before
+   * LiveWindow and SmartDashboard integrated updating.
+   */
+  @Override
+  public void robotPeriodic() {
+  }
 
-    @Override
-    public void teleopPeriodic() {
-        loop();
-    }
+  /**
+   * This autonomous (along with the chooser code above) shows how to select
+   * between different autonomous modes using the dashboard. The sendable
+   * chooser code works with the Java SmartDashboard. If you prefer the
+   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
+   * getString line to get the auto name from the text box below the Gyro
+   *
+   * <p>You can add additional auto modes by adding additional comparisons to
+   * the switch structure below with additional strings. If using the
+   * SendableChooser make sure to add them to the chooser code above as well.
+   */
+  @Override
+  public void autonomousInit() {
+  }
 
+  /**
+   * This function is called periodically during autonomous.
+   */
+  @Override
+  public void autonomousPeriodic() {
+    loop();
+  }
+
+  /**
+   * This function is called periodically during operator control.
+   */
+  @Override
+  public void teleopPeriodic() {
+    loop();
+  }
+
+  /**
+   * This function is called periodically during test mode.
+   */
+  @Override
+  public void testPeriodic() {
+  }
 }
