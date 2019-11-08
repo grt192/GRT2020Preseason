@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.input.Input;
 import frc.input.JoystickProfile;
 import frc.swerve.NavXGyro;
-import frc.tank.Tank;
 import frc.swerve.Swerve;
 
 /**
@@ -29,8 +28,6 @@ import frc.swerve.Swerve;
 public class Robot extends TimedRobot {
   private NetworkTableEntry mode;
   private Autonomous autonomous;
-
-  public static Tank TANK;
 
   public static Swerve SWERVE;
   public static NavXGyro GYRO;
@@ -54,7 +51,6 @@ public class Robot extends TimedRobot {
     autonomous = new Autonomous(this);
     GYRO = new NavXGyro();
     SWERVE = new Swerve();
-    TANK = new Tank();
     Mode.initModes();
     mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
     mode.setNumber(0);
