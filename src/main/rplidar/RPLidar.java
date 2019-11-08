@@ -1,4 +1,8 @@
 import java.io.FileOutputStream;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
 public class RPLidar {
 
@@ -12,8 +16,6 @@ public class RPLidar {
             System.out.println("RPLidar.main 010");
             drv.connect(port, baud);
             System.out.println("RPLidar.main 020");
-            drv.reset();
-            System.out.println("RPLidar.main 025");
             DeviceInfo deviceInfo = drv.getDeviceInfo();
             System.out.println("RPLidar.main 030");
 
@@ -69,12 +71,10 @@ public class RPLidar {
         File file = new File("/home/lvuser/deploy/data.txt");
         FileWriter fr = null;
         BufferedWriter br = null;
-
         try {
             fr = new FileWriter(file);
             br = new BufferedWriter(fr);
             br.write(data);
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
