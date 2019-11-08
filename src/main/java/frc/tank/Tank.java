@@ -18,7 +18,7 @@ public class Tank {
     private final double WIDTH;
     /** The max speed of the motors. From -1.0 to 1.0. */
     public final double MAX_SPEED;
-    /** The max angular speed of the wheel */
+    /** The max angular speed of the wheel. How fast the robot can turn */
     public final double MAX_ANGULAR_SPEED;
 
     /** controls the left wheel */
@@ -31,7 +31,7 @@ public class Tank {
         METERS_PER_TICK = Config.getDouble("ticks_to_meters");
         WIDTH = Config.getDouble("dt_width");
         MAX_SPEED = Config.getDouble("max_speed");
-        // angular velocity = v/r
+        // maximum angular velocity = v/r
         MAX_ANGULAR_SPEED = MAX_SPEED / (WIDTH / 2);
         gyro = new AHRS(Port.kMXP);
 
@@ -64,8 +64,9 @@ public class Tank {
     }
 
     /** Set the speed of the left and right motors in meters/second
-     * @param lSpeed speed of the left motor in meters/second
-     * @param rSpeed speed of the right motor in meters/second
+     * (velocity along the ground)
+     * @param lSpeed speed of the left motor in meters/second on the ground
+     * @param rSpeed speed of the right motor in meters/second on the ground
      */
     public void set(double lSpeed, double rSpeed) {
         // make lSpeed and rSpeed smaller than MAX_SPEED
@@ -77,8 +78,10 @@ public class Tank {
         leftMotor.set(ControlMode.Velocity, lSpeed / (METERS_PER_TICK * 10));
         rightMotor.set(ControlMode.Velocity, rSpeed / (METERS_PER_TICK * 10));
     }
-    /** Sets the angular velocity as well as translational velocity. Speed is 
-     * the speed that 
+    /** Sets the tangential velocity and angular velocity of the robot
+     * with respect to the point of rotation.
+     * <p> left motor meters/second = angVel * ( (radius of rotation) + (robot width / 2) ) </p>
+     * <p> right motor meters/second = angVel * ( (radius of rotation) - (robot width / 2) ) </p>
      */
     public void setPolar(double speed, double angVel) {
         double lSpeed = speed + angVel * WIDTH / 2;

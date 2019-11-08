@@ -53,13 +53,10 @@ public class Config {
 			File f = new File(Filesystem.getDeployDirectory(), fileName);
 			Scanner scanner = new Scanner(f);
 			while (scanner.hasNextLine()) {
-				String line = scanner.nextLine();
-
-				while (line.startsWith(" "))
-					line = line.substring(1);
+				String line = scanner.nextLine().trim();
 
 				if (line.length() > 0 && line.charAt(0) != '#') {
-					String[] splitted = line.trim().split("=");
+					String[] splitted = line.split("=");
 					if (splitted.length == 2)
 						map.put(splitted[0], splitted[1]);
 				}

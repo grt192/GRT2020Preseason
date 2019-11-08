@@ -1,5 +1,8 @@
 package frc.input;
 
+/**
+ * A class containing many useful static methods for joystick calculations
+ */
 public class JoystickProfile {
 
 	private static final double DEFAULT_DEADBAND = 0.1;

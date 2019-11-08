@@ -17,9 +17,6 @@ import java.util.Queue;
 
 import edu.wpi.first.wpilibj.Filesystem;
 
-/**
- * Add your docs here.
- */
 public class Autonomous {
 
     private Robot robot;
