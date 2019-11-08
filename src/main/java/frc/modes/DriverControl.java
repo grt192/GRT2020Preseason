@@ -27,11 +27,6 @@ class DriverControl extends Mode {
     }
 
     private void driveSwerve() {
-        if (Input.SWERVE_XBOX.getStartButtonPressed())
-            Robot.SWERVE.setRobotCentric(true);
-        if (Input.SWERVE_XBOX.getBackButtonPressed())
-            Robot.SWERVE.setRobotCentric(false);
-
         double x = JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getY(Hand.kLeft));
         double y = JoystickProfile.applyDeadband(-Input.SWERVE_XBOX.getX(Hand.kLeft));
         // double y =
@@ -39,37 +34,6 @@ class DriverControl extends Mode {
         double mag = Math.sqrt(x * x + y * y);
         x *= mag;
         y *= mag;
-        boolean buttonPressed = false;
-        if (pov == -1) {
-            buttonPressed = true;
-        }
-        pov = Input.SWERVE_XBOX.getPOV();
-        if (Input.SWERVE_XBOX.getBumperPressed(Hand.kLeft)) {
-            pov = lastPov - 45;
-        }
-        if (Input.SWERVE_XBOX.getBumperPressed(Hand.kRight)) {
-            pov = lastPov + 45;
-        }
-        if (buttonPressed) {
-            if (pov == -1) {
-            } else if (pov == 45) {
-                Robot.SWERVE.setAngle(Math.toRadians(-60));
-                lastPov = pov;
-            } else if (pov == 135) {
-                Robot.SWERVE.setAngle(Math.toRadians(-150));
-                lastPov = pov;
-            } else if (pov == 235) {
-                Robot.SWERVE.setAngle(Math.toRadians(-300));
-                lastPov = pov;
-            } else if (pov == 325) {
-                Robot.SWERVE.setAngle(Math.toRadians(-210));
-                lastPov = pov;
-            } else {
-                Robot.SWERVE.setAngle(Math.toRadians(-pov));
-                lastPov = pov;
-            }
-
-        }
 
         double lTrigger = Input.SWERVE_XBOX.getTriggerAxis(Hand.kLeft);
         double rTrigger = Input.SWERVE_XBOX.getTriggerAxis(Hand.kRight);
