@@ -12,9 +12,6 @@ import frc.input.Input;
 import frc.input.JoystickProfile;
 import frc.robot.Robot;
 
-/**
- * Add your docs here.
- */
 class DriverControl extends Mode {
 
     @Override
@@ -24,8 +21,7 @@ class DriverControl extends Mode {
     }
 
     private void driveTank() {
-
-        // You may be wondering, why x is .getY() and y is .getX()? Don't question it //
+        // You may be wondering, why x is .getY() and y is .getX()? Don't question it
         double x = JoystickProfile.applyDeadband(-Input.TANK_XBOX.getY(Hand.kLeft));
         double y = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kLeft));
 

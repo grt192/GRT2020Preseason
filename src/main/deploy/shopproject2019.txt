@@ -2,6 +2,7 @@
 # Domain: roborio-192-frc.local
 
 dt_width=0.73025
+# meters per tick
 ticks_to_meters=0.0005588
 
 max_speed=0.9
