@@ -13,3 +13,12 @@ left_follower=2
 right_inverted=true
 right_master=16
 right_follower=15
+
+#elevator variables
+elevator_master=
+elevator_follower=
+# travel distance per revolution of the lead screw, inches
+screw_dist_per_rev=1
+# distance the nut moves, inches
+screw_len=
+elevator_ticks_per_rev=

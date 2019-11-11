@@ -57,10 +57,12 @@ public class Tank {
     }
 
     /** Sets the speed of the motor. lSpeed/rSpeed should be between -1.0 and 1.0,
-     * with 0.0 as stopped, and represent the percent output of the motor. */
-    private void setRaw(double lSpeed, double rSpeed) {
-        leftMotor.set(ControlMode.PercentOutput, lSpeed);
-        rightMotor.set(ControlMode.PercentOutput, rSpeed);
+     * with 0.0 as stopped, and represent the percent output of the motor.
+     * @param lSpeed percent output of the left motor
+     * @param rSpeed percent output of the right motor */
+    public void setRaw(double lSpeed, double rSpeed) {
+        leftMotor.set(ControlMode.PercentOutput, Math.min(lSpeed, MAX_SPEED));
+        rightMotor.set(ControlMode.PercentOutput, Math.min(rSpeed, MAX_SPEED));
     }
 
     /** Set the speed of the left and right motors in meters/second
@@ -74,16 +76,18 @@ public class Tank {
         lSpeed *= scale;
         rSpeed *= scale;
 
-        // meters/second * ticks/meter / 10 = meters/100ms
+        // meters/second * ticks/meter / 10 = ticks/100ms
         leftMotor.set(ControlMode.Velocity, lSpeed / (METERS_PER_TICK * 10));
         rightMotor.set(ControlMode.Velocity, rSpeed / (METERS_PER_TICK * 10));
     }
     /** Sets the tangential velocity and angular velocity of the robot
      * with respect to the point of rotation.
-     * <p> left motor meters/second = angVel * ( (radius of rotation) + (robot width / 2) ) </p>
-     * <p> right motor meters/second = angVel * ( (radius of rotation) - (robot width / 2) ) </p>
+     * @param speed tangential velocity in meters/second
+     * @param angVel angular velocity in radians/second
      */
     public void setPolar(double speed, double angVel) {
+        // left motor meters/second = angVel * ( (radius of rotation) + (robot width / 2) ) 
+        // right motor meters/second = angVel * ( (radius of rotation) - (robot width / 2) ) 
         double lSpeed = speed + angVel * WIDTH / 2;
         double rSpeed = speed - angVel * WIDTH / 2;
         set(lSpeed, rSpeed);

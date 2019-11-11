@@ -24,7 +24,6 @@ import frc.tank.Tank;
 public class Robot extends TimedRobot {
   private NetworkTableEntry mode;
   private Autonomous autonomous;
-
   public static Tank TANK;
 
   public static double ROBOT_WIDTH;
@@ -37,10 +36,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    //TODO Add elevator mech
     Config.start();
     ROBOT_WIDTH = Config.getDouble("robot_width");
     ROBOT_HEIGHT = Config.getDouble("robot_height");
     ROBOT_RADIUS = Math.sqrt(ROBOT_WIDTH * ROBOT_WIDTH + ROBOT_HEIGHT * ROBOT_HEIGHT) / 2;
+
     autonomous = new Autonomous(this);
     TANK = new Tank();
     Mode.initModes();
