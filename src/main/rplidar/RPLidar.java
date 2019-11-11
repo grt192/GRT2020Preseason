@@ -22,7 +22,7 @@ public class RPLidar {
             System.out.println("model = " + deviceInfo.model + " firmware = " + deviceInfo.getFirmwareString() + "("
                     + deviceInfo.firmwareVersion + ")" + " hardware = " + deviceInfo.hardwareVersion + " serial = "
                     + deviceInfo.getSerialnumString());
-            
+
             System.out.println("RPLidar.main 9999");
             DeviceHealth deviceHealth = drv.getDeviceHealth();
             System.out.println("status = " + deviceHealth.status + " error = " + deviceHealth.errorCode);
@@ -40,22 +40,37 @@ public class RPLidar {
                     for (int i = 0; i < measurements.length; i++) {
                         measurements[i] = new Measurement();
                     }
+                    File fileDone = new File("/home/lvuser/deploy/data.txt");
+                    File fileTemp = new File(fileDone.getPath() + ".temp");
+
                     while (true) {
+                        // long time = System.currentTimeMillis();
                         drv.grabScanDataHq(measurements);
                         boolean seenNonZeroAngle = false;
-                        for (int i = 0; i < measurements.length; i++) {
-                            Measurement m = measurements[i];
-                            float angle = m.getAngle();
-                            if (angle == 0 && seenNonZeroAngle) {
-                                break;
-                            }
-                            seenNonZeroAngle = true;
+                        try (BufferedWriter out = new BufferedWriter(new FileWriter(fileTemp))) {
 
-                            String data = new String(String.format("%s theta: %03.2f Dist: %08.2f Q: %d",
-                                    m.isSyncBit() ? "S " : "  ", angle, m.getDistance(), m.getQuality()));
-                            System.out.println(data);
-                            dataToFile(data);
+                            for (int i = 0; i < measurements.length; i++) {
+                                // long t =System.currentTimeMillis();
+                                Measurement m = measurements[i];
+                                float angle = m.getAngle();
+                                if (angle == 0 && seenNonZeroAngle) {
+                                    break;
+                                }
+                                seenNonZeroAngle = true;
+
+                                String data = new String(String.format("%s theta: %03.2f Dist: %08.2f Q: %d",
+                                        m.isSyncBit() ? "S " : "  ", angle, m.getDistance(), m.getQuality()));
+                                // System.out.println(data);
+                                out.write(data + "\n");
+                                // System.out.println(System.currentTimeMillis()-t);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+                        if (!fileTemp.renameTo(fileDone)) {
+                            System.out.println("File failed to rename " + fileTemp + "to " + fileDone);
+                        }
+                        // .out.println(System.currentTimeMillis() - time);
                     }
                 } finally {
                     drv.stop();
@@ -64,26 +79,6 @@ public class RPLidar {
                 drv.stopMotor();
             }
 
-        }
-    }
-
-    private static void dataToFile(String data) {
-        File file = new File("/home/lvuser/deploy/data.txt");
-        FileWriter fr = null;
-        BufferedWriter br = null;
-        try {
-            fr = new FileWriter(file);
-            br = new BufferedWriter(fr);
-            br.write(data);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-                fr.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
