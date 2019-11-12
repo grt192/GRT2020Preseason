@@ -24,7 +24,7 @@ public class ElevatorMech extends Mech {
     //TODO we may need to add a motor rev. to screw rev. ratio
 
     /** The controller for this elevator */
-    private static final XboxController controller = Input.TANK_XBOX;
+    private static final XboxController controller = Input.CONTROLLER;
 
     public ElevatorMech() {
         // config motors
