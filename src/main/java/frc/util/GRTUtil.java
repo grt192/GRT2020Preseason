@@ -30,4 +30,9 @@ public class GRTUtil {
 		return error;
 	}
 
+	/** Returns the number squared, but with the original sign */
+	public static double signedSquare(double num) {
+		return Math.signum(num) * num * num;
+	}
+
 }

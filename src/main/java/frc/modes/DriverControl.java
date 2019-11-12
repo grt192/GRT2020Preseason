@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.input.Input;
 import frc.input.JoystickProfile;
 import frc.robot.Robot;
+import frc.util.GRTUtil;
 
 class DriverControl extends Mode {
     // consider the front of the robot to be the side with the hopper
@@ -42,6 +43,7 @@ class DriverControl extends Mode {
             case 0: tankDrive(); break;
             case 1: arcadeDrive(); break;
             case 2: arcade2StickDrive(); break;
+            default: tankDrive(); break;
         }
         return true;
     }
@@ -51,6 +53,10 @@ class DriverControl extends Mode {
         // You may be wondering, why x is .getY() and y is .getX()? Don't question it //
         double leftVel = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kLeft));
         double rightVel = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kRight));
+        // square inputs to decrease sensitivity at low speeds
+        leftVel = GRTUtil.signedSquare(leftVel);
+        rightVel = GRTUtil.signedSquare(rightVel);
+
         if (reverse) {
             double tmp = leftVel;
             leftVel = -rightVel;
@@ -63,6 +69,9 @@ class DriverControl extends Mode {
     private void arcadeDrive() {
         double forwardVel = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kLeft)) * (reverse?-1:1);
         double rotateAmt = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kLeft)) * (reverse?-1:1);
+        // square inputs to decrease sensitivity at low speeds
+        forwardVel = GRTUtil.signedSquare(forwardVel);
+        rotateAmt = GRTUtil.signedSquare(rotateAmt);
         Robot.TANK.setPolar(forwardVel * Robot.TANK.MAX_SPEED, rotateAmt * Robot.TANK.MAX_ANGULAR_SPEED);
     }
 
@@ -71,6 +80,9 @@ class DriverControl extends Mode {
      private void arcade2StickDrive() {
         double forwardVel = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kLeft)) * (reverse?-1:1);
         double rotateAmt = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kRight)) * (reverse?-1:1);
+        // square inputs to decrease sensitivity at low speeds
+        forwardVel = GRTUtil.signedSquare(forwardVel);
+        rotateAmt = GRTUtil.signedSquare(rotateAmt);
         Robot.TANK.setPolar(forwardVel * Robot.TANK.MAX_SPEED, rotateAmt * Robot.TANK.MAX_ANGULAR_SPEED);
      }
 
