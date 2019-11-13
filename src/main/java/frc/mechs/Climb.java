@@ -1,27 +1,41 @@
 package frc.mechs;
 
 import frc.config.Config;
-import frc.robot.Mech;
+import frc.input.Input;
 
 import edu.wpi.first.wpilibj.Solenoid;
+
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.XboxController;
 
 public class Climb extends Mech {
     private Solenoid solLeft;
     private Solenoid solRight;
+    private XboxController controller = Input.CONTROLLER;
+
+    private boolean extended = False;
 
     public Climb() {
         solLeft = new Solenoid(Config.getInt("climb_sol_l"));
         solRight = new Solenoid(Config.getInt("climb_sol_r"));
-        // TODO: change config
     }
 
-    public void extend() {
-        solLeft.set(true);
-        solRight.set(true);
-    }
+    public void loop() {
+        // if a button is pressed, extend elevator
+        // if b button is pressed, retract elevator
 
-    public void retract() {
-        solLeft.set(false);
-        solRight.set(true);
+        boolean aButtonVal = controller.getAButtonReleased();
+        double bButtonVal = controller.getBButtonReleased();
+
+        if (aButtonVal && !extended) {
+            solLeft.set(true);
+            solRight.set(true);
+        } else if (bButtonVal && extended) {
+            solLeft.set(false);
+            solRight.set(false);
+        }
+
+        // TODO: add backups on the joysticks?
     }
 }
