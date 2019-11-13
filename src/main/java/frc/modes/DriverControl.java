@@ -25,17 +25,17 @@ class DriverControl extends Mode {
     @Override
     public boolean loop() {
         // if the right bumper is being pressed, then we are in reverse mode
-        if (Input.TANK_XBOX.getBumperPressed(Hand.kRight)) {
+        if (Input.CONTROLLER.getBumperPressed(Hand.kRight)) {
             reverse = true;
         }
-        if (Input.TANK_XBOX.getBumperReleased(Hand.kRight)) {
+        if (Input.CONTROLLER.getBumperReleased(Hand.kRight)) {
             reverse = false;
         }
 
         // get input from the dpad to switch drive modes
-        if (Input.TANK_XBOX.getPOV() == 90) {
+        if (Input.CONTROLLER.getPOV() == 90) {
             driveMethod = (driveMethod + 1) % DRIVES;
-        } else if (Input.TANK_XBOX.getPOV() == 270) {
+        } else if (Input.CONTROLLER.getPOV() == 270) {
             driveMethod = (driveMethod - 1) % DRIVES;
         }
 
@@ -51,8 +51,8 @@ class DriverControl extends Mode {
     /** Left stick controls velocity of left wheels, right stick controls velocity of right wheels */
     private void tankDrive() {
         // You may be wondering, why x is .getY() and y is .getX()? Don't question it //
-        double leftVel = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kLeft));
-        double rightVel = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kRight));
+        double leftVel = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kLeft));
+        double rightVel = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kRight));
         // square inputs to decrease sensitivity at low speeds
         leftVel = GRTUtil.signedSquare(leftVel);
         rightVel = GRTUtil.signedSquare(rightVel);
@@ -67,8 +67,8 @@ class DriverControl extends Mode {
 
     /** Left stick controls forward/backward and left/right motion */
     private void arcadeDrive() {
-        double forwardVel = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kLeft)) * (reverse?-1:1);
-        double rotateAmt = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kLeft)) * (reverse?-1:1);
+        double forwardVel = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kLeft)) * (reverse?-1:1);
+        double rotateAmt = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kLeft)) * (reverse?-1:1);
         // square inputs to decrease sensitivity at low speeds
         forwardVel = GRTUtil.signedSquare(forwardVel);
         rotateAmt = GRTUtil.signedSquare(rotateAmt);
@@ -78,8 +78,8 @@ class DriverControl extends Mode {
     /** 2 stick arcade drive - left stick controls forward/backward, right 
      * stick controls left/right */
      private void arcade2StickDrive() {
-        double forwardVel = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kLeft)) * (reverse?-1:1);
-        double rotateAmt = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kRight)) * (reverse?-1:1);
+        double forwardVel = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kLeft)) * (reverse?-1:1);
+        double rotateAmt = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kRight)) * (reverse?-1:1);
         // square inputs to decrease sensitivity at low speeds
         forwardVel = GRTUtil.signedSquare(forwardVel);
         rotateAmt = GRTUtil.signedSquare(rotateAmt);
