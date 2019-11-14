@@ -33,12 +33,6 @@ public class ElevatorMech extends Mech {
         // if neither are pressed, keep elevator at same level (run the motor to keep it there?)
         double triggerVal = controller.getTriggerAxis(Hand.kLeft) + controller.getTriggerAxis(Hand.kRight);
 
-        // make controller vibrate if we are at elevator top or bottom
-        if (triggerVal > 0 && mainMotor.getSelectedSensorPosition() >= TICKS_PER_SCREW - 1) {
-            controller.setRumble(RumbleType.kRightRumble, 1);
-        } else if (triggerVal < 0 && mainMotor.getSelectedSensorPosition() <= 2) {
-            controller.setRumble(RumbleType.kLeftRumble, 1);
-        }
     }
 
 }
