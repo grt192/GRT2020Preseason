@@ -7,9 +7,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.config.Config;
 import frc.modes.Mode;
+import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -17,6 +19,7 @@ import frc.input.Input;
 import frc.input.JoystickProfile;
 import frc.swerve.NavXGyro;
 import frc.swerve.Swerve;
+import frc.util.GRTUtil;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -54,6 +57,11 @@ public class Robot extends TimedRobot {
     Mode.initModes();
     mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
     mode.setNumber(0);
+    NetworkTableInstance.getDefault().getTable("Joystick").getEntry("factor").addListener(event -> {
+      double val = event.getEntry().getDouble(-1);
+      if (GRTUtil.inRange(0, val, 1)) { JoystickProfile.setProfileFactor(val); }
+      else { event.getEntry().setDouble(JoystickProfile.getProfileFactor()); }
+    }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
   }
 
   private void loop() {

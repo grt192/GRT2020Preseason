@@ -7,7 +7,7 @@ public class JoystickProfile {
 
 	// number between 0 and 1. closer to 1 = more dramatic joystick value correction
 	private static double profileFactor = .8;
-
+	
 	private JoystickProfile() {}
 
 	public static double applyProfile(double x) {
@@ -32,6 +32,10 @@ public class JoystickProfile {
 			return true;
 		}
 		return false;
+	}
+	/** Returns how much the joystick value correction is */
+	public static double getProfileFactor() {
+		return profileFactor;
 	}
 
 	public static double applyDeadband(double x, double deadband) {
