@@ -28,3 +28,6 @@ fl_offset=-399
 
 ticks_per_rotation=1024
 drive_encoder_scale=1.83259571
+
+#joystick profile variables
+joystick_profile_size=1000
