@@ -24,13 +24,8 @@ class DriverControl extends Mode {
     }
 
     private void driveSwerve() {
-        double x = JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getY(Hand.kLeft));
-        double y = JoystickProfile.applyDeadband(-Input.SWERVE_XBOX.getX(Hand.kLeft));
-        // double y =
-        // JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getX(Hand.kRight));
-        double mag = Math.sqrt(x * x + y * y);
-        x *= mag;
-        y *= mag;
+        double x = JoystickProfile.applyProfile(Input.SWERVE_XBOX.getY(Hand.kLeft));
+        double y = JoystickProfile.applyProfile(-Input.SWERVE_XBOX.getX(Hand.kLeft));
 
         double lTrigger = Input.SWERVE_XBOX.getTriggerAxis(Hand.kLeft);
         double rTrigger = Input.SWERVE_XBOX.getTriggerAxis(Hand.kRight);

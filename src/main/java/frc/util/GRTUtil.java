@@ -16,6 +16,7 @@ public class GRTUtil {
 		return (((x % mod) + mod) % mod);
 	}
 
+	/** Returns whether x is between min and max, inclusive */
 	public static boolean inRange(double min, double x, double max) {
 		return x >= min && x <= max;
 	}
