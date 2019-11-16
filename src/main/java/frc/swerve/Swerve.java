@@ -1,9 +1,19 @@
 package frc.swerve;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.util.Scanner;
+import java.util.LinkedList;
+import java.util.Queue;
+
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Filesystem;
+
 import frc.config.Config;
 import frc.robot.Robot;
 import frc.util.GRTUtil;
@@ -22,6 +32,7 @@ public class Swerve implements Runnable {
 
 	private NetworkTableEntry gyroAngle;
 	private NavXGyro gyro;
+	/** wheels[0]=fr, wheels[1]=br, wheels[2]=bl, wheels[3]=fl */
 	private Wheel[] wheels;
 
 	private volatile double userVX, userVY, userW, angle;
@@ -139,6 +150,44 @@ public class Swerve implements Runnable {
 			angle += Math.PI;
 		}
 		return angle;
+	}
+
+	/** Takes the current position of the wheels and sets them as zero in 
+	 * the currently running program and in the config file */
+	public void zeroRotate() {
+		// copied from Config.start()
+		Queue<String> lines = new LinkedList<String>();
+		try {
+			String fileName = Config.getFileName();
+			File f = new File(Filesystem.getDeployDirectory(), fileName);
+			System.out.println("reading from file " + fileName + " for zeroing wheel rotation");
+			Scanner scanner = new Scanner(f);
+			// load the original lines into the queue
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+				lines.add(line);
+			}
+			scanner.close();
+
+			// overwrite the files, adding edited lines
+			BufferedWriter writer = new BufferedWriter(new FileWriter(f));
+			while (!lines.isEmpty()) {
+				String ln = lines.remove().trim();
+				if (ln.length() > 0 && ln.charAt(0) != '#') {
+					String valName = ln.split("=")[0].trim();
+					switch (valName) {
+						case "fr_rotate": ln = valName + "=" + wheels[0].zero(); break;
+						case "br_rotate": ln = valName + "=" + wheels[1].zero(); break;
+						case "bl_rotate": ln = valName + "=" + wheels[2].zero(); break;
+						case "fl_rotate": ln = valName + "=" + wheels[3].zero(); break;
+					}
+				}
+				writer.write(ln + "\n");
+			}
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
