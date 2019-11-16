@@ -152,8 +152,8 @@ public class Swerve implements Runnable {
 		return angle;
 	}
 
-	/** Takes the current position of the wheels and sets them as zero in 
-	 * the currently running program and in the config file */
+	/** Takes the current position of the wheels and sets them as zero in the
+	 * currently running program and in the config file */
 	public void zeroRotate() {
 		// copied from Config.start()
 		Queue<String> lines = new LinkedList<String>();
@@ -176,10 +176,18 @@ public class Swerve implements Runnable {
 				if (ln.length() > 0 && ln.charAt(0) != '#') {
 					String valName = ln.split("=")[0].trim();
 					switch (valName) {
-						case "fr_rotate": ln = valName + "=" + wheels[0].zero(); break;
-						case "br_rotate": ln = valName + "=" + wheels[1].zero(); break;
-						case "bl_rotate": ln = valName + "=" + wheels[2].zero(); break;
-						case "fl_rotate": ln = valName + "=" + wheels[3].zero(); break;
+					case "fr_rotate":
+						ln = valName + "=" + wheels[0].zero();
+						break;
+					case "br_rotate":
+						ln = valName + "=" + wheels[1].zero();
+						break;
+					case "bl_rotate":
+						ln = valName + "=" + wheels[2].zero();
+						break;
+					case "fl_rotate":
+						ln = valName + "=" + wheels[3].zero();
+						break;
 					}
 				}
 				writer.write(ln + "\n");
