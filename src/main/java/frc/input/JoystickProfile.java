@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 import frc.util.GRTUtil;
 public class JoystickProfile {
-	private static final double DEFAULT_DEADBAND = 0.1;
+	private static final double DEFAULT_DEADBAND = 0.2;
 
 	// number between 0 and 1. closer to 1 = more dramatic joystick value correction
 	private static double profileFactor = .8;
@@ -14,6 +14,8 @@ public class JoystickProfile {
 		// first apply deadband, then scale back to original range
 		x = applyDeadband(x) / (1 - DEFAULT_DEADBAND);
 		// apply the polynominal
+		System.out.println(x);
+		System.out.println(applyPolynominal(x));
 		return applyPolynominal(x);
 	}
 
