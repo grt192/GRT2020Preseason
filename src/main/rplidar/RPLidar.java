@@ -10,7 +10,7 @@ public class RPLidar {
 
         System.out.println("RPLidar.main 000");
         String port = "/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0";
-        String fileLocation = "/home/pi/GRTLidar";
+        String fileLocation = "/home/pi/Documents/GRTLidar/";
         int baud = 115200;
         try (RPLidarDriver drv = RPLidarDriver.create()) {
 
@@ -42,10 +42,10 @@ public class RPLidar {
                         measurements[i] = new Measurement();
                     }
                     File fileDone = new File(fileLocation + "data.txt");
-                    File fileTemp = new File(fileDone.getPath() + ".temp");
 
                     while (true) {
                         // long time = System.currentTimeMillis();
+                        File fileTemp = new File(fileDone.getPath() + ".temp");
                         drv.grabScanDataHq(measurements);
                         boolean seenNonZeroAngle = false;
                         try (BufferedWriter out = new BufferedWriter(new FileWriter(fileTemp))) {
@@ -69,7 +69,7 @@ public class RPLidar {
                             e.printStackTrace();
                         }
                         if (!fileTemp.renameTo(fileDone)) {
-                            System.out.println("File failed to rename " + fileTemp + "to " + fileDone);
+                            System.out.println("File failed to rename " + fileTemp + " to " + fileDone);
                         }
                         // .out.println(System.currentTimeMillis() - time);
                     }

@@ -10,7 +10,7 @@ if %errorlevel% neq 0 exit /b %errorlevel%
 scp RPLidar.class RPLidarDriver.class DeviceInfo.class DeviceHealth.class Measurement.class librplidar.so data.txt run.sh %host%:/home/pi/Documents/GRTLidar/ 
 if %errorlevel% neq 0 exit /b %errorlevel%
 
-rem If it promtps you for a password use keygen.
+rem If it prompts you for a password use keygen.
 
 ssh %host% sh -xv /home/pi/Documents/GRTLidar/run.sh
 if %errorlevel% neq 0 exit /b %errorlevel%
