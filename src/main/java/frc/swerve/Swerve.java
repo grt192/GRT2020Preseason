@@ -176,16 +176,16 @@ public class Swerve implements Runnable {
 				if (ln.length() > 0 && ln.charAt(0) != '#') {
 					String valName = ln.split("=")[0].trim();
 					switch (valName) {
-					case "fr_rotate":
+					case "fr_offset":
 						ln = valName + "=" + wheels[0].zero();
 						break;
-					case "br_rotate":
+					case "br_offset":
 						ln = valName + "=" + wheels[1].zero();
 						break;
-					case "bl_rotate":
+					case "bl_offset":
 						ln = valName + "=" + wheels[2].zero();
 						break;
-					case "fl_rotate":
+					case "fl_offset":
 						ln = valName + "=" + wheels[3].zero();
 						break;
 					}
