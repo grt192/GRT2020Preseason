@@ -8,7 +8,6 @@
 package frc.input;
 
 import edu.wpi.first.wpilibj.XboxController;
-
 /**
  * Add your docs here.
  */
