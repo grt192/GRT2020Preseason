@@ -1,1 +1,1 @@
-java -classpath /home/pi/Documents/GRTLidar/ -Djava.library.path=/home/pi/Documents/GRTLidar/ RPLidar
+java -classpath /home/pi/Documents/GRTLidar/ -Djava.library.path=/home/pi/Documents/GRTLidar/ LidarStart

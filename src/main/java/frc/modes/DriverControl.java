@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.input.Input;
 import frc.input.JoystickProfile;
 import frc.robot.Robot;
-import frc.lidar.Lidar;
 
 /**
  * Add your docs here.
