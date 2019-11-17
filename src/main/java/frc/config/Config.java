@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.Filesystem;
 public class Config {
 	private static Map<String, String> map;
 
+	private static String fileName;
+
 	public static int getInt(String key) {
 		try {
 			return Integer.parseInt(map.get(key));
@@ -48,15 +50,12 @@ public class Config {
 			Scanner nameScanner = new Scanner(new File("/home/lvuser/name.192"));
 			String name = nameScanner.nextLine();
 			nameScanner.close();
-			String fileName = name + ".txt";
+			fileName = name + ".txt";
 			System.out.println("reading from file " + fileName);
 			File f = new File(Filesystem.getDeployDirectory(), fileName);
 			Scanner scanner = new Scanner(f);
 			while (scanner.hasNextLine()) {
-				String line = scanner.nextLine();
-
-				while (line.startsWith(" "))
-					line = line.substring(1);
+				String line = scanner.nextLine().trim();
 
 				if (line.length() > 0 && line.charAt(0) != '#') {
 					String[] splitted = line.trim().split("=");
@@ -81,5 +80,10 @@ public class Config {
 		talon.configReverseSoftLimitEnable(false, 0);
 		talon.setNeutralMode(NeutralMode.Brake);
 		talon.configOpenloopRamp(0, 0);
+	}
+
+	/** Returns the name of the file used for config (eg "preseason2020.txt") */
+	public static String getFileName() {
+		return fileName;
 	}
 }
