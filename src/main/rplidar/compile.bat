@@ -1,7 +1,7 @@
 set host=pi@raspberrypi
 set host=pi@10.1.92.50
 
-scp *.java *.cpp run.bat RPLidarDriver.h compile.sh %host%:/home/pi/Documents/GRTLidar/ 
+scp *.java *.cpp run.bat RPLidarDriver.h compile.sh data.txt pos.txt %host%:/home/pi/Documents/GRTLidar/ 
 if %errorlevel% neq 0 exit /b %errorlevel%
 
 rem If it prompts you for a password use keygen.

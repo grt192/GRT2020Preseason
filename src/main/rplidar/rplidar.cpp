@@ -1,3 +1,4 @@
+#include <signal.h>
 #include <stdio.h>
 
 #include "rplidar.h"
@@ -19,6 +20,12 @@ static jfieldID angle_z_q14Field;
 static jfieldID dist_mm_q2Field;
 static jfieldID qualityField;
 static jfieldID flagField;
+
+static bool ctrl_c_pressed = false;
+void ctrlc(int)
+{
+    ctrl_c_pressed = true;
+}
 
 JNIEXPORT jboolean JNICALL Java_RPLidarDriver_nativeCreateDriver(JNIEnv *env, jclass, jobject o)
 {
@@ -114,6 +121,10 @@ JNIEXPORT jboolean JNICALL Java_RPLidarDriver_nativeStartScan(JNIEnv *env, jobje
 
 JNIEXPORT jboolean JNICALL Java_RPLidarDriver_nativeGrabScanDataHq(JNIEnv *env, jobject o, jobjectArray measurements)
 {
+    if (ctrl_c_pressed)
+    {
+        return JNI_FALSE;
+    }
 
     RPlidarDriver *drv = reinterpret_cast<RPlidarDriver *>(env->GetLongField(o, drvField));
     size_t count = env->GetArrayLength(measurements);
@@ -225,6 +236,13 @@ JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved)
     flagField = env->GetFieldID(cMeasurement, "flag", "B");
     if (flagField == nullptr)
         return JNI_ERR;
+
+    // setup Control-C handler to be calle on interrupt
+    if (signal(SIGINT, ctrlc) == SIG_ERR)
+    {
+        perror("Problem initializing signal handler for SIGINT");
+        return JNI_ERR;
+    }
 
     return JNI_VERSION_1_8;
 }

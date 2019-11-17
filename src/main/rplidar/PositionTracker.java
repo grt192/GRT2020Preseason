@@ -1,33 +1,24 @@
 
 import java.util.ArrayList;
+
 import java.lang.Math;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.File;
 
-class PositionTracker implements Runnable {
+public class PositionTracker implements Runnable {
 
     private Position currPos;
     private ArrayList<LidarData> prevLidarData;
     private ArrayList<LidarData> currLidarData;
     private ArrayList<Position> LPositions;
+    private boolean firstTime;
 
     public PositionTracker(Position startingPos) {
         currPos = startingPos;
-        readData();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        readData();
-        updatePosition(1);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        updatePosition(1);
     }
 
     // Read txt file and replace currLidarData
@@ -67,6 +58,11 @@ class PositionTracker implements Runnable {
      * points can stay where they are during the comparison
      */
     public void updatePosition(double boxLength) {
+        if (!firstTime) {
+            readData();
+            firstTime = true;
+        }
+
         prevLidarData = currLidarData;
         readData();
 
@@ -88,8 +84,6 @@ class PositionTracker implements Runnable {
         if (newPos != null) {
             currPos = newPos;
         }
-        System.out.println(currPos);
-
     }
 
     // Uses boxCenter and current lidar data to get positions
@@ -112,13 +106,13 @@ class PositionTracker implements Runnable {
             if (currPos.getX() != boxCenter.getX()) {
                 if (posAfter.getTheta() < 45 || posAfter.getTheta() > 135 && posAfter.getTheta() < 225
                         || posAfter.getTheta() > 315) {
-                    posAfter.addVector(boxCenter.getX() - currPos.getX(), 0);
+                    // posAfter.addVector(boxCenter.getX() - currPos.getX(), 0);
                 }
             }
             if (currPos.getY() != boxCenter.getY()) {
                 if (posAfter.getTheta() > 45 && posAfter.getTheta() < 135
                         || posAfter.getTheta() > 225 && posAfter.getTheta() < 315) {
-                    posAfter.addVector(0, boxCenter.getY() - currPos.getY());
+                    // posAfter.addVector(0, boxCenter.getY() - currPos.getY());
                 }
             }
 
@@ -149,8 +143,28 @@ class PositionTracker implements Runnable {
     }
 
     @Override
-    public void Run() {
-        System.out.println("Position Tracking run");
+    public void run() {
+
+        String fileLocation = "/home/pi/Documents/GRTLidar/";
+        System.out.println("\nPosition Tracking run");
+        File fileDonePos = new File(fileLocation + "pos.txt");
+        firstTime = false;
+        while (true) {
+
+            File fileTempPos = new File(fileDonePos.getPath() + ".temp");
+            updatePosition(1 / 3);
+            try (BufferedWriter out = new BufferedWriter(new FileWriter(fileTempPos))) {
+                String pos = currPos.toString();
+                System.out.println(pos);
+                out.write(pos);
+
+                if (!fileTempPos.renameTo(fileDonePos)) {
+                    System.out.println("File failed to rename " + fileTempPos + " to " + fileDonePos);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
