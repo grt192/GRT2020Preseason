@@ -50,9 +50,11 @@ class Wheel {
 		set(0, 0);
 	}
 
-	public void zero() {
+	/** Zeroes the wheel by updating the offset, and returns the new offset */
+	public int zero() {
 		System.out.println("Zeroing " + name + "module");
 		OFFSET = rotateMotor.getSelectedSensorPosition(0);
+		return OFFSET;
 	}
 
 	public void disable() {
