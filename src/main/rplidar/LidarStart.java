@@ -12,7 +12,7 @@ public class LidarStart {
             e.printStackTrace();
         }
 
-        Runnable positionTracker = new PositionTracker(new Position(4.1148, 4.1148));
+        Runnable positionTracker = new PositionTracker(new Position(4114.8, 4114.8));
         Thread getPos = new Thread(positionTracker);
         getPos.start();
 

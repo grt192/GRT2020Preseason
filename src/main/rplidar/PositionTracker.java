@@ -152,7 +152,7 @@ public class PositionTracker implements Runnable {
         while (true) {
 
             File fileTempPos = new File(fileDonePos.getPath() + ".temp");
-            updatePosition(1 / 3);
+            updatePosition(333);
             try (BufferedWriter out = new BufferedWriter(new FileWriter(fileTempPos))) {
                 String pos = currPos.toString();
                 System.out.println(pos);
