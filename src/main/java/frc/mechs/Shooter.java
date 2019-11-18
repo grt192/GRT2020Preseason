@@ -16,6 +16,9 @@ public class Shooter extends Mech {
 
     private TalonSRX motorHopper;
     private TalonSRX motorFlywheel;
+    private XboxController controller = Input.MECH_XBOX;
+
+    private boolean shooterOn = False;
     
     public Shooter() {
         this.motorHopper = new TalonSRX(Config.getInt("motor_hopper"));
@@ -23,13 +26,21 @@ public class Shooter extends Mech {
         // TODO: add config
     }
 
-    public void start() {
-        motorHopper.set(ControlMode.PercentOutput, POWER_HOPPER * directionHopper);
-        motorFlywheel.set(ControlMode.PercentOutput, POWER_FLYWHEEL * directionFlywheel);
-    }
+    public void loop () {
+        // if x button is pressed, start shooter
+        // if y button is pressed, stop shooter
 
-    public void stop() {
-        motorHopper.set(ControlMode.PercentOutput, 0);
-        motorFlywheel.set(ControlMode.PercentOutput, 0);
+        boolean xButtonVal = controller.getXButtonReleased();
+        double yButtonVal = controller.getYButtonReleased();
+
+        if (xButtonVal && !shooterOn) {
+            motorHopper.set(ControlMode.PercentOutput, directionHopper * POWER_HOPPER);
+            motorFlywheel.set(ControlMode.PercentOutput, directionFlywheel * POWER_FLYWHEEL);
+            shooterOn = true;
+        } else if (yButtonVal && shooterOn) {
+            motorHopper.set(ControlMode.PercentOutput, 0);
+            motorFlywheel.set(ControlMode.PercentOutput, 0);
+            shooterOn = false;
+        }
     }
 }

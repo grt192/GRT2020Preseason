@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 public class Climb extends Mech {
     private Solenoid solLeft;
     private Solenoid solRight;
-    private XboxController controller = Input.CONTROLLER;
+    private XboxController controller = Input.MECH_XBOX;
 
     private boolean extended = False;
 
