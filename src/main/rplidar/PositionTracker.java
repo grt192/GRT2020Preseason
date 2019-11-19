@@ -68,21 +68,27 @@ public class PositionTracker implements Runnable {
 
         LPositions = createPositions(currPos, prevLidarData);
 
-        Position newPos = null;
-        double minDifference = 1000;
-
-        for (double x = currPos.getX() - boxLength / 3; x <= currPos.getX() + boxLength / 2; x += boxLength / 3) {
-            for (double y = currPos.getY() - boxLength / 3; y <= currPos.getY() + boxLength / 2; y += boxLength / 3) {
-                Position boxCenter = new Position(x, y);
-                double difference = avgDifference(boxCenter);
-                if (difference < minDifference) {
-                    minDifference = difference;
-                    newPos = boxCenter;
+        //Multiple iterations
+        //Change the currPos and make boxlength smaller everty iteration
+        int iterations = 2;
+        while(iterations > 0){
+            Position newPos = null;
+            double minDifference = 1000000;
+            for (double x = currPos.getX() - boxLength / 3; x <= currPos.getX() + boxLength / 2; x += boxLength / 3) {
+                for (double y = currPos.getY() - boxLength / 3; y <= currPos.getY() + boxLength / 2; y += boxLength / 3) {
+                    Position boxCenter = new Position(x, y);
+                    double difference = avgDifference(boxCenter);
+                    if (difference < minDifference) {
+                        minDifference = difference;
+                        newPos = boxCenter;
+                    }
                 }
             }
-        }
-        if (newPos != null) {
-            currPos = newPos;
+            if (newPos != null) {
+                currPos = newPos;
+            }
+            iterations++;
+            boxLength /= 3;
         }
     }
 
