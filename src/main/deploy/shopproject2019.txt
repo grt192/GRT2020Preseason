@@ -22,3 +22,10 @@ screw_dist_per_rev=1
 # distance the nut moves, inches
 screw_len=
 elevator_ticks_per_rev=
+
+# speed and time of the ball dump/climb
+# speeds in % output of motors, times in ms
+ball_dump_speed=.9
+ball_dump_time=2000
+climb_speed=.3
+climb_time=4000
