@@ -15,7 +15,7 @@ public class PositionTracker implements Runnable {
     private ArrayList<LidarData> prevLidarData;
     private ArrayList<LidarData> currLidarData;
     private ArrayList<Position> LPositions;
-    private boolean firstTime;
+    private boolean firstTime = false;
 
     public PositionTracker(Position startingPos) {
         currPos = startingPos;
@@ -148,14 +148,13 @@ public class PositionTracker implements Runnable {
         String fileLocation = "/home/pi/Documents/GRTLidar/";
         System.out.println("\nPosition Tracking run");
         File fileDonePos = new File(fileLocation + "pos.txt");
-        firstTime = false;
         while (true) {
 
             File fileTempPos = new File(fileDonePos.getPath() + ".temp");
-            updatePosition(333);
+            updatePosition(150);
             try (BufferedWriter out = new BufferedWriter(new FileWriter(fileTempPos))) {
                 String pos = currPos.toString();
-                System.out.println(pos);
+                // System.out.println(pos);
                 out.write(pos);
 
                 if (!fileTempPos.renameTo(fileDonePos)) {

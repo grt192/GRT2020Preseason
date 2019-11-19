@@ -53,6 +53,7 @@ public class RPLidar implements Runnable {
                         File fileTemp = new File(fileDone.getPath() + ".temp");
                         drv.grabScanDataHq(measurements);
                         boolean seenNonZeroAngle = false;
+                        boolean seen359 = false;
                         try (BufferedWriter out = new BufferedWriter(new FileWriter(fileTemp))) {
 
                             for (int i = 0; i < measurements.length; i++) {
@@ -62,8 +63,13 @@ public class RPLidar implements Runnable {
                                 if (angle == 0 && seenNonZeroAngle) {
                                     break;
                                 }
+                                if (seen359) {
+                                    break;
+                                }
                                 seenNonZeroAngle = true;
-
+                                if (359 == (int) m.getDistance()) {
+                                    seen359 = true;
+                                }
                                 String data = new String(String.format("%s theta: %03.2f Dist: %08.2f Q: %d",
                                         m.isSyncBit() ? "S " : "  ", angle, m.getDistance(), m.getQuality()));
                                 // System.out.println(data);
