@@ -55,7 +55,6 @@ public class Robot extends TimedRobot {
     Mode.initModes();
     mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
     mode.setNumber(0);
-    SmartDashboard.putNumber("DB/Slider 0", 5*JoystickProfile.getProfileFactor());
   }
 
   private void loop() {
