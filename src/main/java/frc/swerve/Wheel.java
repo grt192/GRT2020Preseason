@@ -104,6 +104,10 @@ class Wheel {
 		return name;
 	}
 
+	public int getOffset() {
+		return OFFSET;
+	}
+
 	private void configRotateMotor() {
 		Config.defaultConfigTalon(rotateMotor);
 
