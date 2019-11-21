@@ -15,6 +15,8 @@ import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.input.Input;
 import frc.input.JoystickProfile;
 import frc.swerve.NavXGyro;
@@ -57,14 +59,15 @@ public class Robot extends TimedRobot {
     Mode.initModes();
     mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
     mode.setNumber(0);
-    NetworkTableInstance.getDefault().getTable("Joystick").getEntry("factor").addListener(event -> {
-      double val = event.getEntry().getDouble(-1);
-      if (GRTUtil.inRange(0, val, 1)) { JoystickProfile.setProfileFactor(val); }
-      else { event.getEntry().setDouble(JoystickProfile.getProfileFactor()); }
-    }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+    SmartDashboard.putNumber("DB/Slider 0", 5*JoystickProfile.getProfileFactor());
   }
 
   private void loop() {
+    // zero swerve
+    if (Input.SWERVE_XBOX.getYButtonReleased()) {
+      SWERVE.zeroRotate();
+    }
+    
     autonomous.loop();
     int i = mode.getNumber(0).intValue();
     if (manualOverride()) {
@@ -144,8 +147,5 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    if (Input.SWERVE_XBOX.getYButtonReleased()) {
-      SWERVE.zeroRotate();
-    }
   }
 }

@@ -153,48 +153,12 @@ public class Swerve implements Runnable {
 	}
 
 	/** Takes the current position of the wheels and sets them as zero in the
-	 * currently running program and in the config file */
+	 * currently running program and adds them to the Basic tab on SmartDashboard */
 	public void zeroRotate() {
-		// copied from Config.start()
-		Queue<String> lines = new LinkedList<String>();
-		try {
-			String fileName = Config.getFileName();
-			File f = new File(Filesystem.getDeployDirectory(), fileName);
-			System.out.println("reading from file " + fileName + " for zeroing wheel rotation");
-			Scanner scanner = new Scanner(f);
-			// load the original lines into the queue
-			while (scanner.hasNextLine()) {
-				String line = scanner.nextLine();
-				lines.add(line);
-			}
-			scanner.close();
-
-			// overwrite the files, adding edited lines
-			BufferedWriter writer = new BufferedWriter(new FileWriter(f));
-			while (!lines.isEmpty()) {
-				String ln = lines.remove().trim();
-				if (ln.length() > 0 && ln.charAt(0) != '#') {
-					String valName = ln.split("=")[0].trim();
-					switch (valName) {
-					case "fr_offset":
-						ln = valName + "=" + wheels[0].zero();
-						break;
-					case "br_offset":
-						ln = valName + "=" + wheels[1].zero();
-						break;
-					case "bl_offset":
-						ln = valName + "=" + wheels[2].zero();
-						break;
-					case "fl_offset":
-						ln = valName + "=" + wheels[3].zero();
-						break;
-					}
-				}
-				writer.write(ln + "\n");
-			}
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		for (int i = 0; i < wheels.length; i++) {
+			wheels[i].zero();
+			SmartDashboard.putString("DB/String " + i, 
+				wheels[i].getName() + "_offset: " + wheels[i].getOffset());
 		}
 	}
 

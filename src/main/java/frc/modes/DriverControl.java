@@ -24,6 +24,7 @@ class DriverControl extends Mode {
     }
 
     private void driveSwerve() {
+        JoystickProfile.updateProfileFactor();
         double x = JoystickProfile.applyProfile(Input.SWERVE_XBOX.getY(Hand.kLeft));
         double y = JoystickProfile.applyProfile(-Input.SWERVE_XBOX.getX(Hand.kLeft));
 

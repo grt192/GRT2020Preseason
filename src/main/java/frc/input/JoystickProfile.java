@@ -1,12 +1,13 @@
 package frc.input;
 import java.util.ArrayList;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.util.GRTUtil;
 public class JoystickProfile {
-	private static final double DEFAULT_DEADBAND = 0.2;
+	private static final double DEFAULT_DEADBAND = 0.15;
 
 	// number between 0 and 1. closer to 1 = more dramatic joystick value correction
-	private static double profileFactor = .8;
+	private static double profileFactor = 1;
 	
 	private JoystickProfile() {}
 
@@ -14,27 +15,20 @@ public class JoystickProfile {
 		// first apply deadband, then scale back to original range
 		x = applyDeadband(x) / (1 - DEFAULT_DEADBAND);
 		// apply the polynominal
-		System.out.println(x);
-		System.out.println(applyPolynominal(x));
 		return applyPolynominal(x);
 	}
 
 	private static double applyPolynominal(double x) {
-		// possible a*X^3 + (1-a)*X
-		return profileFactor * x * x * x + (1 - profileFactor) * x;
+		double posX = Math.abs(x);
+		
+		return Math.signum(x) * (profileFactor * Math.pow(posX, 5) + (1 - profileFactor) * Math.pow(posX, 2));
 	}
 
-	/** Sets how "dramatic" the joystick value correction should be.
-	 * @param factor a number from 0 to 1
-	 */
-	public static boolean setProfileFactor(double factor) {
-		// maybe check network tables here
-		if (GRTUtil.inRange(0, factor, 1)) {
-			profileFactor = factor;
-			return true;
-		}
-		return false;
+	public static void updateProfileFactor() {
+		double val = SmartDashboard.getNumber("DB/Slider 0", 0.8);
+		profileFactor = val/5;
 	}
+
 	/** Returns how much the joystick value correction is */
 	public static double getProfileFactor() {
 		return profileFactor;

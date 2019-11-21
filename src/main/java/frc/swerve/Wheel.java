@@ -100,6 +100,10 @@ class Wheel {
 				+ (reversed ? Math.PI : 0)), TWO_PI);
 	}
 
+	public int getOffset() {
+		return OFFSET;
+	}
+
 	public String getName() {
 		return name;
 	}
