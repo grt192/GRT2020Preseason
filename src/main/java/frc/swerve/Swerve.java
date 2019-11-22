@@ -152,14 +152,17 @@ public class Swerve implements Runnable {
 		return angle;
 	}
 
-	/** Takes the current position of the wheels and sets them as zero in the
-	 * currently running program and adds them to the Basic tab on SmartDashboard */
+	/**
+	 * Takes the current position of the wheels and sets them as zero in the
+	 * currently running program and adds them to the Basic tab on SmartDashboard
+	 */
 	public void zeroRotate() {
 		for (int i = 0; i < wheels.length; i++) {
 			wheels[i].zero();
-			SmartDashboard.putString("DB/String " + i, 
-				wheels[i].getName() + "_offset: " + wheels[i].getOffset());
+			SmartDashboard.putString("DB/String " + i, wheels[i].getName() + "_offset: " + wheels[i].getOffset());
 		}
 	}
+
+	public void update
 
 }

@@ -31,3 +31,4 @@ drive_encoder_scale=1.83259571
 
 #joystick profile variables
 joystick_profile_size=1000
+max_accel=.2
