@@ -7,12 +7,15 @@
 
 package frc.robot;
 
+import java.util.HashSet;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.config.Config;
 import frc.modes.Mode;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.tank.Tank;
+import frc.mechs.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,6 +34,8 @@ public class Robot extends TimedRobot {
   public static double ROBOT_HEIGHT;
   public static double ROBOT_RADIUS;
 
+  private HashSet<Mech> mechs;
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -43,6 +48,10 @@ public class Robot extends TimedRobot {
     ROBOT_RADIUS = Math.sqrt(ROBOT_WIDTH * ROBOT_WIDTH + ROBOT_HEIGHT * ROBOT_HEIGHT) / 2;
     autonomous = new Autonomous(this);
     TANK = new Tank();
+
+    mechs.add(new Climb());
+    mechs.add(new Shooter());
+
     Mode.initModes();
     mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
     mode.setNumber(0);
@@ -86,6 +95,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    for (Mech mech : mechs)
+      mech.start();
   }
 
   /**

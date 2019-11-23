@@ -12,3 +12,16 @@ left_follower=2
 right_inverted=true
 right_master=16
 right_follower=15
+
+# motor variables for shooter
+motor_hopper=
+motor_flywheel=
+
+# starting speeds and change per button press
+power_hopper=0.2
+power_flywheel=0.5
+speed_change=0.05
+
+# pnuematic variables for climb
+climb_sol_l=
+climb_sol_r=

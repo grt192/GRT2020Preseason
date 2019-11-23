@@ -1,12 +1,10 @@
 package frc.mechs;
 
+import frc.robot.Mech;
 import frc.config.Config;
 import frc.input.Input;
 
 import edu.wpi.first.wpilibj.Solenoid;
-
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class Climb extends Mech {
@@ -31,11 +29,11 @@ public class Climb extends Mech {
         if (aButtonVal && !extended) {
             solLeft.set(true);
             solRight.set(true);
+            extended = true;
         } else if (bButtonVal && extended) {
             solLeft.set(false);
             solRight.set(false);
+            extended = false;
         }
-
-        // TODO: add backups on the joysticks?
     }
 }

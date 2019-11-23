@@ -1,18 +1,23 @@
 package frc.mechs;
 
-import frc.config.Config;
 import frc.robot.Mech;
+import frc.config.Config;
+import frc.input.Input;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+
 public class Shooter extends Mech {
 
-    private static final double POWER_HOPPER = 0.35;
-    private static final double POWER_FLYWHEEL = 0.35;
+    private double powerHopper;
+    private double powerFlywheel;
+    private double powerFlywheelOrig;
 
-    private int directionHopper = 1;
-    private int directionFlywheel = 1;
+    private final double maxSpeed;
+    private final double speedChange;
 
     private TalonSRX motorHopper;
     private TalonSRX motorFlywheel;
@@ -23,24 +28,50 @@ public class Shooter extends Mech {
     public Shooter() {
         this.motorHopper = new TalonSRX(Config.getInt("motor_hopper"));
         this.motorFlywheel = new TalonSRX(Config.getInt("motor_flywheel"));
-        // TODO: add config
+
+        this.powerHopper = new TalonSRX(Config.getInt("power_hopper"));
+        this.powerFlywheel = new TalonSRX(Config.getInt("power_flywheel"));
+        this.powerFlywheelOrig = this.powerFlywheel;
+
+        this.maxSpeed = new TalonSRX(Config.getInt("max_speed"));
+        this.speedChange = new TalonSRX(Config.getInt("speed_change"));
+        
+        Config.defaultConfigTalon(motorHopper);
+        Config.defaultConfigTalon(motorFlywheel);
     }
 
     public void loop () {
         // if x button is pressed, start shooter
         // if y button is pressed, stop shooter
 
-        boolean xButtonVal = controller.getXButtonReleased();
-        double yButtonVal = controller.getYButtonReleased();
+        boolean xButton = controller.getXButtonReleased();
+        boolean yButton = controller.getYButtonReleased();
 
-        if (xButtonVal && !shooterOn) {
-            motorHopper.set(ControlMode.PercentOutput, directionHopper * POWER_HOPPER);
-            motorFlywheel.set(ControlMode.PercentOutput, directionFlywheel * POWER_FLYWHEEL);
-            shooterOn = true;
-        } else if (yButtonVal && shooterOn) {
+        if (xButton && !shooterOn) shooterOn = true;
+        if (yButton && shooterOn) shooterOn = false;
+
+        // if left bumper pressed, increase bumper speed
+        // if right bumper pressed, decrease bumper speed
+
+        boolean leftBumper = controller.getBumperReleased​(GenericHID.Hand.kLeft);
+        boolean rightBumper = controller.getBumperReleased​(GenericHID.Hand.kRight);
+
+        if (leftBumper) powerFlywheel = Math.min(maxSpeed, powerFlywheel + speedChange);
+        if (rightBumper) powerFlywheel = Math.max(0, powerFlywheel - speedChange);
+
+        // if left stick pushed down, reset to original speed
+
+        boolean leftStick = controller.getStickButtonReleased​(GenericHID.Hand.kLeft);
+        if (leftStick) powerFlywheel = powerFlywheelOrig;
+
+        // set motor speeds
+
+        if (shooterOn) {
+            motorHopper.set(ControlMode.PercentOutput, powerHopper);
+            motorFlywheel.set(ControlMode.PercentOutput, powerFlywheel);
+        } else {
             motorHopper.set(ControlMode.PercentOutput, 0);
             motorFlywheel.set(ControlMode.PercentOutput, 0);
-            shooterOn = false;
         }
     }
 }
