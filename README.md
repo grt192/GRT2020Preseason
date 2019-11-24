@@ -1,5 +1,9 @@
 # GRT2020Preseason
 
+## People
+- Aaryan
+- Michael?
+
 ## Instructions for shop project
 
 This branch is just framework + tank code. You might see it fit to change some things.
