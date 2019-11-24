@@ -29,12 +29,12 @@ public class Shooter extends Mech {
         this.motorHopper = new TalonSRX(Config.getInt("motor_hopper"));
         this.motorFlywheel = new TalonSRX(Config.getInt("motor_flywheel"));
 
-        this.powerHopper = new TalonSRX(Config.getInt("power_hopper"));
-        this.powerFlywheel = new TalonSRX(Config.getInt("power_flywheel"));
+        this.powerHopper = Config.getDouble("power_hopper");
+        this.powerFlywheel = Config.getDouble("power_flywheel");
         this.powerFlywheelOrig = this.powerFlywheel;
 
-        this.maxSpeed = new TalonSRX(Config.getInt("max_speed"));
-        this.speedChange = new TalonSRX(Config.getInt("speed_change"));
+        this.maxSpeed = Config.getDouble("max_speed");
+        this.speedChange = Config.getDouble("speed_change");
         
         Config.defaultConfigTalon(motorHopper);
         Config.defaultConfigTalon(motorFlywheel);

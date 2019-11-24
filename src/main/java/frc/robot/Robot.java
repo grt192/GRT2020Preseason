@@ -115,10 +115,9 @@ public class Robot extends TimedRobot {
     loop();
   }
 
-  /**
-   * This function is called periodically during test mode.
-   */
   @Override
-  public void testPeriodic() {
+  public void disabledInit() {
+    for (Mech mech : mechs)
+      mech.stop();
   }
 }
