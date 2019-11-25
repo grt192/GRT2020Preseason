@@ -23,14 +23,14 @@ public class Climb extends Mech {
         // if a button is pressed, extend elevator
         // if b button is pressed, retract elevator
 
-        boolean aButtonVal = controller.getAButtonReleased();
-        double bButtonVal = controller.getBButtonReleased();
+        boolean aButton = controller.getAButtonReleased();
+        boolean bButton = controller.getBButtonReleased();
 
-        if (aButtonVal && !extended) {
+        if (aButton && !extended) {
             solLeft.set(true);
             solRight.set(true);
             extended = true;
-        } else if (bButtonVal && extended) {
+        } else if (bButton && extended) {
             solLeft.set(false);
             solRight.set(false);
             extended = false;
