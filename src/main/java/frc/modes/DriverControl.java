@@ -24,6 +24,7 @@ class DriverControl extends Mode {
 
     @Override
     public boolean loop() {
+        System.out.println("In loop, drivemethod=" + driveMethod);
         // if the right bumper is being pressed, then we are in reverse mode
         if (Input.CONTROLLER.getBumperPressed(Hand.kRight)) {
             reverse = true;
@@ -62,11 +63,13 @@ class DriverControl extends Mode {
             leftVel = -rightVel;
             rightVel = -tmp;
         }
+        System.out.println("left vel=" + leftVel + ", right vel=" + rightVel);
         Robot.TANK.setRaw(leftVel, rightVel);
     }
 
     /** Left stick controls forward/backward and left/right motion */
     private void arcadeDrive() {
+        System.out.println("In arcade Drive");
         double forwardVel = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kLeft)) * (reverse?-1:1);
         double rotateAmt = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kLeft)) * (reverse?-1:1);
         // square inputs to decrease sensitivity at low speeds
@@ -78,6 +81,7 @@ class DriverControl extends Mode {
     /** 2 stick arcade drive - left stick controls forward/backward, right 
      * stick controls left/right */
      private void arcade2StickDrive() {
+        System.out.println("in arcade 2 stick");
         double forwardVel = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kLeft)) * (reverse?-1:1);
         double rotateAmt = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kRight)) * (reverse?-1:1);
         // square inputs to decrease sensitivity at low speeds

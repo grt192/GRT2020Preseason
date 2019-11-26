@@ -43,6 +43,7 @@ public class Config {
 	}
 
 	public static void start() {
+		System.out.println("in config start");
 		map = new HashMap<>();
 		try {
 			Scanner nameScanner = new Scanner(new File("/home/lvuser/name.192"));

@@ -46,17 +46,19 @@ public class Robot extends TimedRobot {
 
     autonomous = new Autonomous(this);
     TANK = new Tank();
+    System.out.println("In robot init");
 
     // 
-    ELEVATOR = new ElevatorMech();
-    ELEVATOR.start();
-
+    //ELEVATOR = new ElevatorMech();
+    //ELEVATOR.start();
+    
     Mode.initModes();
     mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
     mode.setNumber(0);
   }
 
   private void loop() {
+    System.out.println("in loop");
     autonomous.loop();
     int i = mode.getNumber(0).intValue();
     if (!Mode.getMode(i).loop()) {
@@ -103,6 +105,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    System.out.println("in auto periodic");
     loop();
   }
 
@@ -111,6 +114,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    System.out.println("In teleop periodic");
     loop();
   }
 
@@ -119,5 +123,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    System.out.println("In test periodic");
   }
 }

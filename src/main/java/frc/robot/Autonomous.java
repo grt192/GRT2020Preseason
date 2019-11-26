@@ -53,6 +53,7 @@ public class Autonomous {
     }
 
     public void loop() {
+        System.out.println("In auton loop");
         long time = System.currentTimeMillis();
         while (true) {
             if (done || !finishedFlag || time < delayTime)
