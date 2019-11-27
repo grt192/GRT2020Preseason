@@ -7,11 +7,11 @@ ticks_to_meters=0.0005588
 max_speed=0.9
 
 left_inverted=false
-left_master=1
-left_follower=2
+left_master=14
+left_follower=15
 right_inverted=true
-right_master=16
-right_follower=15
+right_master=4
+right_follower=16
 
 # motor variables for shooter
 motor_hopper=
