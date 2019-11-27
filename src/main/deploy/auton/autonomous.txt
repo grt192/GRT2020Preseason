@@ -1,3 +1,2 @@
-setspeed 0.1
-delay 3
-setspeed 0
+setspeed 0.5
+delay 5000
