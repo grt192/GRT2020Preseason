@@ -72,6 +72,11 @@ public class Autonomous {
             case "wait":
                 finishedFlag = false;
                 break;
+            case "setspeed":
+                double speed = Integer.parseInt(cmd[1]);
+                System.out.println("set speed to" + speed);
+                Robot.TANK.set(speed, speed);
+                break;
             }
         }
     }
