@@ -8,6 +8,7 @@
 package frc.modes;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.input.Input;
 import frc.input.JoystickProfile;
 import frc.robot.Robot;
@@ -21,6 +22,9 @@ class DriverControl extends Mode {
     // current drive control method, [0, DRIVES-1]
     private int driveMethod = 0;
 
+    public DriverControl() {
+        putDriveMethod();
+    }
 
     @Override
     public boolean loop() {
@@ -36,8 +40,10 @@ class DriverControl extends Mode {
         // get input from the dpad to switch drive modes
         if (Input.CONTROLLER.getPOV() == 90) {
             driveMethod = (driveMethod + 1) % DRIVES;
+            putDriveMethod();
         } else if (Input.CONTROLLER.getPOV() == 270) {
             driveMethod = (driveMethod - 1) % DRIVES;
+            putDriveMethod();
         }
 
         switch (driveMethod) {
@@ -68,25 +74,34 @@ class DriverControl extends Mode {
 
     /** Left stick controls forward/backward and left/right motion */
     private void arcadeDrive() {
-        System.out.println("In arcade Drive");
         double forwardVel = JoystickProfile.applyDeadband(Input.CONTROLLER.getY(Hand.kLeft)) * (reverse?-1:1);
         double rotateAmt = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kLeft)) * (reverse?-1:1);
         // square inputs to decrease sensitivity at low speeds
         forwardVel = GRTUtil.signedSquare(forwardVel);
         rotateAmt = GRTUtil.signedSquare(rotateAmt);
-        Robot.TANK.setPolar(forwardVel * Robot.TANK.MAX_SPEED, rotateAmt * Robot.TANK.MAX_ANGULAR_SPEED);
+        Robot.TANK.setPolarRaw(forwardVel * Robot.TANK.MAX_SPEED, rotateAmt * Robot.TANK.MAX_ANGULAR_SPEED);
     }
 
     /** 2 stick arcade drive - left stick controls forward/backward, right 
      * stick controls left/right */
      private void arcade2StickDrive() {
-        System.out.println("in arcade 2 stick");
         double forwardVel = JoystickProfile.applyDeadband(Input.CONTROLLER.getY(Hand.kLeft)) * (reverse?-1:1);
         double rotateAmt = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kRight)) * (reverse?-1:1);
         // square inputs to decrease sensitivity at low speeds
         forwardVel = GRTUtil.signedSquare(forwardVel);
         rotateAmt = GRTUtil.signedSquare(rotateAmt);
-        Robot.TANK.setPolar(forwardVel * Robot.TANK.MAX_SPEED, rotateAmt * Robot.TANK.MAX_ANGULAR_SPEED);
+        Robot.TANK.setPolarRaw(forwardVel * Robot.TANK.MAX_SPEED, rotateAmt * Robot.TANK.MAX_ANGULAR_SPEED);
      }
 
+     /** Puts the current drive method onto the SmartDashboard */
+     private void putDriveMethod() {
+         String strDrive;
+         switch (driveMethod) {
+             case 0: strDrive = "Tank"; break;
+             case 1: strDrive = "Arcade, 1 stick"; break;
+             case 2: strDrive = "Arcade, 2 stick"; break;
+             default: strDrive = "Default (tank)"; break;
+         }
+         SmartDashboard.putString("DB/String 0", "drive: " + driveMethod + ", " + strDrive);
+     }
 }

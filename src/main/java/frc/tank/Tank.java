@@ -18,7 +18,7 @@ public class Tank {
     private final double WIDTH;
     /** The max speed of the motors. From -1.0 to 1.0. */
     public final double MAX_SPEED;
-    /** The max angular speed of the wheel. How fast the robot can turn */
+    /** The max angular speed of the wheel. How fast the robot can turn, calculated from MAX_SPEED */
     public final double MAX_ANGULAR_SPEED;
 
     /** controls the left wheel */
@@ -94,6 +94,16 @@ public class Tank {
         // right motor meters/second = angVel * ( (radius of rotation) - (robot width / 2) ) 
         double rSpeed = speed - angVel * WIDTH / 2;
         set(lSpeed, rSpeed);
+    }
+    /** Sets the tangential and angular velocity of the robot.
+     * @param speed tangential velocity between -MAX_SPEED and MAX_SPEED
+     * @param angVel angular velocity between -MAX_ANGULAR_SPEED and MAX_ANGULAR_SPEED
+     * @see {@link frc.tank.Tank#MAX_SPEED}, {@link frc.tank.Tank#MAX_ANGULAR_SPEED}
+     */
+    public void setPolarRaw(double speed, double angVel) {
+        double lSpeed = speed + angVel * WIDTH / 2;
+        double rSpeed = speed - angVel * WIDTH / 2;
+        setRaw(lSpeed, rSpeed);
     }
 
     private void configPID(TalonSRX talon) {

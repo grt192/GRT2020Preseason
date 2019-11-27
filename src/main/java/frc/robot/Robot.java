@@ -59,7 +59,6 @@ public class Robot extends TimedRobot {
 
   private void loop() {
     System.out.println("in loop");
-    autonomous.loop();
     int i = mode.getNumber(0).intValue();
     if (!Mode.getMode(i).loop()) {
       autonomous.modeFinished();
@@ -107,7 +106,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     System.out.println("in auto periodic");
-    loop();
+    autonomous.loop();
+
   }
 
   /**

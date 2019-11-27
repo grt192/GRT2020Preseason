@@ -53,7 +53,6 @@ public class Autonomous {
     }
 
     public void loop() {
-        System.out.println("In auton loop");
         long time = System.currentTimeMillis();
         while (true) {
             if (done || !finishedFlag || time < delayTime)
@@ -73,9 +72,9 @@ public class Autonomous {
                 finishedFlag = false;
                 break;
             case "setspeed":
-                double speed = Integer.parseInt(cmd[1]);
+                double speed = Double.parseDouble(cmd[1]);
                 System.out.println("set speed to" + speed);
-                Robot.TANK.set(speed, speed);
+                Robot.TANK.setRaw(speed, speed);
                 break;
             }
         }
