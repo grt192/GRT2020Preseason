@@ -8,11 +8,11 @@ ticks_to_meters=0.0005588
 max_speed=0.9
 
 left_inverted=false
-left_master=16
-left_follower=15
-right_inverted=false
-right_master=14
-right_follower=13
+left_master=12
+left_follower=16
+right_inverted=true
+right_master=4
+right_follower=14
 
 #elevator variables
 elevator_master=
