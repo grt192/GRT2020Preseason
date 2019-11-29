@@ -36,4 +36,9 @@ public class Climb extends Mech {
             extended = false;
         }
     }
+
+    // allows for pneumatic to be extended without a button press (for auton)
+    public void setExtended(boolean val) {
+        extended = val;
+    }
 }

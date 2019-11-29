@@ -29,6 +29,8 @@ public class Robot extends TimedRobot {
   private Autonomous autonomous;
 
   public static Tank TANK;
+  public static Climb CLIMB;
+  public static Shooter SHOOTER;
 
   public static double ROBOT_WIDTH;
   public static double ROBOT_HEIGHT;
@@ -49,8 +51,12 @@ public class Robot extends TimedRobot {
     autonomous = new Autonomous(this);
     TANK = new Tank();
 
-    //mechs.add(new Climb());
-    //mechs.add(new Shooter());
+    // defining these as static makes them accessible to autonomous
+    CLIMB = new Climb();
+    SHOOTER = new Shooter();
+
+    // mechs.add(CLIMB);
+    // mechs.add(SHOOTER);
 
     Mode.initModes();
     mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
@@ -97,6 +103,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     for (Mech mech : mechs)
       mech.start();
+    autonomous.init("auton1.txt");
   }
 
   /**
