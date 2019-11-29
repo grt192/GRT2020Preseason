@@ -19,9 +19,9 @@ public class ElevatorMech extends Mech {
     /** speed in percent output -1 to 1 */
     private double timedSpeed;
     /** The time at which the timed action started. Used to calculate when to stop */
-    private long startMS;
+    private long startTimeMS;
     /** The number of ms to run the timed action for */
-    private int timeMS;
+    private int runTimeMS;
     /** Whether we are in timed mode */
     private boolean inTimeMode;
 
@@ -75,7 +75,7 @@ public class ElevatorMech extends Mech {
         }
         
         if (inTimeMode) {
-            if (System.currentTimeMillis() > startMS + timeMS) {
+            if (System.currentTimeMillis() > startTimeMS + runTimeMS) {
                 inTimeMode = false;
             } else {
                 mainMotor.set(ControlMode.PercentOutput, timedSpeed);
@@ -91,8 +91,8 @@ public class ElevatorMech extends Mech {
      */
     private void startTimeMode(double speed, int time) {
         timedSpeed = speed;
-        timeMS = time;
-        startMS = System.currentTimeMillis();
+        runTimeMS = time;
+        startTimeMS = System.currentTimeMillis();
         inTimeMode = true;
     }
 
