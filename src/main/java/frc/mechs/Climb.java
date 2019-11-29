@@ -12,7 +12,7 @@ public class Climb extends Mech {
     private Solenoid solRight;
     private XboxController controller = Input.MECH_XBOX;
 
-    private boolean extended = False;
+    private boolean extended = false;
 
     public Climb() {
         solLeft = new Solenoid(Config.getInt("climb_sol_l"));

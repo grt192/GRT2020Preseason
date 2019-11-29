@@ -1,4 +1,4 @@
-package frc.mechs;
+package frc.robot;
 
 public abstract class Mech implements Runnable {
 
