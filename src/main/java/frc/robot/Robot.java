@@ -47,6 +47,8 @@ public class Robot extends TimedRobot {
     autonomous = new Autonomous(this);
     TANK = new Tank();
 
+    ELEVATOR = new ElevatorMech();
+
     Mode.initModes();
     mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
     mode.setNumber(0);

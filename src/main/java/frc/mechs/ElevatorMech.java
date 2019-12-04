@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 
-public class ElevatorMech extends Mech {
+public class ElevatorMech {
     private TalonSRX mainMotor;
     private TalonSRX followMotor;
 

@@ -28,6 +28,11 @@ class DriverControl extends Mode {
 
     @Override
     public boolean loop() {
+        Robot.ELEVATOR.loop();
+        return true;
+    }
+
+    public void drive() {
         // if the right bumper is being pressed, then we are in reverse mode
         if (Input.CONTROLLER.getBumperPressed(Hand.kRight)) {
             System.out.println("reversing");
@@ -52,7 +57,6 @@ class DriverControl extends Mode {
             case 2: arcade2StickDrive(); break;
             default: tankDrive(); break;
         }
-        return true;
     }
 
     /** Left stick controls velocity of left wheels, right stick controls velocity of right wheels */
