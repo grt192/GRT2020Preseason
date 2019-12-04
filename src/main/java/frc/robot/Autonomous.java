@@ -42,6 +42,7 @@ public class Autonomous {
                     lines.add(line);
                 line = reader.readLine();
             }
+            reader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

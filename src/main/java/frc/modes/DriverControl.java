@@ -30,7 +30,7 @@ class DriverControl extends Mode {
     public boolean loop() {
         // if the right bumper is being pressed, then we are in reverse mode
         if (Input.CONTROLLER.getBumperPressed(Hand.kRight)) {
-            System.out.println("reverse is true");
+            System.out.println("reversing");
             reverse = true;
         }
         if (Input.CONTROLLER.getBumperReleased(Hand.kRight)) {
