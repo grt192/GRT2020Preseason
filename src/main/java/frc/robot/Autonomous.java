@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import edu.wpi.first.wpilibj.Filesystem;
+import frc.sequence.Sequence;
 
 public class Autonomous {
 
@@ -78,6 +79,12 @@ public class Autonomous {
                 Robot.TANK.setRaw(speed, speed);
                 break;
             case "elevatorup":
+                System.out.println("elevator moving up");
+                Sequence.ELEVATOR_UP.start();
+                break;
+            case "elevatordown":
+                System.out.println("elevator moving down");
+                Sequence.ELEVATOR_DOWN.start();
                 break;
             }
         }

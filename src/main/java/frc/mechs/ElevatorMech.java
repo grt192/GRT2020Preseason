@@ -53,8 +53,9 @@ public class ElevatorMech {
         // config inverted
         UP_IS_POSITIVE = Config.getBoolean("elevator_up_is_positive");
         // config limit switches
-        topLimitSwitch = new DigitalInput(Config.getInt("top_switch"));
-        bottomLimitSwitch = new DigitalInput(Config.getInt("bottom_switch"));
+        //TODO use config stuff for this
+        topLimitSwitch = new DigitalInput(0);
+        bottomLimitSwitch = new DigitalInput(1);
         // config speeds
         ballDumpSpeed = Config.getDouble("ball_dump_speed");
         ballDumpTime = Config.getInt("ball_dump_time");
@@ -64,6 +65,8 @@ public class ElevatorMech {
 
     /** pressing a/b moves elevator up/down for ball dump */
     public void loop() {
+        System.out.println("top: " + topLimitSwitch.get());
+        System.out.println("bottom: " + bottomLimitSwitch.get());
         // stop everything if x button is pressed
         if (controller.getXButtonPressed()) {
             stopEverything();

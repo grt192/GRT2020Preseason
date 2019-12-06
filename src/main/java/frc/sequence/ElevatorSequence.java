@@ -17,20 +17,20 @@ public class ElevatorSequence extends Sequence {
         elevator = Robot.ELEVATOR;
         this.up = up;
         if (up) {
-            time = Config.getInt("ball_dump_speed");
-            speed = -elevator.getOuttakeSpeed();
+            time = Config.getInt("ball_dump_time");
+            speed = elevator.getBallDumpSpeed();
         } else {
-            time = Config.getInt("outtake_time_out");
-            speed = outtake.getOuttakeSpeed();
+            time = Config.getInt("ball_dump_time");
+            speed = -elevator.getBallDumpSpeed();
         }
     }
 
     @Override
     public void runSequence() {
-        outtake.stopEverything();
-        outtake.setSpeed(speed);
+        elevator.stopEverything();
+        elevator.setSpeed(speed);
         sleep(time);
-        outtake.stopEverything();
+        elevator.stopEverything();
     }
 
 }

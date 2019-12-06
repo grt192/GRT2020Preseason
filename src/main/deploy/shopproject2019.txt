@@ -27,5 +27,5 @@ climb_speed=.3
 climb_time=4000
 
 # limit switch variables
-top_switch=
-bottom_switch=
+top_switch=0
+bottom_switch=1         
