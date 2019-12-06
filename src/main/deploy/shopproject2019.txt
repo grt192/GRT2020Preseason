@@ -28,9 +28,9 @@ climb_time=4000
 
 # outtake variables
 outtake_inverted=false
-outtake=
+outtake=3
 # times in milliseconds
-outtake_time_in=
-outtake_time_out=
+outtake_time_in=2000
+outtake_time_out=2000
 # speed from -1.0 to 1.0 to move mech out
-outtake_speed=.9
+outtake_speed=.5

@@ -60,8 +60,10 @@ public class OuttakeMech {
 
         // check if the buttons for timed control were pressed
         if (controller.getAButtonReleased()) { // move mech out
+            System.out.println("mech a pressed");
             startTimeMode(outtakeSpeed, outtakeTimeOut);
         } else if (controller.getBButtonReleased()) { // move mech in
+            System.out.println("mech b pressed");
             startTimeMode(-outtakeSpeed, outtakeTimeIn);
         }
 

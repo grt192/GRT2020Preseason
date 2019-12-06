@@ -10,6 +10,6 @@ package frc.input;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class Input {
-    public static final XboxController TANK_CONTROL = new XboxController(0);
-    public static final XboxController MECH_CONTROL = new XboxController(1);
+    public static final XboxController TANK_CONTROL = new XboxController(1);
+    public static final XboxController MECH_CONTROL = new XboxController(0);
 }
