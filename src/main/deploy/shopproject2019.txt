@@ -27,6 +27,7 @@ climb_time=4000
 
 
 # outtake variables
+outtake_inverted=false
 outtake=
 # times in milliseconds
 outtake_time_in=

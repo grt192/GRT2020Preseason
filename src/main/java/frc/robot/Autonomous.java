@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import edu.wpi.first.wpilibj.Filesystem;
+import frc.sequence.Sequence;
 
 public class Autonomous {
 
@@ -76,6 +77,12 @@ public class Autonomous {
                 double speed = Double.parseDouble(cmd[1]);
                 System.out.println("set speed to" + speed);
                 Robot.TANK.setRaw(speed, speed);
+                break;
+            case "outtakein": 
+                Sequence.OUTTAKE_IN.start();
+                break;
+            case "outtakeout": 
+                Sequence.OUTTAKE_OUT.start();
                 break;
             }
         }

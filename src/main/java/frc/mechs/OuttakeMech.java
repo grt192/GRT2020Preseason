@@ -42,6 +42,7 @@ public class OuttakeMech {
         outtakeTimeIn = Config.getInt("outtake_time_in");
         outtakeTimeOut = Config.getInt("outtake_time_out");
         outtakeSpeed = Math.min(1.0, Math.max(-1.0, Config.getDouble("outtake_speed")));
+        outtakeSpeed *= Config.getBoolean("outtake_inverted") ? -1 : 1;
     }
 
     /** Pressing (a) moves the outtake mech out, pressing (b) moves it back in.
@@ -81,13 +82,18 @@ public class OuttakeMech {
                 speedToSet = timedSpeed;
             }
         }
-        motor.set(ControlMode.PercentOutput, speedToSet);
+        setSpeed(speedToSet);
     }
     
     /** Stops timed mode, stops the motor */
     public void stopEverything() {
         inTimeMode = false;
         motor.set(ControlMode.PercentOutput, 0);
+    }
+
+    /** returns the speed for timed outtake mech from -1.0 to 1.0 */
+    public double getOuttakeSpeed() {
+        return outtakeSpeed;
     }
 
     /** Sets timedSpeed to speed, timeMS to time, 
@@ -100,6 +106,11 @@ public class OuttakeMech {
         runTimeMS = time;
         startTimeMS = System.currentTimeMillis();
         inTimeMode = true;
+    }
+
+    /** sets the outtake mech of the elevator from -1 to 1 */
+    public void setSpeed(double speed) {
+        motor.set(ControlMode.PercentOutput, speed);
     }
 
 }
