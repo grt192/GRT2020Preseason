@@ -9,7 +9,7 @@ import frc.robot.Mech;
 public class Climb extends Mech {
     private Solenoid solLeft;
     private Solenoid solRight;
-    private XboxController controller = Input.MECH_XBOX;
+    private XboxController controller = Input.TANK_XBOX;
 
     private boolean extended = false;
 
@@ -26,12 +26,12 @@ public class Climb extends Mech {
         boolean bButton = controller.getBButtonReleased();
 
         if (aButton && !extended) {
-            solLeft.set(false);
-            solRight.set(false);
-            extended = true;
-        } else if (bButton && extended) {
             solLeft.set(true);
             solRight.set(true);
+            extended = true;
+        } else if (bButton && extended) {
+            solLeft.set(false);
+            solRight.set(false);
             extended = false;
         }
     }

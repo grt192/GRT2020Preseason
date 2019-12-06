@@ -18,7 +18,7 @@ motor_hopper=3
 motor_flywheel=2
 
 # starting speeds and change per button press
-power_hopper=0.5
+power_hopper=0.75
 power_flywheel=0.6
 speed_change=0.05
 
