@@ -24,3 +24,12 @@ ball_dump_speed=.9
 ball_dump_time=4500
 climb_speed=.3
 climb_time=4000
+
+
+# outtake variables
+outtake=
+# times in milliseconds
+outtake_time_in=
+outtake_time_out=
+# speed from -1.0 to 1.0 to move mech out
+outtake_speed=.9

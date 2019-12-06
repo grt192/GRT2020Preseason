@@ -29,6 +29,7 @@ public class DriverControl extends Mode {
     public boolean loop() {
         drive();
         Robot.ELEVATOR.loop();
+        Robot.OUTTAKE.loop();
         return true;
     }
 
@@ -90,5 +91,6 @@ public class DriverControl extends Mode {
      /** Takes a drive method and sets it */
      public void setDriveMethod(DriveType method) {
         driveMethod = method;
+        putDriveMethod();
      }
 }

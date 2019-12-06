@@ -14,7 +14,9 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.tank.Tank;
 import frc.input.Input;
+import frc.input.JoystickProfile;
 import frc.mechs.ElevatorMech;
+import frc.mechs.OuttakeMech;
 import frc.modes.DriveType;
 import frc.modes.DriverControl;
 
@@ -31,6 +33,7 @@ public class Robot extends TimedRobot {
   public static Tank TANK;
 
   public static ElevatorMech ELEVATOR;
+  public static OuttakeMech OUTTAKE;
 
   public static double ROBOT_WIDTH;
   public static double ROBOT_HEIGHT;
@@ -51,6 +54,7 @@ public class Robot extends TimedRobot {
     TANK = new Tank();
 
     ELEVATOR = new ElevatorMech();
+    OUTTAKE = new OuttakeMech();
 
     Mode.initModes();
     mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
@@ -128,5 +132,6 @@ public class Robot extends TimedRobot {
     } else if (Input.TANK_CONTROL.getXButtonPressed()) {
       Mode.DRIVER_CONTROL.setDriveMethod(DriveType.TANK);
     }
+    JoystickProfile.updateProfileFactor();
   }
 }

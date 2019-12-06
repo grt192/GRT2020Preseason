@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class ElevatorMech {
@@ -55,6 +54,7 @@ public class ElevatorMech {
     /** pressing b/a moves elevator up/down for ball dump
      * pressing y/x moves elevator up/down for climb */
     public void loop() {
+        // TODO perhaps we do not need the climb buttons, drivers seem to prefer manual control for that
         // check if the buttons for timed control were pressed 
         if (controller.getXButtonReleased()) { // down for climb
             startTimeMode(-climbSpeed, climbTime);

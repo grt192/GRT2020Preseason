@@ -25,8 +25,9 @@ public class JoystickProfile {
 	}
 
 	public static void updateProfileFactor() {
-		double val = SmartDashboard.getNumber("DB/Slider 0", 0.8);
+		double val = SmartDashboard.getNumber("DB/Slider 0", 4);
 		profileFactor = val/5;
+		SmartDashboard.putBoolean("DB/LED 0", !SmartDashboard.getBoolean("DB/LED 0", false));
 	}
 
 	/** Returns how much the joystick value correction is */
