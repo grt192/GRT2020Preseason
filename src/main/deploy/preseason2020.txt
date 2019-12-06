@@ -9,19 +9,19 @@ max_speed=0.9
 left_inverted=false
 left_master=14
 left_follower=15
-right_inverted=true
+right_inverted=false
 right_master=4
 right_follower=16
 
 # motor variables for shooter
-motor_hopper=
-motor_flywheel=
+motor_hopper=3
+motor_flywheel=2
 
 # starting speeds and change per button press
-power_hopper=0.2
-power_flywheel=0.5
+power_hopper=0.5
+power_flywheel=0.6
 speed_change=0.05
 
 # pnuematic variables for climb
-climb_sol_l=
-climb_sol_r=
+climb_sol_l=0
+climb_sol_r=1

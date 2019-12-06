@@ -3,7 +3,7 @@ package frc.mechs;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.config.Config;
 import frc.input.Input;
@@ -50,8 +50,8 @@ public class Shooter extends Mech {
         // if x button is pressed, start shooter
         // if y button is pressed, stop shooter
 
-        boolean xButton = controller.getXButtonReleased();
-        boolean yButton = controller.getYButtonReleased();
+        boolean xButton = controller.getXButtonPressed();
+        boolean yButton = controller.getYButtonPressed();
 
         // if the x button is pressed and the shooter is not on, turn it on
         if (xButton && !shooterOn)
@@ -66,11 +66,12 @@ public class Shooter extends Mech {
         // needs to be getBumperReleased because otherwise this would be called every
         // time it loops, causing many more updates than expected
 
-        boolean leftBumper = controller.getBumperReleased(GenericHID.Hand.kLeft);
-        boolean rightBumper = controller.getBumperReleased(GenericHID.Hand.kRight);
+        boolean leftBumper = controller.getBumperPressed(Hand.kLeft);
+        boolean rightBumper = controller.getBumperPressed(Hand.kRight);
 
         if (leftBumper)
             powerFlywheel = Math.min(maxSpeed, powerFlywheel + speedChange);
+
         if (rightBumper)
             powerFlywheel = Math.max(0, powerFlywheel - speedChange);
 
@@ -82,10 +83,9 @@ public class Shooter extends Mech {
             powerFlywheel = powerFlywheelOrig;
 
         // set motor speeds
-
         if (shooterOn) {
             motorHopper.set(ControlMode.PercentOutput, powerHopper);
-            motorFlywheel.set(ControlMode.PercentOutput, powerFlywheel);
+            motorFlywheel.set(ControlMode.PercentOutput, -powerFlywheel);
         } else {
             motorHopper.set(ControlMode.PercentOutput, 0);
             motorFlywheel.set(ControlMode.PercentOutput, 0);

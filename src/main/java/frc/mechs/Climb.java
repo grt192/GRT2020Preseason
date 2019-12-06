@@ -1,11 +1,10 @@
 package frc.mechs;
 
-import frc.robot.Mech;
-import frc.config.Config;
-import frc.input.Input;
-
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.config.Config;
+import frc.input.Input;
+import frc.robot.Mech;
 
 public class Climb extends Mech {
     private Solenoid solLeft;
@@ -15,8 +14,8 @@ public class Climb extends Mech {
     private boolean extended = false;
 
     public Climb() {
-        solLeft = new Solenoid(Config.getInt("climb_sol_l"));
-        solRight = new Solenoid(Config.getInt("climb_sol_r"));
+        solLeft = new Solenoid(1, Config.getInt("climb_sol_l"));
+        solRight = new Solenoid(1, Config.getInt("climb_sol_r"));
     }
 
     public void loop() {
@@ -27,12 +26,12 @@ public class Climb extends Mech {
         boolean bButton = controller.getBButtonReleased();
 
         if (aButton && !extended) {
-            solLeft.set(true);
-            solRight.set(true);
-            extended = true;
-        } else if (bButton && extended) {
             solLeft.set(false);
             solRight.set(false);
+            extended = true;
+        } else if (bButton && extended) {
+            solLeft.set(true);
+            solRight.set(true);
             extended = false;
         }
     }

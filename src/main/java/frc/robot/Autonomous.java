@@ -35,6 +35,7 @@ public class Autonomous {
     }
 
     public void init(String filename) {
+        System.out.println(filename);
         lines = new LinkedList<>();
         try {
             BufferedReader reader = new BufferedReader(
@@ -45,6 +46,7 @@ public class Autonomous {
                     lines.add(line);
                 line = reader.readLine();
             }
+            reader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -75,11 +77,12 @@ public class Autonomous {
                 finishedFlag = false;
                 break;
             case "setspeed":
-                // input will be in form "setspeed 0.1 0.2" where argument 1 is left speed, argument 2 is right speed
+                // input will be in form "setspeed 0.1 0.2" where argument 1 is left speed,
+                // argument 2 is right speed
                 Robot.TANK.setRaw(Double.parseDouble(cmd[1]), Double.parseDouble(cmd[2]));
                 break;
             case "setclimb":
-                // input will be in form "setclimb true" 
+                // input will be in form "setclimb true"
                 Robot.CLIMB.setExtended(Boolean.parseBoolean(cmd[1]));
                 break;
             case "setshooter":

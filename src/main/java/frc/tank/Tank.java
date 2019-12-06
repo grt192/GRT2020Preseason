@@ -43,7 +43,7 @@ public class Tank {
         rightMotor.setInverted(rightInverted);
         TalonSRX rightFollower = new TalonSRX(Config.getInt("right_follower"));
         Config.defaultConfigTalon(rightFollower);
-        rightFollower.setInverted(rightInverted);
+        rightFollower.setInverted(true);
         rightFollower.follow(rightMotor);
         configPID(rightMotor);
     }
