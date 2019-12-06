@@ -21,6 +21,6 @@ elevator_follower=5
 # speed and time of the ball dump/climb
 # speeds in % output of motors, times in ms
 ball_dump_speed=.9
-ball_dump_time=2000
+ball_dump_time=4500
 climb_speed=.3
 climb_time=4000
