@@ -52,19 +52,22 @@ public class ElevatorMech {
         climbTime = Config.getInt("climb_time");
     }
 
-    /** pressing b/a moves elevator up/down for ball dump
-     * pressing y/x moves elevator up/down for climb */
+    /** pressing b/a moves elevator up/down for ball dump */
     public void loop() {
-        // check if the buttons for timed control were pressed 
-        if (controller.getXButtonReleased()) { // down for climb
-            startTimeMode(-climbSpeed, climbTime);
-        } else if (controller.getYButtonPressed()) { // up for climb
-            startTimeMode(climbSpeed, climbTime);
-        } else if (controller.getAButtonReleased()) { // down for ball dump
+        // stop everything if x button is pressed
+        if (controller.getXButtonPressed()) {
+            stopEverything();
+            return;
+        }
+
+        double speedToSet = 0;
+
+        // check if the buttons for timed control were released 
+        if (controller.getAButtonReleased()) { // down for ball dump
             startTimeMode(-ballDumpSpeed, ballDumpTime);
         } else if (controller.getBButtonReleased()) { // up for ball dump
             startTimeMode(ballDumpSpeed, ballDumpTime);
-        } 
+        }
 
         // check if the trigger was pressed. if so, stop timed control and enter manual control
         double triggerVal = JoystickProfile.applyProfile(
@@ -72,19 +75,24 @@ public class ElevatorMech {
 
         if (triggerVal != 0) {
             inTimeMode = false;
-            mainMotor.set(ControlMode.PercentOutput, triggerVal);
-        } else {
-            mainMotor.set(ControlMode.PercentOutput, 0);
+            speedToSet = triggerVal;
         }
         
         if (inTimeMode) {
             if (System.currentTimeMillis() > startTimeMS + runTimeMS) {
                 inTimeMode = false;
             } else {
-                mainMotor.set(ControlMode.PercentOutput, timedSpeed);
+                speedToSet = timedSpeed;
             }
         }
+        mainMotor.set(ControlMode.PercentOutput, speedToSet);
 
+    }
+
+    /** stops all the motors and stops timed mode */
+    public void stopEverything() {
+        inTimeMode = false;
+        mainMotor.set(ControlMode.PercentOutput, 0);
     }
 
     /** Sets timedSpeed to speed, timeMS to time, 
