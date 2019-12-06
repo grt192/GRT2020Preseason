@@ -69,9 +69,13 @@ public class ElevatorMech {
         // check if the trigger was pressed. if so, stop timed control and enter manual control
         double triggerVal = JoystickProfile.applyDeadband(
             Math.abs(controller.getTriggerAxis(Hand.kLeft)) - Math.abs(controller.getTriggerAxis(Hand.kRight)));
+
+        System.out.println("trigger val: " + triggerVal);
         if (triggerVal != 0) {
             inTimeMode = false;
             mainMotor.set(ControlMode.PercentOutput, triggerVal);
+        } else {
+            mainMotor.set(ControlMode.PercentOutput, 0);
         }
         
         if (inTimeMode) {
