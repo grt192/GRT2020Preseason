@@ -14,13 +14,14 @@ import frc.input.JoystickProfile;
 import frc.robot.Robot;
 import frc.util.GRTUtil;
 
-class DriverControl extends Mode {
+public class DriverControl extends Mode {
     // number of drive control methods
     public static final int DRIVES = 3;
     // current drive control method, [0, DRIVES-1]
-    private int driveMethod = 0;
+    private DriveType driveMethod;
 
     public DriverControl() {
+        driveMethod = DriveType.ARCADE_1_STICK;
         putDriveMethod();
     }
 
@@ -32,30 +33,19 @@ class DriverControl extends Mode {
     }
 
     public void drive() {
-
-        
-        // get input from the dpad to switch drive modes
-        if (Input.CONTROLLER.getBumper(Hand.kLeft)) {
-            driveMethod = (driveMethod + 1) % DRIVES;
-            putDriveMethod();
-        } else if (Input.CONTROLLER.getBumper(Hand.kRight)) {
-            driveMethod = (driveMethod - 1 + DRIVES) % DRIVES;
-            putDriveMethod();
-        }
-
         switch (driveMethod) {
-            case 0: tankDrive(); break;
-            case 1: arcadeDrive(); break;
-            case 2: arcade2StickDrive(); break;
-            default: tankDrive(); break;
+            case TANK: tankDrive(); break;
+            case ARCADE_1_STICK: arcadeDrive(); break;
+            case ARCADE_2_STICK: arcade2StickDrive(); break;
+            default: arcadeDrive(); break;
         }
     }
 
     /** Left stick controls velocity of left wheels, right stick controls velocity of right wheels */
     private void tankDrive() {
         // You may be wondering, why x is .getY() and y is .getX()? Don't question it //
-        double leftVel = JoystickProfile.applyDeadband(Input.CONTROLLER.getY(Hand.kLeft));
-        double rightVel = JoystickProfile.applyDeadband(Input.CONTROLLER.getY(Hand.kRight));
+        double leftVel = JoystickProfile.applyProfile(Input.TANK_CONTROL.getY(Hand.kLeft));
+        double rightVel = JoystickProfile.applyProfile(Input.TANK_CONTROL.getY(Hand.kRight));
         // square inputs to decrease sensitivity at low speeds
         leftVel = GRTUtil.signedSquare(leftVel);
         rightVel = GRTUtil.signedSquare(rightVel);
@@ -66,8 +56,8 @@ class DriverControl extends Mode {
 
     /** Left stick controls forward/backward and left/right motion */
     private void arcadeDrive() {
-        double forwardVel = JoystickProfile.applyDeadband(Input.CONTROLLER.getY(Hand.kLeft));
-        double rotateAmt = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kLeft));
+        double forwardVel = JoystickProfile.applyProfile(Input.TANK_CONTROL.getY(Hand.kLeft));
+        double rotateAmt = JoystickProfile.applyProfile(Input.TANK_CONTROL.getX(Hand.kLeft));
         // square inputs to decrease sensitivity at low speeds
         forwardVel = GRTUtil.signedSquare(forwardVel);
         rotateAmt = GRTUtil.signedSquare(rotateAmt);
@@ -77,8 +67,8 @@ class DriverControl extends Mode {
     /** 2 stick arcade drive - left stick controls forward/backward, right 
      * stick controls left/right */
      private void arcade2StickDrive() {
-        double forwardVel = JoystickProfile.applyDeadband(Input.CONTROLLER.getY(Hand.kLeft));
-        double rotateAmt = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kRight));
+        double forwardVel = JoystickProfile.applyProfile(Input.TANK_CONTROL.getY(Hand.kLeft));
+        double rotateAmt = JoystickProfile.applyProfile(Input.TANK_CONTROL.getX(Hand.kRight));
         // square inputs to decrease sensitivity at low speeds
         forwardVel = GRTUtil.signedSquare(forwardVel);
         rotateAmt = GRTUtil.signedSquare(rotateAmt);
@@ -89,11 +79,16 @@ class DriverControl extends Mode {
      private void putDriveMethod() {
          String strDrive;
          switch (driveMethod) {
-             case 0: strDrive = "Tank"; break;
-             case 1: strDrive = "Arcade, 1 stick"; break;
-             case 2: strDrive = "Arcade, 2 stick"; break;
+             case TANK: strDrive = "Tank"; break;
+             case ARCADE_1_STICK: strDrive = "Arcade, 1 stick"; break;
+             case ARCADE_2_STICK: strDrive = "Arcade, 2 stick"; break;
              default: strDrive = "Default (tank)"; break;
          }
          SmartDashboard.putString("DB/String 0", "drive: " + driveMethod + ", " + strDrive);
+     }
+
+     /** Takes a drive method and sets it */
+     public void setDriveMethod(DriveType method) {
+        driveMethod = method;
      }
 }

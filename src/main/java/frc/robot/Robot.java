@@ -13,7 +13,10 @@ import frc.modes.Mode;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.tank.Tank;
+import frc.input.Input;
 import frc.mechs.ElevatorMech;
+import frc.modes.DriveType;
+import frc.modes.DriverControl;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -118,5 +121,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    if (Input.TANK_CONTROL.getAButtonPressed()) {
+      Mode.DRIVER_CONTROL.setDriveMethod(DriveType.ARCADE_1_STICK);
+    } else if (Input.TANK_CONTROL.getBButtonPressed()) {
+      Mode.DRIVER_CONTROL.setDriveMethod(DriveType.ARCADE_2_STICK);
+    } else if (Input.TANK_CONTROL.getXButtonPressed()) {
+      Mode.DRIVER_CONTROL.setDriveMethod(DriveType.TANK);
+    }
   }
 }

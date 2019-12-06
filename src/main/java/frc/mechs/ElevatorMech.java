@@ -36,7 +36,7 @@ public class ElevatorMech {
 
 
     /** The controller for this elevator */
-    private static final XboxController controller = Input.CONTROLLER;
+    private static final XboxController controller = Input.TANK_CONTROL;
 
     public ElevatorMech() {
         // config motors
@@ -67,7 +67,7 @@ public class ElevatorMech {
         } 
 
         // check if the trigger was pressed. if so, stop timed control and enter manual control
-        double triggerVal = JoystickProfile.applyDeadband(
+        double triggerVal = JoystickProfile.applyProfile(
             Math.abs(controller.getTriggerAxis(Hand.kLeft)) - Math.abs(controller.getTriggerAxis(Hand.kRight)));
 
         if (triggerVal != 0) {
