@@ -10,5 +10,5 @@ package frc.input;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class Input {
-    public static final XboxController CONTROLLER = new XboxController(0);
+    public static final XboxController CONTROLLER = new XboxController(1);
 }

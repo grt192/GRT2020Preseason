@@ -15,13 +15,8 @@ right_master=4
 right_follower=14
 
 #elevator variables
-elevator_master=
-elevator_follower=
-# travel distance per revolution of the lead screw, inches
-screw_dist_per_rev=1
-# distance the nut moves, inches
-screw_len=
-elevator_ticks_per_rev=
+elevator_master=1
+elevator_follower=5
 
 # speed and time of the ball dump/climb
 # speeds in % output of motors, times in ms

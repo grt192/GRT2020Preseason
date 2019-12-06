@@ -15,8 +15,6 @@ import frc.robot.Robot;
 import frc.util.GRTUtil;
 
 class DriverControl extends Mode {
-    // consider the front of the robot to be the side with the hopper
-    private boolean reverse = false;
     // number of drive control methods
     public static final int DRIVES = 3;
     // current drive control method, [0, DRIVES-1]
@@ -28,21 +26,20 @@ class DriverControl extends Mode {
 
     @Override
     public boolean loop() {
-        // if the right bumper is being pressed, then we are in reverse mode
-        if (Input.CONTROLLER.getBumperPressed(Hand.kRight)) {
-            System.out.println("reverse is true");
-            reverse = true;
-        }
-        if (Input.CONTROLLER.getBumperReleased(Hand.kRight)) {
-            reverse = false;
-        }
+        drive();
+        Robot.ELEVATOR.loop();
+        return true;
+    }
 
+    public void drive() {
+
+        
         // get input from the dpad to switch drive modes
-        if (Input.CONTROLLER.getPOV() == 90) {
+        if (Input.CONTROLLER.getBumper(Hand.kLeft)) {
             driveMethod = (driveMethod + 1) % DRIVES;
             putDriveMethod();
-        } else if (Input.CONTROLLER.getPOV() == 270) {
-            driveMethod = (driveMethod - 1) % DRIVES;
+        } else if (Input.CONTROLLER.getBumper(Hand.kRight)) {
+            driveMethod = (driveMethod - 1 + DRIVES) % DRIVES;
             putDriveMethod();
         }
 
@@ -52,7 +49,6 @@ class DriverControl extends Mode {
             case 2: arcade2StickDrive(); break;
             default: tankDrive(); break;
         }
-        return true;
     }
 
     /** Left stick controls velocity of left wheels, right stick controls velocity of right wheels */
@@ -64,18 +60,14 @@ class DriverControl extends Mode {
         leftVel = GRTUtil.signedSquare(leftVel);
         rightVel = GRTUtil.signedSquare(rightVel);
 
-        if (reverse) {
-            double tmp = leftVel;
-            leftVel = -rightVel;
-            rightVel = -tmp;
-        }
+
         Robot.TANK.setRaw(leftVel, rightVel);
     }
 
     /** Left stick controls forward/backward and left/right motion */
     private void arcadeDrive() {
-        double forwardVel = JoystickProfile.applyDeadband(Input.CONTROLLER.getY(Hand.kLeft)) * (reverse?-1:1);
-        double rotateAmt = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kLeft)) * (reverse?-1:1);
+        double forwardVel = JoystickProfile.applyDeadband(Input.CONTROLLER.getY(Hand.kLeft));
+        double rotateAmt = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kLeft));
         // square inputs to decrease sensitivity at low speeds
         forwardVel = GRTUtil.signedSquare(forwardVel);
         rotateAmt = GRTUtil.signedSquare(rotateAmt);
@@ -85,8 +77,8 @@ class DriverControl extends Mode {
     /** 2 stick arcade drive - left stick controls forward/backward, right 
      * stick controls left/right */
      private void arcade2StickDrive() {
-        double forwardVel = JoystickProfile.applyDeadband(Input.CONTROLLER.getY(Hand.kLeft)) * (reverse?-1:1);
-        double rotateAmt = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kRight)) * (reverse?-1:1);
+        double forwardVel = JoystickProfile.applyDeadband(Input.CONTROLLER.getY(Hand.kLeft));
+        double rotateAmt = JoystickProfile.applyDeadband(Input.CONTROLLER.getX(Hand.kRight));
         // square inputs to decrease sensitivity at low speeds
         forwardVel = GRTUtil.signedSquare(forwardVel);
         rotateAmt = GRTUtil.signedSquare(rotateAmt);

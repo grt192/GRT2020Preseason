@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 
-public class ElevatorMech extends Mech {
+public class ElevatorMech {
     private TalonSRX mainMotor;
     private TalonSRX followMotor;
 
@@ -69,9 +69,12 @@ public class ElevatorMech extends Mech {
         // check if the trigger was pressed. if so, stop timed control and enter manual control
         double triggerVal = JoystickProfile.applyDeadband(
             Math.abs(controller.getTriggerAxis(Hand.kLeft)) - Math.abs(controller.getTriggerAxis(Hand.kRight)));
+
         if (triggerVal != 0) {
             inTimeMode = false;
             mainMotor.set(ControlMode.PercentOutput, triggerVal);
+        } else {
+            mainMotor.set(ControlMode.PercentOutput, 0);
         }
         
         if (inTimeMode) {
