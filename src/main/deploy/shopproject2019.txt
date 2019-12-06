@@ -15,6 +15,7 @@ right_master=4
 right_follower=14
 
 #elevator variables
+elevator_up_is_positive=true
 elevator_master=1
 elevator_follower=5
 
@@ -24,3 +25,7 @@ ball_dump_speed=.9
 ball_dump_time=4500
 climb_speed=.3
 climb_time=4000
+
+# limit switch variables
+top_switch=
+bottom_switch=

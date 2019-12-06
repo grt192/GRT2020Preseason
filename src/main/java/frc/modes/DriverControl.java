@@ -27,6 +27,7 @@ public class DriverControl extends Mode {
 
     @Override
     public boolean loop() {
+        JoystickProfile.updateProfileFactor();
         drive();
         Robot.ELEVATOR.loop();
         return true;

@@ -8,7 +8,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class ElevatorMech {
@@ -34,6 +34,11 @@ public class ElevatorMech {
     /** The amt of time in ms to run the motors for climb */
     private int climbTime;
 
+    // limit switch variables
+    DigitalInput topLimitSwitch;
+    DigitalInput bottomLimitSwitch;
+
+    private final boolean UP_IS_POSITIVE;
 
     /** The controller for this elevator */
     private static final XboxController controller = Input.TANK_CONTROL;
@@ -45,6 +50,11 @@ public class ElevatorMech {
         followMotor = new TalonSRX(Config.getInt("elevator_follower"));
         Config.defaultConfigTalon(followMotor);
         followMotor.follow(mainMotor);
+        // config inverted
+        UP_IS_POSITIVE = Config.getBoolean("elevator_up_is_positive");
+        // config limit switches
+        topLimitSwitch = new DigitalInput(Config.getInt("top_switch"));
+        bottomLimitSwitch = new DigitalInput(Config.getInt("bottom_switch"));
         // config speeds
         ballDumpSpeed = Config.getDouble("ball_dump_speed");
         ballDumpTime = Config.getInt("ball_dump_time");
@@ -52,7 +62,7 @@ public class ElevatorMech {
         climbTime = Config.getInt("climb_time");
     }
 
-    /** pressing b/a moves elevator up/down for ball dump */
+    /** pressing a/b moves elevator up/down for ball dump */
     public void loop() {
         // stop everything if x button is pressed
         if (controller.getXButtonPressed()) {
@@ -63,9 +73,9 @@ public class ElevatorMech {
         double speedToSet = 0;
 
         // check if the buttons for timed control were released 
-        if (controller.getAButtonReleased()) { // down for ball dump
+        if (controller.getBButtonReleased()) { // down for ball dump
             startTimeMode(-ballDumpSpeed, ballDumpTime);
-        } else if (controller.getBButtonReleased()) { // up for ball dump
+        } else if (controller.getAButtonReleased()) { // up for ball dump
             startTimeMode(ballDumpSpeed, ballDumpTime);
         }
 
@@ -85,6 +95,22 @@ public class ElevatorMech {
                 speedToSet = timedSpeed;
             }
         }
+
+        // check limit switches and constrain speeds
+        if ((UP_IS_POSITIVE && topLimitSwitch.get()) 
+            || (!UP_IS_POSITIVE && bottomLimitSwitch.get())) {
+            // stop timed movements
+            stopEverything();
+            // speed must be negative or zero, otherwise will break elevator
+            speedToSet = Math.min(0, speedToSet);
+        } else if ((UP_IS_POSITIVE && bottomLimitSwitch.get())
+            || (!UP_IS_POSITIVE && topLimitSwitch.get())) {
+            // stop timed movements
+            stopEverything();
+            // speed must be positive or zero
+            speedToSet = Math.max(0, speedToSet);
+        }
+
         mainMotor.set(ControlMode.PercentOutput, speedToSet);
 
     }

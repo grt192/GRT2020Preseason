@@ -16,7 +16,6 @@ import frc.tank.Tank;
 import frc.input.Input;
 import frc.mechs.ElevatorMech;
 import frc.modes.DriveType;
-import frc.modes.DriverControl;
 
 /**
  * The VM is configured to automatically run this class, and to call the

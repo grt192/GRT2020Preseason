@@ -24,12 +24,15 @@ public class JoystickProfile {
 		return Math.signum(x) * (profileFactor * Math.pow(posX, 5) + (1 - profileFactor) * Math.pow(posX, 2));
 	}
 
+	/** Update the profile factor used to control how sensitive the controls are */
 	public static void updateProfileFactor() {
 		double val = SmartDashboard.getNumber("DB/Slider 0", 0.8);
 		profileFactor = val/5;
 	}
 
-	/** Returns how much the joystick value correction is */
+	/** Returns how much the joystick sensitivity value correction is.
+	 * 0 is most sensitive, 1 is least sensitive
+	 */
 	public static double getProfileFactor() {
 		return profileFactor;
 	}
