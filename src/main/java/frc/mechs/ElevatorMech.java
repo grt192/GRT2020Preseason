@@ -70,7 +70,6 @@ public class ElevatorMech {
         double triggerVal = JoystickProfile.applyDeadband(
             Math.abs(controller.getTriggerAxis(Hand.kLeft)) - Math.abs(controller.getTriggerAxis(Hand.kRight)));
 
-        System.out.println("trigger val: " + triggerVal);
         if (triggerVal != 0) {
             inTimeMode = false;
             mainMotor.set(ControlMode.PercentOutput, triggerVal);
