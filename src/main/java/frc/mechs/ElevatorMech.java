@@ -95,7 +95,18 @@ public class ElevatorMech {
                 speedToSet = timedSpeed;
             }
         }
+        setSpeed(speedToSet);
+    }
 
+    /** stops all the motors and stops timed mode */
+    public void stopEverything() {
+        inTimeMode = false;
+        mainMotor.set(ControlMode.PercentOutput, 0);
+    }
+
+    /** sets the speed of the elevator from -1.0 to 1.0 with
+     * consideration to the values of the limit switches */
+    public void setSpeed(double speedToSet) {
         // check limit switches and constrain speeds
         if ((UP_IS_POSITIVE && topLimitSwitch.get()) 
             || (!UP_IS_POSITIVE && bottomLimitSwitch.get())) {
@@ -110,15 +121,11 @@ public class ElevatorMech {
             // speed must be positive or zero
             speedToSet = Math.max(0, speedToSet);
         }
-
         mainMotor.set(ControlMode.PercentOutput, speedToSet);
-
     }
 
-    /** stops all the motors and stops timed mode */
-    public void stopEverything() {
-        inTimeMode = false;
-        mainMotor.set(ControlMode.PercentOutput, 0);
+    public double getBallDumpSpeed() {
+        return ballDumpSpeed;
     }
 
     /** Sets timedSpeed to speed, timeMS to time, 

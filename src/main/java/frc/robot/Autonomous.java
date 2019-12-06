@@ -77,6 +77,8 @@ public class Autonomous {
                 System.out.println("set speed to" + speed);
                 Robot.TANK.setRaw(speed, speed);
                 break;
+            case "elevatorup":
+                break;
             }
         }
     }
