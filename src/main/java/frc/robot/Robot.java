@@ -99,7 +99,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     SHOOTER.start();
     CLIMB.start();
-    autonomous.init("autonForward.txt");
+    autonomous.init("shoot.txt");
   }
 
   /**
