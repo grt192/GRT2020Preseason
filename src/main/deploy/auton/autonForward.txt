@@ -1,24 +1,35 @@
+setspeed 0.4 0.4
+delay 820
 setspeed -0.7 0.7
-delay 250
-setspeed 0.2 0.2
+delay 260
+setspeed 0.4 0.4
+delay 200
 setshooter true
-delay 1000
-setspeed -0.2 -0.2
-delay 200 
-setspeed 0.2 0.2
-delay 200
-setspeed -0.2 -0.2
-delay 200 
-setspeed 0.2 0.2
-delay 200
-setspeed -0.2 -0.2
-delay 200 
-setspeed 0.2 0.2
-delay 200
-setspeed -0.2 -0.2
-delay 200 
-setspeed 0.2 0.2
-delay 200
 setspeed 0 0
 delay 10000
-
+setshooter false
+setspeed -0.4 -0.4
+delay 200
+setspeed 0.7 -0.7
+delay 300
+setspeed -0.4 -0.4
+delay 780
+setspeed 0.0 0.0
+delay 5000
+setspeed 0.4 0.4
+delay 820
+setspeed -0.7 0.7
+delay 260
+setspeed 0.4 0.4
+delay 200
+setshooter true
+setspeed 0 0
+delay 10000
+setshooter false
+setspeed -0.4 -0.4
+delay 200
+setspeed 0.7 -0.7
+delay 300
+setspeed -0.4 -0.4
+delay 780
+setspeed 0.0 0.0

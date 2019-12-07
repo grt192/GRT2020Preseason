@@ -26,7 +26,7 @@ public class Shooter extends Mech {
 
     private TalonSRX motorHopper;
     private TalonSRX motorFlywheel;
-    private XboxController controller = Input.TANK_XBOX;
+    private XboxController controller = Input.XBOX;
 
     // whether or not the shooter motors (hopper + flywheel) are running
     private boolean shooterOn = false;

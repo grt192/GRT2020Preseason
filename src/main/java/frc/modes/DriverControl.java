@@ -26,10 +26,24 @@ class DriverControl extends Mode {
     private void driveTank() {
 
         // You may be wondering, why x is .getY() and y is .getX()? Don't question it //
-        double x = JoystickProfile.applyDeadband(-Input.TANK_XBOX.getY(Hand.kLeft));
-        double y = JoystickProfile.applyDeadband(Input.TANK_XBOX.getX(Hand.kLeft));
+        double x = JoystickProfile.applyDeadband(-Input.XBOX.getY(Hand.kLeft));
+        double y = JoystickProfile.applyDeadband(Input.XBOX.getX(Hand.kLeft));
 
         Robot.TANK.setPolar(x, y);
+
+        if (Input.XBOX.getStartButton()) {
+            try {
+                Robot.TANK.setRaw(0.4, 0.4);
+                Thread.sleep(820);
+                Robot.TANK.setRaw(-0.7, 0.7);
+                Thread.sleep(260);
+                Robot.TANK.setRaw(0.4, 0.4);
+                Thread.sleep(200);
+                Robot.TANK.setRaw(0.0, 0.0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

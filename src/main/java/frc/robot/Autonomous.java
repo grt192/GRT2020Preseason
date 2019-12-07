@@ -89,6 +89,18 @@ public class Autonomous {
                 // input will be in form "setshooter true"
                 Robot.SHOOTER.setShooterOn(Boolean.parseBoolean(cmd[1]));
                 break;
+            case "shake":
+                for (int i = 0; i < Integer.parseInt(cmd[1]); i++) {
+                    try {
+                        Robot.TANK.setRaw(Double.parseDouble(cmd[2]), Double.parseDouble(cmd[2]));
+                        Thread.sleep(Integer.parseInt(cmd[3]));
+                        Robot.TANK.setRaw(-Double.parseDouble(cmd[2]), -Double.parseDouble(cmd[2]));
+                        Thread.sleep(Integer.parseInt(cmd[3]));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Robot.TANK.setRaw(Double.parseDouble(cmd[1]), Double.parseDouble(cmd[2]));
             }
         }
     }

@@ -18,8 +18,8 @@ motor_hopper=3
 motor_flywheel=2
 
 # starting speeds and change per button press
-power_hopper=0.75
-power_flywheel=0.6
+power_hopper=0.8
+power_flywheel=0.7
 speed_change=0.05
 
 # pnuematic variables for climb

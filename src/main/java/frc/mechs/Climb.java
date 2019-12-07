@@ -9,7 +9,7 @@ import frc.robot.Mech;
 public class Climb extends Mech {
     private Solenoid solLeft;
     private Solenoid solRight;
-    private XboxController controller = Input.TANK_XBOX;
+    private XboxController controller = Input.XBOX;
 
     private boolean extended = false;
 
