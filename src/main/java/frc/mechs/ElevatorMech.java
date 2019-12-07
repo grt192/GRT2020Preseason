@@ -34,7 +34,7 @@ public class ElevatorMech {
     DigitalInput topLimitSwitch;
     DigitalInput bottomLimitSwitch;
 
-    private final boolean UP_IS_POSITIVE;
+    public final boolean UP_IS_POSITIVE;
 
     /** The controller for this elevator */
     private static final XboxController controller = Input.TANK_CONTROL;
