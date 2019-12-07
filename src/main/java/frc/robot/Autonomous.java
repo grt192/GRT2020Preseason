@@ -67,31 +67,38 @@ public class Autonomous {
             System.out.println(line);
             String[] cmd = line.trim().split(" ");
             switch (cmd[0]) {
-            case "delay":
-                delayTime = time + Integer.parseInt(cmd[1]);
-                break;
-            case "wait":
-                finishedFlag = false;
-                break;
-            case "setspeed":
-                double leftSpeed = Double.parseDouble(cmd[1]);
-                double rightSpeed = Double.parseDouble(cmd[2]);
-                Robot.TANK.setRaw(-leftSpeed, -rightSpeed);
-                break;
-            case "outtakein": 
-                Sequence.OUTTAKE_IN.start();
-                break;
-            case "outtakeout": 
-                Sequence.OUTTAKE_OUT.start();
-                break;
-            case "elevatorup":
-                System.out.println("elevator moving up");
-                Sequence.ELEVATOR_UP.start();
-                break;
-            case "elevatordown":
-                System.out.println("elevator moving down");
-                Sequence.ELEVATOR_DOWN.start();
-                break;
+                case "delay":
+                    System.out.println("delay for " + time + " milliseconds");
+                    delayTime = time + Integer.parseInt(cmd[1]);
+                    break;
+                case "wait":
+                    finishedFlag = false;
+                    break;
+                case "setspeed":
+                    System.out.println("setting speed, left:" + cmd[1] + ", right:" + cmd[2]);
+                    double leftSpeed = Double.parseDouble(cmd[1]);
+                    double rightSpeed = Double.parseDouble(cmd[2]);
+                    Robot.TANK.setRaw(-leftSpeed, -rightSpeed);
+                    break;
+                case "outtakein": 
+                    System.out.println("outtake in starting");
+                    Sequence.OUTTAKE_IN.start();
+                    break;
+                case "outtakeout": 
+                    System.out.println("outtake out starting");
+                    Sequence.OUTTAKE_OUT.start();
+                    break;
+                case "elevatorup":
+                    System.out.println("elevator moving up");
+                    Sequence.ELEVATOR_UP.start();
+                    break;
+                case "elevatordown":
+                    System.out.println("elevator moving down");
+                    Sequence.ELEVATOR_DOWN.start();
+                    break;
+                default:
+                    System.out.println("BAD COMMAND in auton: " + cmd[0]);
+                    break;
             }
         }
     }

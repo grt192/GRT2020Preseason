@@ -29,10 +29,6 @@ public class ElevatorMech {
     private double ballDumpSpeed;
     /** The amt of time in ms to run the motors for ball dump */
     private int ballDumpTime;
-    /** The speed for climbing in motor percent output (0-1.0) */
-    private double climbSpeed;
-    /** The amt of time in ms to run the motors for climb */
-    private int climbTime;
 
     // limit switch variables
     DigitalInput topLimitSwitch;
@@ -59,14 +55,12 @@ public class ElevatorMech {
         // config speeds
         ballDumpSpeed = Config.getDouble("ball_dump_speed");
         ballDumpTime = Config.getInt("ball_dump_time");
-        climbSpeed = Config.getDouble("climb_speed");
-        climbTime = Config.getInt("climb_time");
     }
 
     /** pressing a/b moves elevator up/down for ball dump */
     public void loop() {
-        System.out.println("top: " + topLimitSwitch.get());
-        System.out.println("bottom: " + bottomLimitSwitch.get());
+        //System.out.println("top: " + topLimitSwitch.get());
+        //System.out.println("bottom: " + bottomLimitSwitch.get());
         // stop everything if x button is pressed
         if (controller.getXButtonPressed()) {
             stopEverything();
@@ -103,13 +97,15 @@ public class ElevatorMech {
 
     /** stops all the motors and stops timed mode */
     public void stopEverything() {
-        System.out.println("stopping everything");
+        System.out.println("stopping everything in elevator");
         inTimeMode = false;
         mainMotor.set(ControlMode.PercentOutput, 0);
     }
 
     /** sets the speed of the elevator from -1.0 to 1.0 with
-     * consideration to the values of the limit switches */
+     * consideration to the values of the limit switches.
+     * @param speedToSet the speed of the elevator to set from -1.0 to 1.0
+     * @return whether the limit switches prevented movement or not */
     public boolean setSpeed(double speedToSet) {
         boolean stoppedSomething = false;
         // check limit switches and constrain speeds
@@ -132,7 +128,6 @@ public class ElevatorMech {
             // speed must be positive or zero
             speedToSet = Math.max(0, speedToSet);
         }
-        System.out.println("speed: " + speedToSet + ", stopped: " + stoppedSomething);
         mainMotor.set(ControlMode.PercentOutput, speedToSet);
         return stoppedSomething;
     }
