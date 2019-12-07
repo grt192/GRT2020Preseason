@@ -83,6 +83,13 @@ public class Autonomous {
                 break;
             case "outtakeout": 
                 Sequence.OUTTAKE_OUT.start();
+            case "elevatorup":
+                System.out.println("elevator moving up");
+                Sequence.ELEVATOR_UP.start();
+                break;
+            case "elevatordown":
+                System.out.println("elevator moving down");
+                Sequence.ELEVATOR_DOWN.start();
                 break;
             }
         }

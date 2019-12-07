@@ -4,6 +4,9 @@
 # outtakein moves outtake mech in
 # outtakeout moves outtake mech outtake
 
+elevatorup
+delay 3800
 outtakeout
 delay 3000
 outtakein
+elevatordown

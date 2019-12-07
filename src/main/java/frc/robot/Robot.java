@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.config.Config;
 import frc.modes.Mode;
+import frc.sequence.Sequence;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.tank.Tank;
@@ -18,7 +19,6 @@ import frc.input.JoystickProfile;
 import frc.mechs.ElevatorMech;
 import frc.mechs.OuttakeMech;
 import frc.modes.DriveType;
-import frc.modes.DriverControl;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -56,6 +56,8 @@ public class Robot extends TimedRobot {
     ELEVATOR = new ElevatorMech();
     OUTTAKE = new OuttakeMech();
 
+    Sequence.initSequences();
+    
     Mode.initModes();
     mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
     mode.setNumber(0);

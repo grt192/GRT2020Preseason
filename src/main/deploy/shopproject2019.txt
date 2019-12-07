@@ -15,6 +15,7 @@ right_master=4
 right_follower=14
 
 #elevator variables
+elevator_up_is_positive=true
 elevator_master=1
 elevator_follower=5
 
@@ -34,3 +35,6 @@ outtake_time_in=2000
 outtake_time_out=2000
 # speed from -1.0 to 1.0 to move mech out
 outtake_speed=.5
+# limit switch variables
+top_switch=0
+bottom_switch=1         

@@ -16,12 +16,16 @@ public abstract class Sequence implements Runnable {
 
     public static OuttakeSequence OUTTAKE_IN;
     public static OuttakeSequence OUTTAKE_OUT;
+    public static ElevatorSequence ELEVATOR_UP;
+    public static ElevatorSequence ELEVATOR_DOWN;
 
     private volatile boolean isRunning;
 
-    public static void initSequneces() {
+    public static void initSequences() {
         OUTTAKE_IN = new OuttakeSequence(true);
         OUTTAKE_OUT = new OuttakeSequence(false);
+        ELEVATOR_UP = new ElevatorSequence(true);
+        ELEVATOR_DOWN = new ElevatorSequence(false);
     }
 
     private Notifier notifier;
