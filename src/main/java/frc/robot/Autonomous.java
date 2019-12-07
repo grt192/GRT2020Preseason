@@ -74,9 +74,9 @@ public class Autonomous {
                 finishedFlag = false;
                 break;
             case "setspeed":
-                double speed = Double.parseDouble(cmd[1]);
-                System.out.println("set speed to" + speed);
-                Robot.TANK.setRaw(speed, speed);
+                double leftSpeed = Double.parseDouble(cmd[1]);
+                double rightSpeed = Double.parseDouble(cmd[2]);
+                Robot.TANK.setRaw(-leftSpeed, -rightSpeed);
                 break;
             case "outtakein": 
                 Sequence.OUTTAKE_IN.start();

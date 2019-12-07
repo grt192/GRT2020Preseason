@@ -5,8 +5,24 @@
 # outtakeout moves outtake mech outtake
 
 elevatorup
-delay 3800
+delay 9000
+
+
+# go to thing
+setspeed 0.4 0.4
+delay 1100
+setspeed -.6 0.6
+delay 500
+setspeed 0.4 0.4
+delay 1000
+
+setspeed 0 0
+
+# elevator up
+elevatorup
+delay 4000
 outtakeout
-delay 3000
+delay 6000
+
 outtakein
 elevatordown

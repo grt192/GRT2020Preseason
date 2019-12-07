@@ -18,10 +18,10 @@ public class OuttakeSequence extends Sequence {
         this.in = in;
         if (in) {
             time = Config.getInt("outtake_time_in");
-            speed = -outtake.getOuttakeSpeed();
+            speed = outtake.getOuttakeSpeed();
         } else {
             time = Config.getInt("outtake_time_out");
-            speed = outtake.getOuttakeSpeed();
+            speed = -outtake.getOuttakeSpeed();
         }
     }
 
