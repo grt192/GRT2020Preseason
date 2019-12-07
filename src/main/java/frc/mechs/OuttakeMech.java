@@ -72,6 +72,7 @@ public class OuttakeMech {
             Math.abs(controller.getTriggerAxis(Hand.kLeft)) - Math.abs(controller.getTriggerAxis(Hand.kRight)));
         if (triggerVal != 0) {
             inTimeMode = false;
+            System.out.println(triggerVal);
             speedToSet = triggerVal;
         } else {
             speedToSet = 0;
@@ -112,6 +113,7 @@ public class OuttakeMech {
 
     /** sets the outtake mech of the elevator from -1 to 1 */
     public void setSpeed(double speed) {
+        System.out.println("outtake speed: " + speed);
         motor.set(ControlMode.PercentOutput, speed);
     }
 
