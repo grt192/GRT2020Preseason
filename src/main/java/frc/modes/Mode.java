@@ -9,7 +9,7 @@ package frc.modes;
 
 public abstract class Mode {
 
-    public static Mode DRIVER_CONTROL;
+    public static DriverControl DRIVER_CONTROL;
     private static Mode[] modes;
 
     public static void initModes() {

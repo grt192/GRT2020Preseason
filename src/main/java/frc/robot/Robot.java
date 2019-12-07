@@ -10,10 +10,15 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.config.Config;
 import frc.modes.Mode;
+import frc.sequence.Sequence;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.tank.Tank;
+import frc.input.Input;
+import frc.input.JoystickProfile;
 import frc.mechs.ElevatorMech;
+import frc.mechs.OuttakeMech;
+import frc.modes.DriveType;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,6 +33,7 @@ public class Robot extends TimedRobot {
   public static Tank TANK;
 
   public static ElevatorMech ELEVATOR;
+  public static OuttakeMech OUTTAKE;
 
   public static double ROBOT_WIDTH;
   public static double ROBOT_HEIGHT;
@@ -48,7 +54,10 @@ public class Robot extends TimedRobot {
     TANK = new Tank();
 
     ELEVATOR = new ElevatorMech();
+    OUTTAKE = new OuttakeMech();
 
+    Sequence.initSequences();
+    
     Mode.initModes();
     mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
     mode.setNumber(0);
@@ -118,5 +127,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    if (Input.TANK_CONTROL.getAButtonPressed()) {
+      Mode.DRIVER_CONTROL.setDriveMethod(DriveType.ARCADE_1_STICK);
+    } else if (Input.TANK_CONTROL.getBButtonPressed()) {
+      Mode.DRIVER_CONTROL.setDriveMethod(DriveType.ARCADE_2_STICK);
+    } else if (Input.TANK_CONTROL.getXButtonPressed()) {
+      Mode.DRIVER_CONTROL.setDriveMethod(DriveType.TANK);
+    }
+    JoystickProfile.updateProfileFactor();
   }
 }

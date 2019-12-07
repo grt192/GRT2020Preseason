@@ -1,11 +1,28 @@
 # delay <time in ms> 
 # setspeed <speed of both motors -1.0 to 1.0> 
 #    ^ drives straight
+# outtakein moves outtake mech in
+# outtakeout moves outtake mech outtake
 
-setspeed 0.2
-delay 2000
-setspeed 0
-delay 2000
-setspeed -0.2
-delay 2000
-setspeed 0
+elevatorup
+delay 9000
+
+
+# go to thing
+setspeed 0.4 0.4
+delay 1100
+setspeed -.6 0.6
+delay 500
+setspeed 0.4 0.4
+delay 1000
+
+setspeed 0 0
+
+# elevator up
+elevatorup
+delay 4000
+outtakeout
+delay 6000
+
+outtakein
+elevatordown

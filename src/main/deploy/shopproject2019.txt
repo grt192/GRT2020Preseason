@@ -15,12 +15,26 @@ right_master=4
 right_follower=14
 
 #elevator variables
+elevator_up_is_positive=true
 elevator_master=1
 elevator_follower=5
 
 # speed and time of the ball dump/climb
 # speeds in % output of motors, times in ms
 ball_dump_speed=.9
-ball_dump_time=2000
+ball_dump_time=4500
 climb_speed=.3
 climb_time=4000
+
+
+# outtake variables
+outtake_inverted=false
+outtake=15
+# times in milliseconds
+outtake_time_in=4000
+outtake_time_out=4000
+# speed from -1.0 to 1.0 to move mech out
+outtake_speed=.5
+# limit switch variables
+top_switch=0
+bottom_switch=1         

@@ -1,19 +1,48 @@
 package frc.input;
+import java.util.ArrayList;
 
-/**
- * A class containing many useful static methods for joystick calculations
- */
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.util.GRTUtil;
 public class JoystickProfile {
+	private static final double DEFAULT_DEADBAND = 0.15;
 
-	private static final double DEFAULT_DEADBAND = 0.1;
+	// number between 0 and 1. closer to 1 = more dramatic joystick value correction
+	private static double profileFactor = 1;
+	
+	private JoystickProfile() {}
 
-	private JoystickProfile() {
+	public static double applyProfile(double x) {
+		// first apply deadband, then scale back to original range
+		x = applyDeadband(x) / (1 - DEFAULT_DEADBAND);
+		// apply the polynominal
+		return applyPolynominal(x);
+	}
+
+	private static double applyPolynominal(double x) {
+		double posX = Math.abs(x);
+		
+		return Math.signum(x) * (profileFactor * Math.pow(posX, 5) + (1 - profileFactor) * Math.pow(posX, 2));
+	}
+
+	/** Update the profile factor used to control how sensitive the controls are */
+	public static void updateProfileFactor() {
+		double val = SmartDashboard.getNumber("DB/Slider 0", 4);
+		profileFactor = val/5;
+		SmartDashboard.putBoolean("DB/LED 0", !SmartDashboard.getBoolean("DB/LED 0", false));
+	}
+
+	/** Returns how much the joystick sensitivity value correction is.
+	 * 0 is most sensitive, 1 is least sensitive
+	 */
+	public static double getProfileFactor() {
+		return profileFactor;
 	}
 
 	public static double applyDeadband(double x, double deadband) {
 		return (Math.abs(x) > deadband ? x : 0);
 	}
 
+	/** Applies the default deadband to the value passed in */
 	public static double applyDeadband(double x) {
 		return applyDeadband(x, DEFAULT_DEADBAND);
 	}
