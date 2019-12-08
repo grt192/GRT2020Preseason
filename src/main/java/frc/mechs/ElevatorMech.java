@@ -3,6 +3,7 @@ package frc.mechs;
 import frc.config.Config;
 import frc.input.Input;
 import frc.input.JoystickProfile;
+import frc.util.GRTUtil;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -128,6 +129,7 @@ public class ElevatorMech {
             // speed must be positive or zero
             speedToSet = Math.max(0, speedToSet);
         }
+        speedToSet = GRTUtil.clamp(-1, speedToSet, 1);
         mainMotor.set(ControlMode.PercentOutput, speedToSet);
         return stoppedSomething;
     }
