@@ -1,7 +1,16 @@
 # delay <time in ms> 
 # setspeed <speed of both motors -1.0 to 1.0> 
-# outtakein moves outtake mech in
-# outtakeout moves outtake mech outtake
+#    ^ drives straight
+# wait // stops until something in code calls finished flag
+# outtakein //moves outtake mech in
+# outtakeout //moves outtake mech outtake
+# elevatorup //moves elevator up
+# elevatordown //moves elevator down
+
+# outtakeraw <speed from -1.0 to 1.0> <time in ms> // raw control of outtake mech
+# elevatorraw <speed from -1.0 to 1.0> <time in ms> // raw control of elevator, right now, positive is up
+# 
+
 
 # go to thing
 setspeed 0.4 0.4
@@ -10,15 +19,41 @@ setspeed -.6 0.6
 delay 500
 setspeed 0.4 0.4
 delay 1000
-
+# stop at arrival
 setspeed 0 0
 
-# elevator up
-elevatorup
+elevatorraw 0.9 7000
+delay 4500
+outtakeraw 0.9 4000
 delay 4000
-outtakeout
-delay 6000
+delay 2000
+# shake code
 setspeed -0.4 -0.4
-delay 300
-setspeed 0 0
+delay 500
+setspeed 0.4 0.4
+delay 200
+setspeed -0.4 -0.4
+delay 200
+setspeed 0.4 0.4
+delay 200
+outtakein -0.9 4000
 
+outtakeraw -.9 4000
+delay 4000
+
+elevatorraw -0.9 5000
+
+# comment this out to try moving the robot back to original spot
+wait
+
+# go back
+setspeed -0.4 -0.4
+delay 1000
+setspeed 0.6 -0.6
+delay 500
+setspeed 0.4 0.4
+delay 1100
+
+#--------------------------------------------------
+# PASTE REPEAT CODE BELOW
+#--------------------------------------------------

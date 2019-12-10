@@ -1,24 +1,26 @@
 # delay <time in ms> 
 # setspeed <speed of both motors -1.0 to 1.0> 
-# outtakein moves outtake mech in
-# outtakeout moves outtake mech outtake
+#    ^ drives straight
+# wait // stops until something in code calls finished flag
+# outtakein //moves outtake mech in
+# outtakeout //moves outtake mech outtake
+# elevatorup //moves elevator up
+# elevatordown //moves elevator down
+
+# outtakeraw <speed from -1.0 to 1.0> <time in ms> // raw control of outtake mech
+# elevatorraw <speed from -1.0 to 1.0> <time in ms> // raw control of elevator, right now, positive is up
+# 
+
+# elevatorup
+# delay 9000
+
 
 # go to thing
 setspeed 0.4 0.4
 delay 1100
 setspeed -.6 0.6
-delay 500
+delay 400
 setspeed 0.4 0.4
-delay 1000
-
-setspeed 0 0
-
-# elevator up
-elevatorup
-delay 4000
-outtakeout
-delay 6000
-
-setspeed -0.4 -0.4
-delay 300
+delay 900
+# stop at arrival
 setspeed 0 0

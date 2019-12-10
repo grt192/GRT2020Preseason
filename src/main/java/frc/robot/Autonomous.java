@@ -66,7 +66,7 @@ public class Autonomous {
             }
             System.out.println(line);
             String[] cmd = line.trim().split(" ");
-            switch (cmd[0]) {
+            switch (cmd[0].toLowerCase()) {
                 case "delay":
                     System.out.println("delay for " + time + " milliseconds");
                     delayTime = time + Integer.parseInt(cmd[1]);
@@ -88,6 +88,11 @@ public class Autonomous {
                     System.out.println("outtake out starting");
                     Sequence.OUTTAKE_OUT.start();
                     break;
+                case "outtakeraw":
+                    System.out.println("outtakeraw starting; speed=" + cmd[1] + ",time=" + cmd[2]);
+                    Sequence.OUTTAKE_RAW.setSpeedTime(Double.parseDouble(cmd[1]), Integer.parseInt(cmd[2]));
+                    Sequence.OUTTAKE_RAW.start();
+                    break;
                 case "elevatorup":
                     System.out.println("elevator moving up");
                     Sequence.ELEVATOR_UP.start();
@@ -96,8 +101,13 @@ public class Autonomous {
                     System.out.println("elevator moving down");
                     Sequence.ELEVATOR_DOWN.start();
                     break;
+                case "elevatorraw":
+                    System.out.println("raw elevator movement; speed=" + cmd[1] + ",time=" + cmd[2]);
+                    Sequence.ELEVATOR_RAW.setSpeedTime(Double.parseDouble(cmd[1]), Integer.parseInt(cmd[2]));
+                    Sequence.ELEVATOR_RAW.start();
+                    break;
                 default:
-                    System.out.println("BAD COMMAND in auton: " + cmd[0]);
+                    System.out.println("BAD COMMAND in auton: " + line);
                     break;
             }
         }

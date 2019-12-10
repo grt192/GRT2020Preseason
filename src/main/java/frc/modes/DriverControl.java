@@ -46,8 +46,8 @@ public class DriverControl extends Mode {
     /** Left stick controls velocity of left wheels, right stick controls velocity of right wheels */
     private void tankDrive() {
         // You may be wondering, why x is .getY() and y is .getX()? Don't question it //
-        double leftVel = JoystickProfile.applyProfile(Input.TANK_CONTROL.getY(Hand.kLeft));
-        double rightVel = JoystickProfile.applyProfile(Input.TANK_CONTROL.getY(Hand.kRight));
+        double leftVel = JoystickProfile.applyProfile(Input.TANK_CONTROL.getY(Hand.kLeft))*2/3;
+        double rightVel = JoystickProfile.applyProfile(Input.TANK_CONTROL.getY(Hand.kRight))*2/3;
         // square inputs to decrease sensitivity at low speeds
         leftVel = GRTUtil.signedSquare(leftVel);
         rightVel = GRTUtil.signedSquare(rightVel);
@@ -58,8 +58,8 @@ public class DriverControl extends Mode {
 
     /** Left stick controls forward/backward and left/right motion */
     private void arcadeDrive() {
-        double forwardVel = JoystickProfile.applyProfile(Input.TANK_CONTROL.getY(Hand.kLeft));
-        double rotateAmt = JoystickProfile.applyProfile(Input.TANK_CONTROL.getX(Hand.kLeft));
+        double forwardVel = JoystickProfile.applyProfile(Input.TANK_CONTROL.getY(Hand.kLeft))*2/3;
+        double rotateAmt = JoystickProfile.applyProfile(Input.TANK_CONTROL.getX(Hand.kLeft))*2/3;
         // square inputs to decrease sensitivity at low speeds
         forwardVel = GRTUtil.signedSquare(forwardVel);
         rotateAmt = GRTUtil.signedSquare(rotateAmt);
@@ -69,8 +69,8 @@ public class DriverControl extends Mode {
     /** 2 stick arcade drive - left stick controls forward/backward, right 
      * stick controls left/right */
      private void arcade2StickDrive() {
-        double forwardVel = JoystickProfile.applyProfile(Input.TANK_CONTROL.getY(Hand.kLeft));
-        double rotateAmt = JoystickProfile.applyProfile(Input.TANK_CONTROL.getX(Hand.kRight));
+        double forwardVel = JoystickProfile.applyProfile(Input.TANK_CONTROL.getY(Hand.kLeft))*2/3;
+        double rotateAmt = JoystickProfile.applyProfile(Input.TANK_CONTROL.getX(Hand.kRight))*2/3;
         // square inputs to decrease sensitivity at low speeds
         forwardVel = GRTUtil.signedSquare(forwardVel);
         rotateAmt = GRTUtil.signedSquare(rotateAmt);

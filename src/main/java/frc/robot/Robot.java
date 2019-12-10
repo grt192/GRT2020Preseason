@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
   public static ElevatorMech ELEVATOR;
   public static OuttakeMech OUTTAKE;
 
-  public static double ROBOT_WIDTH;
+  public stat,l    ic double ROBOT_WIDTH;
   public static double ROBOT_HEIGHT;
   public static double ROBOT_RADIUS;
 
