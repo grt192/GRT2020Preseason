@@ -19,8 +19,8 @@
 setspeed 0.4 0.4
 delay 1100
 setspeed -.6 0.6
-delay 500
+delay 400
 setspeed 0.4 0.4
-delay 1000
+delay 900
 # stop at arrival
 setspeed 0 0

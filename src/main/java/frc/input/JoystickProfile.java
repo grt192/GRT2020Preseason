@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.util.GRTUtil;
 public class JoystickProfile {
-	private static final double DEFAULT_DEADBAND = 0.15;
+	private static final double DEFAULT_DEADBAND = 0.05;
 
 	// number between 0 and 1. closer to 1 = more dramatic joystick value correction
 	private static double profileFactor = 1;
