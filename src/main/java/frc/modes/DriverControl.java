@@ -12,9 +12,6 @@ import frc.input.Input;
 import frc.input.JoystickProfile;
 import frc.robot.Robot;
 
-/**
- * Add your docs here.
- */
 class DriverControl extends Mode {
 
     @Override
@@ -26,12 +23,13 @@ class DriverControl extends Mode {
     private void driveSwerve() {
         double x = JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getY(Hand.kLeft));
         double y = JoystickProfile.applyDeadband(-Input.SWERVE_XBOX.getX(Hand.kLeft));
-        // double y =
-        // JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getX(Hand.kRight));
+       
+        // decrease joystick sensitivity
         double mag = Math.sqrt(x * x + y * y);
         x *= mag;
         y *= mag;
 
+        // rotate the robot
         double lTrigger = Input.SWERVE_XBOX.getTriggerAxis(Hand.kLeft);
         double rTrigger = Input.SWERVE_XBOX.getTriggerAxis(Hand.kRight);
         double rotate = 0;

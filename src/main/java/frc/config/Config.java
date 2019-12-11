@@ -15,7 +15,10 @@ public class Config {
 	private static Map<String, String> map;
 
 	private static String fileName;
-
+	
+	/** Get the int config value corresponding to the key passed in.
+	 * @return The corresponding integer value, or -1 if the key was not found/invalid
+	 */
 	public static int getInt(String key) {
 		try {
 			return Integer.parseInt(map.get(key));
@@ -24,10 +27,15 @@ public class Config {
 		}
 	}
 
+	/** Get the boolean config value corresponding to the key passed in.
+	 * @return The corresponding boolean value, or false if the key was invalid
+	 */
 	public static boolean getBoolean(String key) {
 		return Boolean.parseBoolean(map.get(key));
 	}
-
+	/** Get the string config value corresponding to the key passed in.
+	 * @return The corresponding string value, or the empty string if the key was invalid
+	 */
 	public static String getString(String key) {
 		String result = map.get(key);
 		if (result == null) {
@@ -36,6 +44,9 @@ public class Config {
 		return result;
 	}
 
+	/** Get the double config value corresponding to the key passed in.
+	 * @return The corresponding double value, or 0.0 if the key was invalid
+	 */
 	public static double getDouble(String key) {
 		try {
 			return Double.parseDouble(map.get(key));
@@ -47,6 +58,7 @@ public class Config {
 	public static void start() {
 		map = new HashMap<>();
 		try {
+			// load config file
 			Scanner nameScanner = new Scanner(new File("/home/lvuser/name.192"));
 			String name = nameScanner.nextLine();
 			nameScanner.close();
@@ -54,6 +66,8 @@ public class Config {
 			System.out.println("reading from file " + fileName);
 			File f = new File(Filesystem.getDeployDirectory(), fileName);
 			Scanner scanner = new Scanner(f);
+
+			// add configs to map
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine().trim();
 

@@ -1,18 +1,9 @@
 package frc.swerve;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.util.Scanner;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.Filesystem;
 
 import frc.config.Config;
 import frc.robot.Robot;
@@ -25,7 +16,9 @@ public class Swerve implements Runnable {
 	private final double RADIUS;
 	private final double WHEEL_ANGLE;
 	private final double ROTATE_SCALE;
+	/** proportional scaling constant */
 	private final double kP;
+	/** derivative scaling constant */
 	private final double kD;
 
 	private Notifier notifier;
@@ -35,7 +28,9 @@ public class Swerve implements Runnable {
 	/** wheels[0]=fr, wheels[1]=br, wheels[2]=bl, wheels[3]=fl */
 	private Wheel[] wheels;
 
+	/** requested x velocity, y velocity, angular velocity(rad/s), and angle */
 	private volatile double userVX, userVY, userW, angle;
+	/** determines if robot centric control or field centric control is used */
 	private volatile boolean robotCentric;
 	private volatile boolean withPID;
 	private volatile SwerveData swerveData;
@@ -77,12 +72,22 @@ public class Swerve implements Runnable {
 		gyroAngle.setDouble(Math.toRadians(gyro.getAngle()));
 	}
 
+	/**
+	 * calculates angle correction for robot based on current angle, requested
+	 * angle, kP, and kD
+	 */
 	private double calcPID() {
 		double error = GRTUtil.distanceToAngle(Math.toRadians(gyro.getAngle()), angle);
 		double w = error * kP - Math.toRadians(gyro.getRate()) * kD;
 		return w;
 	}
 
+	/**
+	 * sets x velocity, y velocity, and angular velocity of robot
+	 * @param vx the new x velocity, from -1.0 to 1.0
+	 * @param vy the new y velocity, from -1.0 to 1.0
+	 * @param w the new angular velocity, in radians/sec
+	 */
 	public void drive(double vx, double vy, double w) {
 		userVX = vx;
 		userVY = vy;
@@ -92,19 +97,31 @@ public class Swerve implements Runnable {
 		}
 	}
 
+	/**
+	 * sets the angle of the robot
+	 * @param angle the angle to turn the robot to, in radians
+	 */
 	public void setAngle(double angle) {
 		withPID = true;
 		this.angle = angle;
 	}
 
+	/** sets whether we use robot centric or field centric control */
 	public void setRobotCentric(boolean mode) {
 		robotCentric = mode;
 	}
 
+	/**
+	 * change the motors to reach the requested values
+	 * @param vx the requested x velocity from -1.0 to 1.0
+	 * @param vy the requested y velocity from -1.0 to 1.0
+	 * @param w the requested angular velocity
+	 */
 	public void changeMotors(double vx, double vy, double w) {
 		w *= ROTATE_SCALE;
 		double gyroAngle = (robotCentric ? 0 : Math.toRadians(gyro.getAngle()));
 		for (int i = 0; i < 4; i++) {
+			// angle in radians
 			double wheelAngle = getRelativeWheelAngle(i) + gyroAngle;
 			double dx = RADIUS * Math.cos(wheelAngle);
 			double dy = RADIUS * Math.sin(wheelAngle);
@@ -152,13 +169,14 @@ public class Swerve implements Runnable {
 		return angle;
 	}
 
-	/** Takes the current position of the wheels and sets them as zero in the
-	 * currently running program and adds them to the Basic tab on SmartDashboard */
+	/**
+	 * Takes the current position of the wheels and sets them as zero in the
+	 * currently running program and adds them to the Basic tab on SmartDashboard
+	 */
 	public void zeroRotate() {
 		for (int i = 0; i < wheels.length; i++) {
 			wheels[i].zero();
-			SmartDashboard.putString("DB/String " + i, 
-				wheels[i].getName() + "_offset: " + wheels[i].getOffset());
+			SmartDashboard.putString("DB/String " + i, wheels[i].getName() + "_offset: " + wheels[i].getOffset());
 		}
 	}
 
