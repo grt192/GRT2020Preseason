@@ -2,7 +2,7 @@
 
 ## People
 - Aaryan
-- 1/2 of Michael
+- 1/10 of Michael
 
 ## Instructions for shop project
 
