@@ -25,7 +25,7 @@ public class JoystickProfile {
 	}
 
 	public static void updateProfileFactor() {
-		double val = SmartDashboard.getNumber("DB/Slider 0", 0.8);
+		double val = SmartDashboard.getNumber("DB/Slider 0", 4);
 		profileFactor = val/5;
 	}
 
@@ -35,12 +35,12 @@ public class JoystickProfile {
 	}
 
 	public static double applyDeadband(double x, double deadband) {
-		return (Math.abs(x) > deadband ? x : 0);
+		return applyPolynominal(x);//(Math.abs(x) > deadband ? x : 0);
 	}
 
 	/** Applies the default deadband to the value passed in */
 	public static double applyDeadband(double x) {
-		return applyDeadband(x, DEFAULT_DEADBAND);
+		return applyPolynominal(x);//applyDeadband(x, DEFAULT_DEADBAND);
 	}
 
 	public static double square(double x) {

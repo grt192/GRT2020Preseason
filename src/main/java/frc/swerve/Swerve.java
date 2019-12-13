@@ -163,6 +163,5 @@ public class Swerve implements Runnable {
 		}
 	}
 
-	public void update
 
 }
