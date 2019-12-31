@@ -2,6 +2,8 @@ package frc.config;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -72,9 +74,9 @@ public class Config {
 				String line = scanner.nextLine().trim();
 
 				if (line.length() > 0 && line.charAt(0) != '#') {
-					String[] splitted = line.trim().split("=");
+					String[] splitted = line.split("=");
 					if (splitted.length == 2)
-						map.put(splitted[0], splitted[1]);
+						map.put(splitted[0].trim(), splitted[1].trim());
 				}
 			}
 			scanner.close();
@@ -99,5 +101,36 @@ public class Config {
 	/** Returns the name of the file used for config (eg "preseason2020.txt") */
 	public static String getFileName() {
 		return fileName;
+	}
+
+	/** Puts a key/value pair into the map of config values. If the map 
+	 * previously contained a mapping for the key, the old value is replaced 
+	 * by the specified value. DOES NOT change the actual config file, call
+	 * updateConfigFile() to change values in file */
+	public static void put(String key, String value) {
+		key = key.trim();
+		value = value.trim();
+		if (map.put(key, value) == null) {
+			System.out.println("added new key/value pair to config map: " + key + "=" + value);
+		} else {
+			System.out.println("edited existing key/value pair in config map: " + key + "=" + value);
+		}
+	}
+
+	/** Writes the current mappings to the config file */
+	public static void updateConfigFile() {
+		File f = new File(Filesystem.getDeployDirectory(), fileName);
+		System.out.println("Writing to config file: " + fileName);
+		FileWriter writer;
+		try {
+			writer = new FileWriter(f);
+			for (Map.Entry<String, String> entry : map.entrySet()) {
+				writer.write(entry.getKey() + "=" + entry.getValue() + "\n");
+			}
+		} catch (IOException e) {
+			System.out.println("could not write to config file");
+			e.printStackTrace();
+		}
+
 	}
 }
