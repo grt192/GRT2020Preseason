@@ -4,9 +4,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Scanner;
+import java.util.Set;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -103,7 +109,7 @@ public class Config {
 		return fileName;
 	}
 
-	/** Puts a key/value pair into the map of config values. If the map 
+	/** Puts an entry into the map of config values. If the map 
 	 * previously contained a mapping for the key, the old value is replaced 
 	 * by the specified value. DOES NOT change the actual config file, call
 	 * updateConfigFile() to change values in file */
@@ -111,26 +117,95 @@ public class Config {
 		key = key.trim();
 		value = value.trim();
 		if (map.put(key, value) == null) {
-			System.out.println("added new key/value pair to config map: " + key + "=" + value);
+			System.out.println("added new mapping to config map: " + key + "=" + value);
 		} else {
-			System.out.println("edited existing key/value pair in config map: " + key + "=" + value);
+			System.out.println("edited existing mapping in config map: " + key + "=" + value);
 		}
 	}
+
+	/** Removes the mapping for a key from the map of config values if it is present
+	 * @param key the key whose mapping is to be removed
+	 * @return the previous value associated with the key */
+	public static String remove(String key) {
+		System.out.println("removed mapping from config map: " + key + "=" + map.get(key));
+		return map.remove(key);
+	}
+
 
 	/** Writes the current mappings to the config file */
 	public static void updateConfigFile() {
 		File f = new File(Filesystem.getDeployDirectory(), fileName);
-		System.out.println("Writing to config file: " + fileName);
+		// read config file, store the formatting, and identify new keys to add
+		Queue<String> commands = new LinkedList<String>();
+		Set<String> existingKeys = new HashSet<String>();
+		try {
+			Scanner scanner = new Scanner(f);
+			String input;
+			while (scanner.hasNext()) {
+				input = scanner.nextLine().trim();
+				commands.add(input);
+				if (!input.isEmpty() && input.charAt(0) != '#') {
+					existingKeys.add(input.split("=")[0].trim().toLowerCase());
+				}
+			}
+			scanner.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("recovering...");
+			// recover by writing the current key/value pairs to a new config file
+			writeRawToConfigFile(f);
+			return;
+		}
+
+		// put new config file at "configtemp.txt", then atomically rename it to replace old config file
+		File tempFile = new File(Filesystem.getDeployDirectory(), "configtemp.txt");
+		FileWriter writer;
+		try {
+			writer = new FileWriter(tempFile);
+			String cmd, key;
+			while (!commands.isEmpty()) {
+				cmd = commands.remove();
+				if (cmd.isEmpty()) {
+					writer.write("\n");
+				} else if (cmd.charAt(0) != '#') {
+					key = cmd.split("=")[0].trim();
+					if (map.containsKey(key)) {
+						writer.write(key + "=" + map.get(key) + "\n");
+					}
+				} else if (cmd.charAt(0) == '#') {
+					writer.write(cmd + "\n");
+				}
+			}
+			// write new key/value pairs to bottom of file
+			writer.write("\n");
+			for (Map.Entry<String, String> entry : map.entrySet()) {
+				if (!existingKeys.contains(entry.getKey().toLowerCase())) {
+					writer.write(entry.getKey() + "=" + entry.getValue() + "\n");
+				}
+			}
+			writer.close();
+			// rename file to replace old file
+			Files.move(tempFile.toPath(), f.toPath(), StandardCopyOption.ATOMIC_MOVE);
+		} catch (IOException e) {
+			System.out.println("could not update config file");
+			e.printStackTrace();
+			return;
+		}
+	}
+
+	/** Writes the current key/value pairs to the file in an unordered way */
+	private static void writeRawToConfigFile(File f)  {
+		System.out.println("Writing raw key/value pairs to config file: " + f.getName());
 		FileWriter writer;
 		try {
 			writer = new FileWriter(f);
 			for (Map.Entry<String, String> entry : map.entrySet()) {
 				writer.write(entry.getKey() + "=" + entry.getValue() + "\n");
 			}
+			writer.close();
 		} catch (IOException e) {
 			System.out.println("could not write to config file");
 			e.printStackTrace();
 		}
-
 	}
 }
