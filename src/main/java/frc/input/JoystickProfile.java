@@ -7,7 +7,7 @@ import frc.util.GRTUtil;
 public class JoystickProfile {
 	private static final double DEFAULT_DEADBAND = 0.05;
 
-	/** array of [x, y] points used to define the joystick profile */
+	/** Array of [original, new] mappings used to define the joystick profile. */
 	private static double[][] profilingPoints;
 	
 	private JoystickProfile() {}
@@ -27,12 +27,14 @@ public class JoystickProfile {
 		x = applyDeadband(x) / (1 - DEFAULT_DEADBAND);
 		// apply profiling
 		if (GRTUtil.inRange(0, x, profilingPoints[0][0])) {
-			x = GRTUtil.toRange(0, profilingPoints[0][0], 0, profilingPoints[0][1], x);
+			x = GRTUtil.toRange(0, profilingPoints[0][0], 
+								0, profilingPoints[0][1], x);
 		} else if (GRTUtil.inRange(profilingPoints[0][0], x, profilingPoints[1][0])) {
 			x = GRTUtil.toRange(profilingPoints[0][0], profilingPoints[1][0], 
 								profilingPoints[0][1], profilingPoints[1][1], x);
 		} else {
-			x = GRTUtil.toRange(profilingPoints[1][0], 1, profilingPoints[1][1], 1, x);
+			x = GRTUtil.toRange(profilingPoints[1][0], 1, 
+								profilingPoints[1][1], 1, x);
 		}
 		return x;
 	}
