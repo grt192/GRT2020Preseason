@@ -21,13 +21,8 @@ class DriverControl extends Mode {
     }
 
     private void driveSwerve() {
-        double x = JoystickProfile.applyDeadband(Input.SWERVE_XBOX.getY(Hand.kLeft));
-        double y = JoystickProfile.applyDeadband(-Input.SWERVE_XBOX.getX(Hand.kLeft));
-       
-        // decrease joystick sensitivity
-        double mag = Math.sqrt(x * x + y * y);
-        x *= mag;
-        y *= mag;
+        double x = JoystickProfile.applyProfile(Input.SWERVE_XBOX.getY(Hand.kLeft));
+        double y = JoystickProfile.applyProfile(-Input.SWERVE_XBOX.getX(Hand.kLeft));
 
         // rotate the robot
         double lTrigger = Input.SWERVE_XBOX.getTriggerAxis(Hand.kLeft);
