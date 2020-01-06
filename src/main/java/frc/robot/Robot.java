@@ -142,5 +142,11 @@ public class Robot extends TimedRobot {
       System.out.println("y button released");
       SWERVE.zeroRotate();
     }
+    if (Input.SWERVE_XBOX.getAButtonPressed()) {
+      Config.useDeployConfig(true);
+    }
+    if (Input.SWERVE_XBOX.getBButtonPressed()) {
+      Config.useDeployConfig(false);
+    }
   }
 }

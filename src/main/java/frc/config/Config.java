@@ -18,11 +18,16 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Config {
 	private static Map<String, String> map;
 
-	private static String fileName;
+	/** Whether to use the config file originally deployed to roborio 
+	 * in /home/lvuser/deploy or to use the temporary config file in /home/lvuser */
+	private static boolean useDeployConfig; // TODO initialize somewhere
+	/** The name of the temporary config file in home/lvuser. Should include ".txt" */
+	private static String tempConfigFileName = "temporaryconfig.txt";
 	
 	/** Get the int config value corresponding to the key passed in.
 	 * @return The corresponding integer value, or -1 if the key was not found/invalid
@@ -67,12 +72,17 @@ public class Config {
 		map = new HashMap<>();
 		try {
 			// load config file
-			Scanner nameScanner = new Scanner(new File("/home/lvuser/name.192"));
-			String name = nameScanner.nextLine();
-			nameScanner.close();
-			fileName = name + ".txt";
+			String directory = "/home/lvuser";
+			String fileName = tempConfigFileName;
+			if (useDeployConfig) {
+				Scanner nameScanner = new Scanner(new File("/home/lvuser/name.192"));
+				String name = nameScanner.nextLine();
+				nameScanner.close();
+				fileName = name + ".txt";
+				directory = "/home/lvuser/deploy";
+			}
 			System.out.println("reading from file " + fileName);
-			File f = new File(Filesystem.getDeployDirectory(), fileName);
+			File f = new File(directory, fileName);
 			Scanner scanner = new Scanner(f);
 
 			// add configs to map
@@ -93,7 +103,12 @@ public class Config {
 		for (String s : map.keySet()) {
 			System.out.println(s + ": " + getString(s));
 		}
-
+		
+		if (useDeployConfig) {
+			SmartDashboard.putString("DB/String 7", "using deploy time config file");
+		} else {
+			SmartDashboard.putString("DB/String 7", "using temporary config file");
+		}
 	}
 
 	public static void defaultConfigTalon(TalonSRX talon) {
@@ -102,11 +117,6 @@ public class Config {
 		talon.configReverseSoftLimitEnable(false, 0);
 		talon.setNeutralMode(NeutralMode.Brake);
 		talon.configOpenloopRamp(0, 0);
-	}
-
-	/** Returns the name of the file used for config (eg "preseason2020.txt") */
-	public static String getFileName() {
-		return fileName;
 	}
 
 	/** Puts an entry into the map of config values. If the map 
@@ -131,10 +141,18 @@ public class Config {
 		return map.remove(key);
 	}
 
+	/** Change whether we use the deploy time config file or the temporary config file ON STARTUP. 
+	 * This function does not modify current program state TODO make it so it actually doent modify state
+	 */
+	public static void useDeployConfig(boolean useIt) {
+		useDeployConfig = useIt;
+		start();
+	}
 
-	/** Writes the current mappings to the config file */
+
+	/** Writes the current mappings to the temporary config file in home/lvuser */
 	public static void updateConfigFile() {
-		File f = new File(Filesystem.getDeployDirectory(), fileName);
+		File f = new File("/home/lvuser", tempConfigFileName);
 		// read config file, store the formatting, and identify new keys to add
 		Queue<String> commands = new LinkedList<String>();
 		Set<String> existingKeys = new HashSet<String>();
@@ -157,8 +175,8 @@ public class Config {
 			return;
 		}
 
-		// put new config file at "configtemp.txt", then atomically rename it to replace old config file
-		File tempFile = new File(Filesystem.getDeployDirectory(), "configtemp.txt");
+		// put new config file at "configtemptemp.txt", then atomically rename it to replace old config file
+		File tempFile = new File(Filesystem.getDeployDirectory(), "configtemptemp.txt");
 		FileWriter writer;
 		try {
 			writer = new FileWriter(tempFile);
