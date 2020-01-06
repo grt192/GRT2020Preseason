@@ -42,7 +42,7 @@ public class Swerve implements Runnable {
 		angle = 0.0;
 		robotCentric = false;
 		withPID = false;
-		wheels = new Wheel[4];
+		wheels = new Wheel[4]; 
 		wheels[0] = new Wheel("fr");
 		wheels[1] = new Wheel("br");
 		wheels[2] = new Wheel("bl");
@@ -120,7 +120,7 @@ public class Swerve implements Runnable {
 	public void changeMotors(double vx, double vy, double w) {
 		w *= ROTATE_SCALE;
 		double gyroAngle = (robotCentric ? 0 : Math.toRadians(gyro.getAngle()));
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < wheels.length; i++) {
 			// angle in radians
 			double wheelAngle = getRelativeWheelAngle(i) + gyroAngle;
 			double dx = RADIUS * Math.cos(wheelAngle);
@@ -143,7 +143,7 @@ public class Swerve implements Runnable {
 		double vx = 0;
 		double vy = 0;
 		double w = 0;
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < wheels.length; i++) {
 			double wheelAngle = getRelativeWheelAngle(i);
 			double wheelPos = wheels[i].getCurrentPosition();
 			double speed = wheels[i].getDriveSpeed();

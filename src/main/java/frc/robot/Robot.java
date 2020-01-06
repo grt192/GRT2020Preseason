@@ -58,10 +58,6 @@ public class Robot extends TimedRobot {
   }
 
   private void loop() {
-    // zero swerve
-    if (Input.SWERVE_XBOX.getYButtonReleased()) {
-      SWERVE.zeroRotate();
-    }
     autonomous.loop();
     int i = mode.getNumber(0).intValue();
     if (manualOverride()) {
@@ -141,5 +137,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    // zero swerve
+    if (Input.SWERVE_XBOX.getYButtonReleased()) {
+      System.out.println("y button released");
+      SWERVE.zeroRotate();
+    }
   }
 }
