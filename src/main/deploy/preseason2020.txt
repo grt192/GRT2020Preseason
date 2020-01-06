@@ -29,6 +29,9 @@ fl_offset=658
 ticks_per_rotation=1024
 drive_encoder_scale=1.83259571
 
-#joystick profile variables
-joystick_profile_size=1000
-max_accel=.2
+# joystick profile variables
+# see https://www.desmos.com/calculator/bmcalwjje2
+joystick_x1=0.4
+joystick_y1=0.1
+joystick_x2=0.85
+joystick_y2=0.4
