@@ -20,14 +20,27 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+
+/**
+ * This class stores its configuration information in 3 files: 
+ * <p>Deploy time config file, located in /home/lvuser/deploy/. Robot programs
+ * don't have permission to write to this directory. </p>
+ * <p>"Temporary" config file, located in /home/lvuser/. This file is where changes
+ * to configuration values while the program is running are stored. </p>
+ * <p>Config state file, located in /home/lvuser/. This file contains a single line 
+ * that determines which config file to load into the program on startup. If the file
+ * contains "deploy", the deploy time config file will be used, and if the file contains 
+ * "temp", the temporary config file will be used. </p>
+ */
 public class Config {
 	private static Map<String, String> map;
 
-	/** Whether to use the config file originally deployed to roborio 
-	 * in /home/lvuser/deploy or to use the temporary config file in /home/lvuser */
-	private static boolean useDeployConfig; // TODO initialize somewhere
+	/** The name of the deploy time config file in home/lvuser/deploy */
+	private static String deployConfigFileName;
 	/** The name of the temporary config file in home/lvuser. Should include ".txt" */
 	private static String tempConfigFileName = "temporaryconfig.txt";
+	/** The name of the config state file in home/lvuser. Should include ".txt" */
+	private static String configStateFileName = "configstate.txt";
 	
 	/** Get the int config value corresponding to the key passed in.
 	 * @return The corresponding integer value, or -1 if the key was not found/invalid
@@ -70,15 +83,32 @@ public class Config {
 
 	public static void start() {
 		map = new HashMap<>();
+		// check whether to use the deploy configuration or the temporary configuration
+		boolean useDeployConfig;
 		try {
+			File useDeployFile = new File("/home/lvuser/", configStateFileName);
+			Scanner useDeployScan = new Scanner(useDeployFile);
+			String line = useDeployScan.nextLine();
+			if (line.equalsIgnoreCase("temp") || line.equalsIgnoreCase("temporary")) {
+				useDeployConfig = false;
+			} else {
+				useDeployConfig = true;
+			}
+			useDeployScan.close();
+		} catch (Exception e) {
+			useDeployConfig = true;
+		}
+
+		try {
+			// get deploy config file name
+			Scanner nameScanner = new Scanner(new File("/home/lvuser/name.192"));
+			deployConfigFileName = nameScanner.nextLine() + ".txt";
+			nameScanner.close();
 			// load config file
 			String directory = "/home/lvuser";
 			String fileName = tempConfigFileName;
 			if (useDeployConfig) {
-				Scanner nameScanner = new Scanner(new File("/home/lvuser/name.192"));
-				String name = nameScanner.nextLine();
-				nameScanner.close();
-				fileName = name + ".txt";
+				fileName = deployConfigFileName;
 				directory = "/home/lvuser/deploy";
 			}
 			System.out.println("reading from file " + fileName);
@@ -133,6 +163,14 @@ public class Config {
 		}
 	}
 
+	/** Puts an entry into the map of config values. If the map 
+	 * previously contained a mapping for the key, the old value is replaced 
+	 * by the specified value. DOES NOT change the actual config file, call
+	 * updateConfigFile() to change values in file */
+	public static void put(String key, double value) {
+		put(key, "" + value);
+	}
+
 	/** Removes the mapping for a key from the map of config values if it is present
 	 * @param key the key whose mapping is to be removed
 	 * @return the previous value associated with the key */
@@ -142,11 +180,19 @@ public class Config {
 	}
 
 	/** Change whether we use the deploy time config file or the temporary config file ON STARTUP. 
-	 * This function does not modify current program state TODO make it so it actually doent modify state
+	 * This function does not modify current program state.
 	 */
-	public static void useDeployConfig(boolean useIt) {
-		useDeployConfig = useIt;
-		start();
+	public static void changeStartupConfigFile(boolean useDeploy) {
+		File useDeployFile = new File("/home/lvuser/", configStateFileName);
+		try {
+			FileWriter writer = new FileWriter(useDeployFile);
+			writer.write(useDeploy ? "deploy" : "temp");
+			writer.close();
+		} catch (IOException e) {
+			System.out.println("Unable to write to config state file at /home/lvuser/" + configStateFileName);
+			e.printStackTrace();
+		}
+		SmartDashboard.putString("DB/String 7", (useDeploy ? "deploy" : "temp") + " file will be used on startup");
 	}
 
 
@@ -176,7 +222,7 @@ public class Config {
 		}
 
 		// put new config file at "configtemptemp.txt", then atomically rename it to replace old config file
-		File tempFile = new File(Filesystem.getDeployDirectory(), "configtemptemp.txt");
+		File tempFile = new File("/home/lvuser", "configtemptemp.txt");
 		FileWriter writer;
 		try {
 			writer = new FileWriter(tempFile);
@@ -209,6 +255,7 @@ public class Config {
 			e.printStackTrace();
 			return;
 		}
+		changeStartupConfigFile(false);
 	}
 
 	/** Writes the current key/value pairs to the file in an unordered way */
@@ -224,6 +271,27 @@ public class Config {
 		} catch (IOException e) {
 			System.out.println("could not write to config file");
 			e.printStackTrace();
+		}
+		changeStartupConfigFile(false);
+	}
+	/** copies the contents of the deploy time config file to the temp config file */
+	public static void resetTempConfigFile() {
+		System.out.println("copying config file from home/lvuser/deploy to temp config file in home/lvuser");
+		File tempConfigFile = new File("/home/lvuser/", tempConfigFileName);
+		File deployConfigFile = new File("/home/lvuser/deploy/", deployConfigFileName);
+		try {
+			Files.copy(deployConfigFile.toPath(), tempConfigFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			SmartDashboard.putString("DB/String 7", "reset temp config file");
+		} 
+		catch (IOException e) {
+			System.out.println("unable to reset temp config file");
+			e.printStackTrace();
+		}
+	}
+
+	public static void printConfigMappings() {
+		for (Map.Entry<String, String> e : map.entrySet()) {
+			System.out.println(e.getKey() + "=" + e.getValue());
 		}
 	}
 }

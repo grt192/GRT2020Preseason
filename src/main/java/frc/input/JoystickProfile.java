@@ -1,16 +1,20 @@
 package frc.input;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.config.Config;
 import frc.util.GRTUtil;
 
 public class JoystickProfile {
-	private static final double DEFAULT_DEADBAND = 0.05;
+	private static final double DEFAULT_DEADBAND = 0.1;
 
 	/** Array of [original, new] mappings used to define the joystick profile. */
 	private static double[][] profilingPoints;
+
+	private static String dashboardProfileStr0 = "DB/String 5";
+	private static String dashboardProfileStr1 = "DB/String 6";
 
 	private JoystickProfile() {
 	}
@@ -19,14 +23,43 @@ public class JoystickProfile {
 		profilingPoints = new double[2][2];
 		profilingPoints[0][0] = Config.getDouble("joystick_x1");
 		profilingPoints[0][1] = Config.getDouble("joystick_y1");
-		SmartDashboard.putString("DB/String 5", profilingPoints[0][0] + ", " + profilingPoints[0][1]);
+		SmartDashboard.putString(dashboardProfileStr0, profilingPoints[0][0] + ", " + profilingPoints[0][1]);
 		profilingPoints[1][0] = Config.getDouble("joystick_x2");
 		profilingPoints[1][1] = Config.getDouble("joystick_y2");
-		SmartDashboard.putString("DB/String 6", profilingPoints[1][0] + ", " + profilingPoints[1][1]);
+		SmartDashboard.putString(dashboardProfileStr1, profilingPoints[1][0] + ", " + profilingPoints[1][1]);
+	}
+
+	public static void updateProfilingPoints() {
+		String[][] profilingPointsStr = new String[2][];
+		profilingPointsStr[0] = SmartDashboard.getString(dashboardProfileStr0, "not found").split(",");
+		profilingPointsStr[1] = SmartDashboard.getString(dashboardProfileStr1, "not found").split(",");
+		try {
+			double[][] profilingPointsTemp = new double[2][2];
+			for (int r = 0; r < profilingPointsTemp.length; r++) {
+				for (int c = 0; c < profilingPointsTemp[r].length; c++) {
+					profilingPointsTemp[r][c] = Double.parseDouble(profilingPointsStr[r][c]);
+				}
+			}
+			profilingPoints = profilingPointsTemp;
+			System.out.println("Successfully set the new joystick profiling points");
+		} catch (Exception e) {
+			// put the current ones on the dashboard instead
+			SmartDashboard.putString(dashboardProfileStr0, 
+							profilingPoints[0][0] + ", " + profilingPoints[0][1]);
+			SmartDashboard.putString(dashboardProfileStr1,
+							profilingPoints[1][0] + ", " + profilingPoints[1][1]);
+		}
+		Config.put("joystick_x1", profilingPoints[0][0]);
+		Config.put("joystick_y1", profilingPoints[0][1]);
+		Config.put("joystick_x2", profilingPoints[1][0]);
+		Config.put("joystick_y2", profilingPoints[1][1]);
+		Config.updateConfigFile();
 	}
 
 	public static double applyProfile(double x) {
+		double signum = Math.signum(x);
 		// first apply deadband, then scale back to original range
+		x = Math.abs(x);
 		x = applyDeadband(x) / (1 - DEFAULT_DEADBAND);
 		// apply profiling
 		if (GRTUtil.inRange(0, x, profilingPoints[0][0])) {
@@ -37,7 +70,7 @@ public class JoystickProfile {
 		} else {
 			x = GRTUtil.toRange(profilingPoints[1][0], 1, profilingPoints[1][1], 1, x);
 		}
-		return x;
+		return x * signum;
 	}
 
 	/** applies the requested deadband to x. */

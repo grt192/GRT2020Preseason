@@ -143,15 +143,25 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     // zero swerve
+    if (Input.SWERVE_XBOX.getXButtonPressed()) {
+      System.out.println("x button pressed");
+      Config.resetTempConfigFile();
+    }
     if (Input.SWERVE_XBOX.getYButtonReleased()) {
       System.out.println("y button released");
       SWERVE.zeroRotate();
     }
     if (Input.SWERVE_XBOX.getAButtonPressed()) {
-      Config.useDeployConfig(true);
+      Config.changeStartupConfigFile(true);
     }
     if (Input.SWERVE_XBOX.getBButtonPressed()) {
-      Config.useDeployConfig(false);
+      Config.changeStartupConfigFile(false);
+    }
+    if (Input.SWERVE_XBOX.getBumperReleased(Hand.kLeft)) {
+      Config.printConfigMappings();
+    }
+    if (Input.SWERVE_XBOX.getBumperReleased(Hand.kRight)) {
+      JoystickProfile.updateProfilingPoints();
     }
   }
 }
