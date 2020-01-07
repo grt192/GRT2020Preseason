@@ -56,9 +56,9 @@ public class Swerve implements Runnable {
 		WHEEL_ANGLE = Math.atan2(SWERVE_WIDTH, SWERVE_HEIGHT);
 		ROTATE_SCALE = 1 / RADIUS;
 		calcSwerveData();
-		notifier = new Notifier(this);
+		notifier = new Notifier(this); 
 		notifier.startPeriodic(0.02);
-		setAngle(0.0);
+		//setAngle(0.0); TODO uncomment this
 	}
 
 	public void run() {
@@ -118,6 +118,7 @@ public class Swerve implements Runnable {
 	 * @param w the requested angular velocity
 	 */
 	public void changeMotors(double vx, double vy, double w) {
+		//System.out.println("vx:" + vx + "vy:" + vy + "w:" + w);
 		w *= ROTATE_SCALE;
 		double gyroAngle = (robotCentric ? 0 : Math.toRadians(gyro.getAngle()));
 		for (int i = 0; i < wheels.length; i++) {

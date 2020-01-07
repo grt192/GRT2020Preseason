@@ -77,8 +77,8 @@ public class Robot extends TimedRobot {
   }
 
   private boolean manualOverride() {
-    double x = JoystickProfile.applyProfile(-Input.SWERVE_XBOX.getY(Hand.kLeft));
-    double y = JoystickProfile.applyProfile(Input.SWERVE_XBOX.getX(Hand.kLeft));
+    double x = JoystickProfile.applyProfile(Input.SWERVE_XBOX.getY(Hand.kLeft));
+    double y = JoystickProfile.applyProfile(-Input.SWERVE_XBOX.getX(Hand.kLeft));
     boolean temp = !(x == 0 && y == 0);
     if (temp && !overridden) {
       overridden = temp;
@@ -126,7 +126,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    loop();
+    //loop();
   }
 
   /**
@@ -134,7 +134,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    loop();
+    Mode.getMode(0).loop();
   }
 
   /**

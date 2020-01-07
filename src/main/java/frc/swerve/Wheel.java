@@ -17,8 +17,6 @@ class Wheel {
 	private final double TICKS_PER_ROTATION;
 	private int OFFSET;
 	private final double DRIVE_TICKS_TO_METERS;
-	/** Maximum acceleration of the wheel in percent output per 100ms */
-	private double MAX_ACCEL;
 
 	private static final double TWO_PI = Math.PI * 2;
 
@@ -42,7 +40,6 @@ class Wheel {
 		TICKS_PER_ROTATION = Config.getDouble("ticks_per_rotation");
 		OFFSET = Config.getInt(name + "_offset");
 		DRIVE_TICKS_TO_METERS = Config.getDouble("drive_encoder_scale");
-		MAX_ACCEL = Config.getDouble("max_accel");
 		configRotateMotor();
 		configDriveMotor();
 	}
@@ -130,6 +127,6 @@ class Wheel {
 
 	private void configDriveMotor() {
 		driveMotor.setIdleMode(IdleMode.kBrake);
-		driveMotor.setOpenLoopRampRate(1);
+		driveMotor.setOpenLoopRampRate(0.5);
 	}
 }

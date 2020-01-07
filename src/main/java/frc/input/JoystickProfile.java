@@ -44,10 +44,8 @@ public class JoystickProfile {
 			System.out.println("Successfully set the new joystick profiling points");
 		} catch (Exception e) {
 			// put the current ones on the dashboard instead
-			SmartDashboard.putString(dashboardProfileStr0, 
-							profilingPoints[0][0] + ", " + profilingPoints[0][1]);
-			SmartDashboard.putString(dashboardProfileStr1,
-							profilingPoints[1][0] + ", " + profilingPoints[1][1]);
+			SmartDashboard.putString(dashboardProfileStr0, profilingPoints[0][0] + ", " + profilingPoints[0][1]);
+			SmartDashboard.putString(dashboardProfileStr1, profilingPoints[1][0] + ", " + profilingPoints[1][1]);
 		}
 		Config.put("joystick_x1", profilingPoints[0][0]);
 		Config.put("joystick_y1", profilingPoints[0][1]);
@@ -59,18 +57,21 @@ public class JoystickProfile {
 	public static double applyProfile(double x) {
 		double signum = Math.signum(x);
 		// first apply deadband, then scale back to original range
-		x = Math.abs(x);
-		x = applyDeadband(x) / (1 - DEFAULT_DEADBAND);
-		// apply profiling
-		if (GRTUtil.inRange(0, x, profilingPoints[0][0])) {
-			x = GRTUtil.toRange(0, profilingPoints[0][0], 0, profilingPoints[0][1], x);
-		} else if (GRTUtil.inRange(profilingPoints[0][0], x, profilingPoints[1][0])) {
-			x = GRTUtil.toRange(profilingPoints[0][0], profilingPoints[1][0], profilingPoints[0][1],
-					profilingPoints[1][1], x);
-		} else {
-			x = GRTUtil.toRange(profilingPoints[1][0], 1, profilingPoints[1][1], 1, x);
+		double ans = applyDeadband(Math.abs(x));
+		if (ans != 0) {
+			ans -= DEFAULT_DEADBAND;
 		}
-		return x * signum;
+		ans = GRTUtil.toRange(0, 1-DEFAULT_DEADBAND, 0, 1, ans);
+		// apply profiling
+		if (GRTUtil.inRange(0, ans, profilingPoints[0][0])) {
+			ans = GRTUtil.toRange(0, profilingPoints[0][0], 0, profilingPoints[0][1], ans);
+		} else if (GRTUtil.inRange(profilingPoints[0][0], ans, profilingPoints[1][0])) {
+			ans = GRTUtil.toRange(profilingPoints[0][0], profilingPoints[1][0], profilingPoints[0][1],
+					profilingPoints[1][1], ans);
+		} else {
+			ans = GRTUtil.toRange(profilingPoints[1][0], 1.01, profilingPoints[1][1], .99, ans);
+		}
+		return ans * signum;
 	}
 
 	/** applies the requested deadband to x. */
