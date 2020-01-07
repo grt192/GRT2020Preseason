@@ -3,7 +3,7 @@ delay 820
 setspeed -0.7 0.7
 delay 260
 setspeed 0.4 0.4
-delay 200
+delay 210
 setshooter true
 setspeed 0 0
 delay 10000
@@ -21,7 +21,7 @@ delay 820
 setspeed -0.7 0.7
 delay 260
 setspeed 0.4 0.4
-delay 200
+delay 210
 setshooter true
 setspeed 0 0
 delay 10000
