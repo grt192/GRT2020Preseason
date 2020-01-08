@@ -91,6 +91,10 @@ class Wheel {
 		driveMotor.set(speed);
 	}
 
+	public int getEncoderPosition() {
+		return rotateMotor.getSelectedSensorPosition(0) - OFFSET;
+	}
+
 	public double getDriveSpeed() {
 		return driveEncoder.getVelocity() * DRIVE_TICKS_TO_METERS * (reversed ? -1 : 1) / 60.0;
 	}
@@ -99,7 +103,7 @@ class Wheel {
 		return GRTUtil.positiveMod((((rotateMotor.getSelectedSensorPosition(0) - OFFSET) * TWO_PI / TICKS_PER_ROTATION)
 				+ (reversed ? Math.PI : 0)), TWO_PI);
 	}
-	
+
 	public String getName() {
 		return name;
 	}

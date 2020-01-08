@@ -42,7 +42,7 @@ public class Swerve implements Runnable {
 		angle = 0.0;
 		robotCentric = false;
 		withPID = false;
-		wheels = new Wheel[4]; 
+		wheels = new Wheel[4];
 		wheels[0] = new Wheel("fr");
 		wheels[1] = new Wheel("br");
 		wheels[2] = new Wheel("bl");
@@ -56,9 +56,9 @@ public class Swerve implements Runnable {
 		WHEEL_ANGLE = Math.atan2(SWERVE_WIDTH, SWERVE_HEIGHT);
 		ROTATE_SCALE = 1 / RADIUS;
 		calcSwerveData();
-		notifier = new Notifier(this); 
+		notifier = new Notifier(this);
 		notifier.startPeriodic(0.02);
-		//setAngle(0.0); TODO uncomment this
+		// setAngle(0.0); TODO uncomment this
 	}
 
 	public void run() {
@@ -67,6 +67,7 @@ public class Swerve implements Runnable {
 			w = calcPID();
 		}
 		changeMotors(userVX, userVY, w);
+		// System.out.println("userVX: " + userVX + " userVY: " + userVY + " w: " + w);
 		calcSwerveData();
 		SmartDashboard.putNumber("Angle", gyro.getAngle());
 		gyroAngle.setDouble(Math.toRadians(gyro.getAngle()));
@@ -84,9 +85,13 @@ public class Swerve implements Runnable {
 
 	/**
 	 * sets x velocity, y velocity, and angular velocity of robot
-	 * @param vx the new x velocity, from -1.0 to 1.0
-	 * @param vy the new y velocity, from -1.0 to 1.0
-	 * @param w the new angular velocity, in radians/sec
+	 * 
+	 * @param vx
+	 *               the new x velocity, from -1.0 to 1.0
+	 * @param vy
+	 *               the new y velocity, from -1.0 to 1.0
+	 * @param w
+	 *               the new angular velocity, in radians/sec
 	 */
 	public void drive(double vx, double vy, double w) {
 		userVX = vx;
@@ -99,7 +104,9 @@ public class Swerve implements Runnable {
 
 	/**
 	 * sets the angle of the robot
-	 * @param angle the angle to turn the robot to, in radians
+	 * 
+	 * @param angle
+	 *                  the angle to turn the robot to, in radians
 	 */
 	public void setAngle(double angle) {
 		withPID = true;
@@ -113,12 +120,15 @@ public class Swerve implements Runnable {
 
 	/**
 	 * change the motors to reach the requested values
-	 * @param vx the requested x velocity from -1.0 to 1.0
-	 * @param vy the requested y velocity from -1.0 to 1.0
-	 * @param w the requested angular velocity
+	 * 
+	 * @param vx
+	 *               the requested x velocity from -1.0 to 1.0
+	 * @param vy
+	 *               the requested y velocity from -1.0 to 1.0
+	 * @param w
+	 *               the requested angular velocity
 	 */
 	public void changeMotors(double vx, double vy, double w) {
-		//System.out.println("vx:" + vx + "vy:" + vy + "w:" + w);
 		w *= ROTATE_SCALE;
 		double gyroAngle = (robotCentric ? 0 : Math.toRadians(gyro.getAngle()));
 		for (int i = 0; i < wheels.length; i++) {
@@ -177,11 +187,10 @@ public class Swerve implements Runnable {
 	public void zeroRotate() {
 		for (int i = 0; i < wheels.length; i++) {
 			wheels[i].zero();
-			Config.put(wheels[i].getName()+"_offset", ""+wheels[i].getOffset());
+			Config.put(wheels[i].getName() + "_offset", "" + wheels[i].getOffset());
 			SmartDashboard.putString("DB/String " + i, wheels[i].getName() + "_offset: " + wheels[i].getOffset());
 		}
 		Config.updateConfigFile();
 	}
-
 
 }

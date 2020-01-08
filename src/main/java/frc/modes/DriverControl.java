@@ -23,10 +23,8 @@ class DriverControl extends Mode {
     private void driveSwerve() {
         double x = -Input.SWERVE_XBOX.getY(Hand.kLeft);
         double y = Input.SWERVE_XBOX.getX(Hand.kLeft);
-        System.out.print("orig x: " + x + ", orig y: " + y);
         x = JoystickProfile.applyProfile(x);
         y = JoystickProfile.applyProfile(y);
-        System.out.println(", x from profile: " + x + ", y from profile: " + y);
         // rotate the robot
         double lTrigger = Input.SWERVE_XBOX.getTriggerAxis(Hand.kLeft);
         double rTrigger = Input.SWERVE_XBOX.getTriggerAxis(Hand.kRight);
