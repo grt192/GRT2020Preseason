@@ -23,6 +23,8 @@ import frc.swerve.NavXGyro;
 import frc.swerve.Swerve;
 import frc.util.GRTUtil;
 
+import edu.wpi.first.cameraserver.*;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -60,6 +62,10 @@ public class Robot extends TimedRobot {
     Mode.initModes();
     mode = NetworkTableInstance.getDefault().getTable("Robot").getEntry("mode");
     mode.setNumber(0);
+
+    CameraServer.getInstance().startAutomaticCapture(0);
+    CameraServer.getInstance().startAutomaticCapture(1);
+
   }
 
   private void loop() {
